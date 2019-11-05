@@ -8,7 +8,7 @@ jobs:
       - run:
           command: |
             pip install -r requirements-dev.txt --user
-            /home/circleci/.local/bin/black . --check 
+            /home/circleci/.local/bin/black . --check --exclude venv\*
             #  backend_test:
             #    docker:
             #      - image: circleci/python:3.7
