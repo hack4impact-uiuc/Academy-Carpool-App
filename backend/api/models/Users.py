@@ -1,17 +1,15 @@
 from mongoengine import *
-from flask_mongoengine import document
+from flask_mongoengine import Document
 from .base import db
 from api.core import Mixin
 
 class User(Document, Mixin):
-    user_id = IntField(required = True)
-    past_trips = IntField(required = True)
     age = IntField(required = True)
     rating = FloatField(required = True)
     email = EmailField(required = True)
     name = StringField(required = True)
     phone = StringField(required = True)
-    venmo_handle = StringField(required = True)
+    venmo_handle = StringField(required = False)
     
     photo = StringField()
     cars = ListField(ReferenceField(Cars))
@@ -19,3 +17,5 @@ class User(Document, Mixin):
     past_passenger_trips = ListField(ReferenceField(Trips))
     current_trips = ListField(ReferenceField(Trips))
 
+    def __repr__(self):
+        return f"<User {self.name}>"
