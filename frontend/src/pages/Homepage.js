@@ -5,19 +5,8 @@ class Homepage extends React.Component {
     constructor(props) {
         super(props)
         this.state ={
-            all_trips: [],
-            origin: "West Quad",
-            destination: "County Market",
-            venmo: "Ashank-Behara",
-            cost: "5",
-            model: "Toyota Prius",
-            seats: "3",
-            space: "empty",
-            color: "blue",
-            notes: "Meet me in the back entrance behind the building. If you arrive late I will leave.",
-            name: "Ashank Behara",
-            date: "11/4/19",
-            time: "6:30"
+            currentTrip: {Trip},
+            allTrips: [ {Trips} ]
         }
     }
     render() {
@@ -34,13 +23,7 @@ class Homepage extends React.Component {
                     <AdditionalDetails details ={this.state}/>
                     </Col>
                 </Row>
-                
-            
-                {/* {this.state.all_trips.map((value) => {
-                    return (
-                    
-                    );
-                })} */}
+                {/*insert function for allTrips and send values to Angela's component*/}
             </div>
         );
     }
