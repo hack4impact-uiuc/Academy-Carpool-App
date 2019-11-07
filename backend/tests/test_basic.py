@@ -61,7 +61,6 @@ def test_delete_user(client):
     
     user_id = ret_dict["result"]["users"][0]["_id"]["$oid"]
 
-    #TODO: Correct?
     rs = client.delete(f"/users/{user_id}")
     rs = client.get("/users")
     ret_dict = rs.json
@@ -111,7 +110,6 @@ def test_create_user(client):
 
     ret_dict = rs.json
     assert rs.status_code == 201
-
 
     rs = client.get("/users")
     ret_dict = rs.json
