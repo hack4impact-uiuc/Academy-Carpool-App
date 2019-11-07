@@ -1,7 +1,3 @@
-//yarn add react-bootstrap bootstrap
-//yarn add mdbreact
-//yarn add semantic-ui-react
-
 import React, { Component } from 'react';
 import { Card, Button, Row, Col, OverlayTrigger, Tooltip, Popover } from 'react-bootstrap';
 import { MDBIcon } from 'mdbreact';
