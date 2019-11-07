@@ -112,10 +112,8 @@ def populate_db():
 
 
 ###################################
-# CARPOOL IMPLEMENTATIONS
+# USER ENDPOINTS
 ##################################
-
-
 @main.route("/users", methods=["GET"])
 def get_users():
     users = User.objects()
@@ -125,7 +123,7 @@ def get_users():
 @main.route("/users", methods=["POST"])
 def create_user():
     data = request.get_json()
-    logger.info("Recieved data {}", data)
+    logger.info(f"Recieved data {data}")
 
     # Make sure that all required fields are filled
     for key in Users.getRequiredKeys():
@@ -140,6 +138,12 @@ def create_user():
     phone = data["phone"]
 
     user = User(age=age, email=email, name=name, phone=phone)
+
+    # Add all non-required keys that can be initialized on a post
+    for key in Users.getAllKeys():
+        if key in data and key not in Users.getRequiredKeys() and key not in Users.getUnpostableKeys():
+            user[key] = data[key]
+
     user.save()
 
     return create_response(
@@ -168,11 +172,7 @@ def update_user(id):
 
     # Update each key but don't update allow to update cars or trips here
     for key in Users.getAllKeys():
-        if key in data and key not in [
-            "past_driver_trips",
-            "past_passanger_trips",
-            "current_trips",
-        ]:
+        if key in data and key not in Users.getUnpostableKeys():
             userToUpdate[key] = data[key]
 
     userToUpdate.save()
@@ -181,6 +181,20 @@ def update_user(id):
         message=f"Successfully updated user {userToUpdate.name} with id {userToUpdate.id}.",
         status=201,
     )
+
+##############################################
+# Car Endpoints
+##############################################
+@main.route("/users/<id>/cars", methods=["GET"])
+def get_user_cars(user_id):
+    user = get_user_by_id(user_id)
+
+    if user is None:
+        logger.info(f"There are no users with id {user_id}.")
+        return None
+
+    return create_response(data={"cars": user["cars"]}, status=200)
+
 
 
 def get_user_by_id(user_id):
