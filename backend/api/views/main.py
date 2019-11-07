@@ -128,8 +128,8 @@ def create_trip():
 
     for key in Trips.get_elements():
         if key not in info:
-            logger.info(f"Trip not created, missing field '{key}.'")
-            return create_response(status=442, message=f"{key} not in info.")
+            logger.info(f"Trip was not created, missing field {key}.")
+            return create_response(status=442, message=f"{key} is required and is not in info.")
 
     driver = info["driver"]
     origin = info["origin"]
@@ -147,7 +147,7 @@ def create_trip():
     trunk_space = trunk_space, passengers = passengers)
     trip.save()
 
-    return create_response(message=f"Successfully created Trip {trip.name} with id {trip.id}.", status=201)
+    return create_response(message=f"Successfully created {trip.driver}'s Trip with id {trip.id}.", status=201)
 
 # function that identifies the trip based on its id (used in the latter two endpoints)
 def get_trip_by_id(trip_id):
@@ -171,7 +171,7 @@ def update_trip(id):
 
     # Update each key
     for key in Trips.get_elements():
-        if(key in info and key not in ["driver", "origin", "car"]):
+        if(key in info and key not in ["driver", "origin", "car"]): # not sure if anything else should not be updated
             trip_to_update[key]=info[key]
         
     trip_to_update.save()
@@ -185,7 +185,7 @@ def delete_trip(id):
     toDelete = get_trip_by_id(id)
 
     if (toDelete is None):
-        return create_response(message=f"No trip with id {id} was found.", status=404)
+        return create_response(message=f"No trip with id {id} found.", status=404)
 
     toDelete.delete()
-    return(create_response(message=f"Trip with id {id} was deleted."))
+    return(create_response(message=f"Trip with id {id} has been deleted."))
