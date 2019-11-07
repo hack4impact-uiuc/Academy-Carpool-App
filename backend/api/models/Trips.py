@@ -1,5 +1,5 @@
 from mongoengine import *
-from flask_mongoengine import document
+from flask_mongoengine import Document
 from .base import db
 from api.core import Mixin
 from api.core import User, Car, Location
@@ -16,3 +16,10 @@ class Trip(Document, Mixin):
     seats_available = IntField(required=true)
     trunk_space = StringField(required=true)
     passengers = ListField(ReferenceField("User", required=true))
+
+    def __repr__(self):
+        return f"<Trip {self.driver}>"
+
+def get_elements():
+    return ["driver", "origin", "destination", "start_time", "posted_time", "cost", "car", "seats_available",
+        "trunk_space", "passengers"]

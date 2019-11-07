@@ -2,8 +2,13 @@ from flask import Blueprint, request, jsonify
 from api.models import db, Person, Email, CensusResponse
 from api.core import create_response, serialize_list, logger
 
+from api.models.Trips import Trip
+from api.models import db, Trips, Location, CensusResponse
+
 from .populate_db import parse_census_data
 from .web_scrap import extract_data_links
+
+# Kelly's code
 
 main = Blueprint("main", __name__)  # initialize blueprint
 
@@ -104,3 +109,83 @@ def populate_db():
     return create_response(
         message=f"Successfully added {len(responses)} new Census Responses"
     )
+
+
+
+#CARPOOL APP CODE:
+
+# function that is called when you visit /trips
+@main.route("/trips", methods=["GET"])
+def get_trips():
+    trips = Trips.objects()
+    return create_response(data={"trips": trips})
+
+# function that is called when you visit /trips
+@main.route("/trips", methods=["POST"])
+def create_trip():
+    info = request.get_json()
+    logger.info(f"Received info {info}.")
+
+    for key in Trips.get_elements():
+        if key not in info:
+            logger.info(f"Trip not created, missing field '{key}.'")
+            return create_response(status=442, message=f"{key} not in info.")
+
+    driver = info["driver"]
+    origin = info["origin"]
+    destination = info["destination"]
+    start_time = info["start_time"]
+    posted_time = info["posted_time"]
+    cost = info["cost"]
+    car = info["car"]
+    seats_available = info["seats_available"]
+    trunk_space = info["trunk_space"]
+    passengers = info["passengers"]
+
+    trip = Trip(driver = driver, origin = origin, destination = destination, start_time = start_time,
+    posted_time = posted_time, cost = cost, car = car, seats_available = seats_available,
+    trunk_space = trunk_space, passengers = passengers)
+    trip.save()
+
+    return create_response(message=f"Successfully created Trip {trip.name} with id {trip.id}.", status=201)
+
+# function that identifies the trip based on its id (used in the latter two endpoints)
+def get_trip_by_id(trip_id):
+    trip = Trip.objects(id = trip_id)
+    
+    if (not trip):
+        logger.info(f"There are no trips with id {trip_id}.")
+        return None
+
+    return trip.get(id = trip_id)
+
+# function that is called when you visit /trips/<id>
+@main.route("/trips/<id>", methods=["PUT"])
+def update_trip(id):
+    info = request.get_json
+    logger.info(f"Recieved info {info}.")
+
+    trip_to_update = get_trip_by_id(id)
+    if(trip_to_update is None):
+        return create_response(message=f"No trip with id {id} was found.", status=404)
+
+    # Update each key
+    for key in Trips.get_elements():
+        if(key in info and key not in ["driver", "origin", "car"]):
+            trip_to_update[key]=info[key]
+        
+    trip_to_update.save()
+
+    return create_response(message=f"Successfully updated {trip_to_update.driver}'s trip with id {trip_to_update.id}.", status=201)
+    
+
+# function that is called when you visit /trips/<id>
+@main.route("/trips/<id>", methods=["DELETE"])
+def delete_trip(id):
+    toDelete = get_trip_by_id(id)
+
+    if (toDelete is None):
+        return create_response(message=f"No trip with id {id} was found.", status=404)
+
+    toDelete.delete()
+    return(create_response(message=f"Trip with id {id} was deleted."))
