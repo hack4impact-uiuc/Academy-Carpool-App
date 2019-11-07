@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from api.models.Users import User;
+from api.models.Users import User
 from api.models import db, Users, Person, Email, CensusResponse
 from api.core import create_response, serialize_list, logger
 
@@ -16,6 +16,7 @@ def index():
     # try using ipdb here :) you can inject yourself
     logger.info("Hello World!")
     return "Hello World!"
+
 
 ##################################
 # EXAMPLES
@@ -109,14 +110,17 @@ def populate_db():
         message=f"Successfully added {len(responses)} new Census Responses"
     )
 
+
 ###################################
 # CARPOOL IMPLEMENTATIONS
 ##################################
 
+
 @main.route("/users", methods=["GET"])
 def get_users():
     users = User.objects()
-    return create_response(data={"users": users})
+    return create_response(data={"users": users}, status=200)
+
 
 @main.route("/users", methods=["POST"])
 def create_user():
@@ -135,19 +139,23 @@ def create_user():
     name = data["name"]
     phone = data["phone"]
 
-    user = User(age = age, email = email, name = name, phone = phone)
+    user = User(age=age, email=email, name=name, phone=phone)
     user.save()
 
-    return create_response(message=f"Successfully created user {user.name} with id {user.id}.", status=201)
+    return create_response(
+        message=f"Successfully created user {user.name} with id {user.id}.", status=201
+    )
+
 
 @main.route("/users/<id>", methods=["DELETE"])
 def delete_user(id):
     toDelete = get_user_by_id(id)
-    if (toDelete is None):
+    if toDelete is None:
         return create_response(message=f"No user with id {id} was found.", status=404)
-    
+
     toDelete.delete()
-    return(create_response(message=f"User with id {id} was deleted."))
+    return create_response(message=f"User with id {id} was deleted.")
+
 
 @main.route("/users/<id>", methods=["PUT"])
 def update_user(id):
@@ -155,23 +163,31 @@ def update_user(id):
     logger.info(f"Recieved data {data}")
 
     userToUpdate = get_user_by_id(id)
-    if(userToUpdate is None):
+    if userToUpdate is None:
         return create_response(message=f"No user with id {id} was found.", status=404)
 
     # Update each key but don't update allow to update cars or trips here
     for key in Users.getAllKeys():
-        if(key in data and key not in ["past_driver_trips", "past_passanger_trips", "current_trips"]):
-            userToUpdate[key]=data[key]
+        if key in data and key not in [
+            "past_driver_trips",
+            "past_passanger_trips",
+            "current_trips",
+        ]:
+            userToUpdate[key] = data[key]
 
     userToUpdate.save()
 
-    return create_response(message=f"Successfully updated user {userToUpdate.name} with id {userToUpdate.id}.", status=201)
+    return create_response(
+        message=f"Successfully updated user {userToUpdate.name} with id {userToUpdate.id}.",
+        status=201,
+    )
+
 
 def get_user_by_id(user_id):
-    user = User.objects(id = user_id)
+    user = User.objects(id=user_id)
 
-    if (not user):
+    if not user:
         logger.info(f"There are no users with id {user_id}.")
         return None
-   
-    return user.get(id = user_id)
+
+    return user.get(id=user_id)
