@@ -20,7 +20,7 @@ import {
   ToastHeader,
   Badge
 } from 'reactstrap';
-
+import TripComponent from './TripComponent';
 class App extends React.Component {
   render() {
     return (
