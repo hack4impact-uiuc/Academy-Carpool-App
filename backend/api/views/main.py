@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from api.models.Users import User
-from api.models import db, Users, Person, Email, CensusResponse
+from api.models.Cars import Car
+from api.models import db, Users, Person, Email, CensusResponse, Cars
 from api.core import create_response, serialize_list, logger
 
 from .populate_db import parse_census_data
@@ -128,8 +129,8 @@ def create_user():
     # Make sure that all required fields are filled
     for key in Users.getRequiredKeys():
         if key not in data:
-            msg = f"{key} not in data"
-            logger.info(f"User not created, missing field '{key}''.")
+            msg = f"User not created, missing field '{key}''."
+            logger.info(msg)
             return create_response(status=442, message=msg)
 
     age = data["age"]
@@ -186,14 +187,44 @@ def update_user(id):
 # Car Endpoints
 ##############################################
 @main.route("/users/<id>/cars", methods=["GET"])
-def get_user_cars(user_id):
-    user = get_user_by_id(user_id)
+def get_user_cars(id):
+    user = get_user_by_id(id)
 
     if user is None:
-        logger.info(f"There are no users with id {user_id}.")
-        return None
+        return create_response(message=f"No user with id {id} was found.", status=404)
 
-    return create_response(data={"cars": user["cars"]}, status=200)
+    cars = user.cars
+
+    return create_response(data={"cars": cars}, status=200)
+
+@main.route("/users/<id>/cars", methods=["POST"])
+def create_user_car(id):
+    data = request.get_json()
+    logger.info(f"Recieved data {data}")
+
+    user = get_user_by_id(id)
+
+    if user is None:
+        return create_response(message=f"No user with id {id} was found.", status=404)
+
+    car = Car()
+
+    for key in Cars.getAllKeys():
+        if key in Cars.getRequiredKeys() and key not in data:
+            msg = f"Car not created, missing field '{key}''."
+            logger.info(msg)
+            return create_response(status=442, message=msg)
+        if key in data:
+            car[key] = data[key]
+
+    car.save()
+
+    user.cars.append(car)
+    user.save()
+
+    return create_response(
+        message=f"Successfully created car with id {car.id} for user with id {user.id}.", status=201
+    )
 
 
 

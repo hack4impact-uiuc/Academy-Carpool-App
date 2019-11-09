@@ -4,7 +4,7 @@ from .base import db
 from api.core import Mixin
 
 
-class Cars(Document, Mixin):
+class Car(Document, Mixin):
     year = IntField(required=False)
     model = StringField(required=True)
     color = StringField(required=True)
@@ -16,3 +16,6 @@ class Cars(Document, Mixin):
 
 def getRequiredKeys():
     return ["model", "color", "license_plate"]
+
+def getAllKeys():
+    return ["model", "color", "license_plate", "year"]

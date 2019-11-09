@@ -3,7 +3,7 @@ from flask_mongoengine import Document
 from .base import db
 from api.core import Mixin
 
-# from api.models import Cars,Trips
+from api.models import Cars#,Trips
 
 
 class User(Document, Mixin):
@@ -15,7 +15,7 @@ class User(Document, Mixin):
     venmo_handle = StringField(required=False)
 
     photo = StringField()
-    cars = ListField(ReferenceField("Cars"))
+    cars = ListField(ReferenceField("Car"))
     # past_driver_trips = ListField(ReferenceField("Trips"))
     # past_passenger_trips = ListField(ReferenceField("Trips"))
     # current_trips = ListField(ReferenceField("Trips"))
