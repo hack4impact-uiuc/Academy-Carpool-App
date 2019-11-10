@@ -28,7 +28,7 @@ def getRequiredKeys():
     return ["age", "email", "name", "phone"]
 
 # Returns keys that should not be set on a post request
-def getUnpostableKeys():
+def getReferenceKeys():
     return ["past_driver_trips","past_passanger_trips","current_trips"]
 
 def getAllKeys():
