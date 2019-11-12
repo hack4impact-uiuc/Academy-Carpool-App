@@ -10,12 +10,13 @@ class Car(Document, Mixin):
     color = StringField(required=True)
     license_plate = StringField(required=True, max_length=4)
 
+    @staticmethod
+    def getRequiredKeys():
+        return ["model", "color", "license_plate"]
+    
+    @staticmethod
+    def getAllKeys():
+        return ["model", "color", "license_plate", "year"]
+
     def __repr__(self):
         return f"<Car {self.license_plate}>"
-
-
-def getRequiredKeys():
-    return ["model", "color", "license_plate"]
-
-def getAllKeys():
-    return ["model", "color", "license_plate", "year"]

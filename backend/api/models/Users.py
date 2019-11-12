@@ -23,25 +23,26 @@ class User(Document, Mixin):
     def __repr__(self):
         return f"<User {self.name}>"
 
+    @staticmethod
+    def getRequiredKeys():
+        return ["age", "email", "name", "phone"]
 
-def getRequiredKeys():
-    return ["age", "email", "name", "phone"]
+    @staticmethod
+    def getReferenceKeys():
+        return ["past_driver_trips","past_passanger_trips","current_trips"]
 
-# Returns keys that should not be set on a post request
-def getReferenceKeys():
-    return ["past_driver_trips","past_passanger_trips","current_trips"]
-
-def getAllKeys():
-    return [
-        "age",
-        "email",
-        "name",
-        "phone",
-        "rating",
-        "venmo_handle",
-        "photo",
-        "cars",
-        "past_driver_trips",
-        "past_passanger_trips",
-        "current_trips"
-    ]
+    @staticmethod
+    def getAllKeys():
+        return [
+            "age",
+            "email",
+            "name",
+            "phone",
+            "rating",
+            "venmo_handle",
+            "photo",
+            "cars",
+            "past_driver_trips",
+            "past_passanger_trips",
+            "current_trips"
+        ]

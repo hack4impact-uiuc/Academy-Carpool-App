@@ -128,8 +128,8 @@ def create_user():
 
     user = User()
 
-    for key in Users.getAllKeys():
-        if key in Users.getRequiredKeys() and key not in data:
+    for key in User.getAllKeys():
+        if key in User.getRequiredKeys() and key not in data:
             msg = f"User not created, missing field '{key}''."
             logger.info(msg)
             return create_response(status=442, message=msg)
@@ -164,7 +164,7 @@ def update_user(id):
 
     # Update each key but don't update allow to update cars or trips here
     for key in Users.getAllKeys():
-        if key in data and key not in Users.getReferenceKeys():
+        if key in data and key not in User.getReferenceKeys():
             userToUpdate[key] = data[key]
 
     userToUpdate.save()
@@ -200,8 +200,8 @@ def create_user_car(id):
 
     car = Car()
 
-    for key in Cars.getAllKeys():
-        if key in Cars.getRequiredKeys() and key not in data:
+    for key in Car.getAllKeys():
+        if key in Car.getRequiredKeys() and key not in data:
             msg = f"Car not created, missing field '{key}''."
             logger.info(msg)
             return create_response(status=442, message=msg)
