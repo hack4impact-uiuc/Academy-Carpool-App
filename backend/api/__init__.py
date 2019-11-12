@@ -74,7 +74,7 @@ def create_app(test_config=None):
 
     # app.config["MONGO_URI"] = "mongodb://localhost:27017/communityconnect-labs"
     app.config["MONGODB_SETTINGS"] = {
-        "db": "communityconnect-labs",
+        "db": "carpool",
         "host": "127.0.0.1",
         "port": 27017,
     }
