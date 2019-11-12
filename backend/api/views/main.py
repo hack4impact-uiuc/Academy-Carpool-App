@@ -128,7 +128,7 @@ def create_user():
     logger.info("Recieved data {}", data)
 
     # Make sure that all required fields are filled
-    for key in Users.getRequiredKeys():
+    for key in User.getRequiredKeys():
         if key not in data:
             msg = f"{key} not in data"
             logger.info(f"User not created, missing field '{key}''.")
@@ -167,7 +167,7 @@ def update_user(id):
         return create_response(message=f"No user with id {id} was found.", status=404)
 
     # Update each key but don't update allow to update cars or trips here
-    for key in Users.getAllKeys():
+    for key in User.getAllKeys():
         if key in data and key not in [
             "past_driver_trips",
             "past_passanger_trips",

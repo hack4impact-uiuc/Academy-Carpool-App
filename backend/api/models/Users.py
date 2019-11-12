@@ -3,7 +3,7 @@ from flask_mongoengine import Document
 from .base import db
 from api.core import Mixin
 
-# from api.models import Cars,Trips
+from api.models import Cars#,Trips
 
 
 class User(Document, Mixin):
@@ -20,25 +20,29 @@ class User(Document, Mixin):
     # past_passenger_trips = ListField(ReferenceField("Trips"))
     # current_trips = ListField(ReferenceField("Trips"))
 
+    @staticmethod
+    def getRequiredKeys():
+        return ["age", "email", "name", "phone"]
+
+    @staticmethod
+    def getReferenceKeys():
+        return ["past_driver_trips","past_passanger_trips","current_trips"]
+
+    @staticmethod
+    def getAllKeys():
+        return [
+            "age",
+            "email",
+            "name",
+            "phone",
+            "rating",
+            "venmo_handle",
+            "photo",
+            "cars",
+            "past_driver_trips",
+            "past_passanger_trips",
+            "current_trips"
+        ]
+
     def __repr__(self):
         return f"<User {self.name}>"
-
-
-def getRequiredKeys():
-    return ["age", "email", "name", "phone"]
-
-
-def getAllKeys():
-    return [
-        "age",
-        "email",
-        "name",
-        "phone",
-        "rating",
-        "venmo_handle",
-        "photo",
-        "cars",
-        "past_driver_trips",
-        "past_passanger_trips",
-        "current_trips",
-    ]
