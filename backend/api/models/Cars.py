@@ -13,7 +13,7 @@ class Car(Document, Mixin):
     @staticmethod
     def getRequiredKeys():
         return ["model", "color", "license_plate"]
-    
+
     @staticmethod
     def getAllKeys():
         return ["model", "color", "license_plate", "year"]

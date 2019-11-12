@@ -174,6 +174,7 @@ def update_user(id):
         status=201,
     )
 
+
 ##############################################
 # Car Endpoints
 ##############################################
@@ -187,6 +188,7 @@ def get_user_cars(id):
     cars = user.cars
 
     return create_response(data={"cars": cars}, status=200)
+
 
 @main.route("/users/<id>/cars", methods=["POST"])
 def create_user_car(id):
@@ -214,8 +216,10 @@ def create_user_car(id):
     user.save()
 
     return create_response(
-        message=f"Successfully created car with id {car.id} for user with id {user.id}.", status=201
+        message=f"Successfully created car with id {car.id} for user with id {user.id}.",
+        status=201,
     )
+
 
 @main.route("/users/<user_id>/cars/<car_id>", methods=["PUT"])
 def update_user_car(user_id, car_id):
@@ -224,34 +228,50 @@ def update_user_car(user_id, car_id):
 
     userToUpdate = get_user_by_id(id)
     if userToUpdate is None:
-        return create_response(message=f"No user with id {user_id} was found.", status=404)
+        return create_response(
+            message=f"No user with id {user_id} was found.", status=404
+        )
 
     carToUpdate = get_car_by_id(userToUpdate, car_id)
     if carToUpdate is None:
-        return create_response(message=f"No car with id {car_id} belongs to user {user_id}", status=404)
+        return create_response(
+            message=f"No car with id {car_id} belongs to user {user_id}", status=404
+        )
 
     for key in Cars.getAllKeys():
         carToUpdate[key] = data[key]
 
     carToUpdate.save()
     return create_response(
-        message=f"Successfully updated car {carToUpdate.id}.",
-        status=201,
+        message=f"Successfully updated car {carToUpdate.id}.", status=201,
     )
+
 
 @main.route("/users/<user_id>/cars/<car_id>", methods=["DELETE"])
 def delete_user_car(user_id, car_id):
     user = get_user_by_id(user_id)
     if user is None:
-        return create_response(message=f"No user with id {user_id} was found.", status=404)
+        return create_response(
+            message=f"No user with id {user_id} was found.", status=404
+        )
 
-    car = get_car_by_id(user, car_id)
+    car = None
+    index = 0
+
+    for user_car in user.cars:
+        if str(user_car.id) == car_id:
+            car = user_car
+            user.cars.pop(index)
+        index += 1
+
     if car is None:
-        return create_response(message=f"No car with id {car_id} belongs to user {user_id}", status=404)
+        return create_response(
+            message=f"No car with id {car_id} belongs to user {user_id}", status=404
+        )
 
+    user.save()
     car.delete()
     return create_response(message=f"Car with id {car_id} was deleted.")
-
 
 
 def get_user_by_id(user_id):
@@ -263,17 +283,16 @@ def get_user_by_id(user_id):
 
     return user.get(id=user_id)
 
-def get_car_by_id(user, car_id):
-    ret_car = None
-    index = 0
 
-    for car in user.cars:
-        index += 1
-        if str(car.id) == car_id:
-            ret_car = car 
+# def get_car_by_id(user, car_id):
+#     ret_car = None
 
-    if ret_car is None:
-        logger.info(f"There are no cars with id {car_id} belonging to user {user.id}.")
-        return None
+#     for car in user.cars:
+#         if str(car.id) == car_id:
+#             ret_car = car
 
-    return ret_car
+#     if ret_car is None:
+#         logger.info(f"There are no cars with id {car_id} belonging to user {user.id}.")
+#         return None
+
+#     return ret_car

@@ -26,6 +26,7 @@ def test_get_person(client):
     assert len(ret_dict["result"]["persons"]) == 1
     assert ret_dict["result"]["persons"][0]["name"] == "Tim"
 
+
 ###############################
 # USER ENDPOINTS
 ###############################
@@ -49,6 +50,7 @@ def test_get_user(client):
     assert ret_dict["result"]["users"][0]["name"] == "Test"
     assert ret_dict["result"]["users"][0]["phone"] == "0123456789"
 
+
 def test_delete_user(client):
     # Create user to test on
     user = User(age=20, email="email@domain.com", name="Test", phone="0123456789")
@@ -58,7 +60,7 @@ def test_delete_user(client):
     rs = client.get("/users")
     ret_dict = rs.json
     assert len(ret_dict["result"]["users"]) == 1
-    
+
     user_id = ret_dict["result"]["users"][0]["_id"]["$oid"]
 
     rs = client.delete(f"/users/{user_id}")
@@ -66,22 +68,26 @@ def test_delete_user(client):
     ret_dict = rs.json
     assert len(ret_dict["result"]["users"]) == 0
 
+
 def test_update_user(client):
     # Create user to test on
     user = User(age=20, email="email@domain.com", name="Test", phone="0123456789")
     db.session.add(user)
     db.session.commit()
-    
+
     rs = client.get("/users")
     ret_dict = rs.json
     user_id = ret_dict["result"]["users"][0]["_id"]["$oid"]
 
-    rs = client.put(f"/users/{user_id}", json={
-        "age": 15,
-        "email": "newemail@domain.com",
-        "cars": "badData", # Cars cannot be updated on put
-        "badKey": "badValue" # Bad values should be ignored
-    })
+    rs = client.put(
+        f"/users/{user_id}",
+        json={
+            "age": 15,
+            "email": "newemail@domain.com",
+            "cars": "badData",  # Cars cannot be updated on put
+            "badKey": "badValue",  # Bad values should be ignored
+        },
+    )
     ret_dict = rs.json
     assert rs.status_code == 201
 
@@ -90,6 +96,7 @@ def test_update_user(client):
     assert ret_dict["result"]["users"][0]["age"] == 15
     assert ret_dict["result"]["users"][0]["email"] == "newemail@domain.com"
     assert ret_dict["result"]["users"][0]["cars"] == []
+
 
 def test_create_user(client):
     # Create user to test on
@@ -101,12 +108,15 @@ def test_create_user(client):
     ret_dict = rs.json
     user_id = ret_dict["result"]["users"][0]["_id"]["$oid"]
 
-    rs = client.post(f"/users/{user_id}", json={
-	"age": 18,
-	"email": "email@gmail.com",
-	"name": "TEST",
-	"phone": "0123456789"
-    })
+    rs = client.post(
+        f"/users/{user_id}",
+        json={
+            "age": 18,
+            "email": "email@gmail.com",
+            "name": "TEST",
+            "phone": "0123456789",
+        },
+    )
 
     ret_dict = rs.json
     assert rs.status_code == 201

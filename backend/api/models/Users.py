@@ -3,7 +3,7 @@ from flask_mongoengine import Document
 from .base import db
 from api.core import Mixin
 
-from api.models import Cars#,Trips
+from api.models import Cars  # ,Trips
 
 
 class User(Document, Mixin):
@@ -29,7 +29,7 @@ class User(Document, Mixin):
 
     @staticmethod
     def getReferenceKeys():
-        return ["past_driver_trips","past_passanger_trips","current_trips"]
+        return ["past_driver_trips", "past_passanger_trips", "current_trips"]
 
     @staticmethod
     def getAllKeys():
@@ -44,5 +44,5 @@ class User(Document, Mixin):
             "cars",
             "past_driver_trips",
             "past_passanger_trips",
-            "current_trips"
+            "current_trips",
         ]
