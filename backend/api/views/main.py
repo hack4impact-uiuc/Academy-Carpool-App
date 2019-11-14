@@ -115,8 +115,6 @@ def populate_db():
 ###################################
 # CARPOOL IMPLEMENTATIONS
 ##################################
-
-
 @main.route("/users", methods=["GET"])
 def get_users():
     users = User.objects()
@@ -165,7 +163,7 @@ def update_user(id):
         return create_response(message=f"No user with id {id} was found.", status=404)
 
     # Update each key but don't update allow to update cars or trips here
-    for key in Users.getAllKeys():
+    for key in User.getAllKeys():
         if key in data and key not in User.getReferenceKeys():
             userToUpdate[key] = data[key]
 
@@ -190,11 +188,8 @@ def get_user_cars(id):
 
     cars = []
 
-    logger.info(f"Cars: {len(user.cars)}")
-
     for user_car in user.cars:
-        logger.info(f"Car: {Car.objects(id=user_car.id)}")
-        cars.append(Car.objects(id=user_car.id))
+        cars.append(Car.objects(id=user_car.id)[0])
 
     #TODO: Create list of cars
 
