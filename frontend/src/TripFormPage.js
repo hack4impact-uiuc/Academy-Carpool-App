@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Form, Button, Col, Jumbotron, Row, InputGroup, FormControl} from 'react-bootstrap';
 import { MDBIcon } from 'mdbreact';
 import './TripFormPage.css';
-import { SingleDatePicker} from 'react-dates';
-import { TimePicker, DatePicker } from 'antd';
+import { TimePicker, DatePicker, InputNumber, Input} from 'antd';
 import LocationSearchInput from './PlacesAutocomplete'
 /**
  * using ant design
@@ -35,27 +34,7 @@ class TripFormPage extends React.Component {
         }
     }
     handleSubmit = () => {
-        let request = new FormData()
-         console.log(this.state);
-        request.append("firstname" + "lastname", this.state.name)
-        request.append("date", this.state.date)
-        request.append("time", this.state.time)
-        request.append("orgin", this.state.orgin)
-        request.append("destination", this.state.destination)
-        request.append("trunk", this.state.trunk)
-        request.append("seats", this.state.seats)
-        request.append("orgin", this.state.orgin)
-        request.append("orgin", this.state.orgin)
-        request.append("orgin", this.state.orgin)
-        request.append("orgin", this.state.orgin)
-        /*
-        fetch("http://127.0.0.1:5000/posts", 
-          {
-            body: request,
-            method: "post"
-          }
-        )
-        */
+        //connect to backend
     
       }
 
@@ -72,10 +51,10 @@ class TripFormPage extends React.Component {
                 <div class = "top-buffer">
                 <Row >
                     <Col>
-                    <Form.Control placeholder="First name" id="firstname"/>
+                    <Input placeholder="First name" size = "large" />
                     </Col>
                     <Col>
-                    <Form.Control placeholder="Last name" id = "lastname"/>
+                    <Input placeholder="Last name" size = "large" />
                     </Col>
                 </Row>
                 </div>
@@ -83,10 +62,10 @@ class TripFormPage extends React.Component {
                 <div class = "top-buffer">
                 <Row>
                 <Col md={4}>
-                <DatePicker style={{width: "10rem"}} size="large" id="date"/>
+                <DatePicker style={{width: "10rem"}} size="large"/>
                 </Col>
                 <Col>
-                <TimePicker style={{width: "10rem"}} size="large" use12Hours format="h:mm a" id="time" />
+                <TimePicker style={{width: "10rem"}} size="large" use12Hours format="h:mm a"/>
                 </Col>
                 </Row>
                 </div>
@@ -107,7 +86,7 @@ class TripFormPage extends React.Component {
                 <Row>
                 <Col>
                 <div class = "top-buffer">
-                 <Form.Group controlId="formGridState" style={{width: "10rem"}} id="trunk">
+                 <Form.Group controlId="formGridState" style={{width: "10rem"}}>
                 <Form.Label>Trunk Size</Form.Label>
                 <Form.Control as="select">
                     <option>Small</option>
@@ -120,7 +99,7 @@ class TripFormPage extends React.Component {
                 </Col>
                 <Col>
                 <div class = "top-buffer">
-                 <Form.Group controlId="formGridState" style={{width: "10rem"}} id="seats">
+                 <Form.Group controlId="formGridState" style={{width: "10rem"}}>
                 <Form.Label>Seats Available</Form.Label>
                 <Form.Control as="select" >
                     <option>1</option>
@@ -136,16 +115,12 @@ class TripFormPage extends React.Component {
                 </div>
                 </Col>
                 <Col>
-                <div class = "moneytop-buffer">
-                <InputGroup className="mb-3" style={{width: "10rem"}}>
-                    <InputGroup.Prepend>
-                    <InputGroup.Text>$</InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <FormControl aria-label="Amount (to the nearest dollar)" />
-                    <InputGroup.Append>
-                    <InputGroup.Text>.00</InputGroup.Text>
-                    </InputGroup.Append>
-                </InputGroup>
+                <div class = "moneytop-buffer"> 
+                <InputNumber size = "large"
+                    defaultValue={5}
+                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                    />
                 </div>
                 </Col>
                 </Row>
@@ -154,29 +129,31 @@ class TripFormPage extends React.Component {
                 <div class = "top-buffer">
                 <Form.Group>
                     <Form.Label>Vehicle Information:</Form.Label>
-                    <Form.Control  placeholder="Vehicle Color" />
+                    <Input placeholder="Vehicle Color" size = "large" />
                 </Form.Group>
                 </div>
                 <Form.Group >
-                    {/* <Form.Label>License Plate</Form.Label> */}
-                    <Form.Control  placeholder="Vehicle License Plate" />
+                    <Input placeholder="Vehicle License Plate" size = "large" />
                 </Form.Group>
                 
 
                 <div>
                 <Row >
                     <Col>
-                    <Form.Control placeholder="Vehicle Model" id="vehicleModel"/>
+                    {/* <Form.Control placeholder="Vehicle Model"/> */}
+                    <Input placeholder="Vehicle Model" size = "large" />
                     </Col>
                     <Col>
-                    <Form.Control placeholder="Vehicle Make" id = "vehicleMake"/>
+                    {/* <Form.Control placeholder="Vehicle Make"/> */}
+                    <Input placeholder="Vehicle Make" size = "large" />
                     </Col>
                 </Row>
                 </div>
-                
-                <Button  variant="primary" type="submit">
+                <div class = "submittop-buffer" style = {{paddingLeft : "75%"}}>
+                <Button  onClick={this.handleSubmit} variant="primary" type="submit">
                     Submit
                 </Button> 
+                </div>
 
                 </Form>
             </Jumbotron>
