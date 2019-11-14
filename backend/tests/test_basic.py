@@ -92,7 +92,6 @@ def test_update_user(client, mongo_proc):
     rs = client.get("/users")
     ret_dict = rs.json
 
-
     assert ret_dict["result"]["users"][1]["age"] == 15
     assert ret_dict["result"]["users"][1]["email"] == "newemail@domain.com"
     assert ret_dict["result"]["users"][1]["cars"] == []
@@ -119,6 +118,7 @@ def test_create_user(client, mongo_proc):
     assert ret_dict["result"]["users"][2]["name"] == "TEST"
     assert ret_dict["result"]["users"][2]["phone"] == "0123456789"
 
+
 ###############################
 # CAR TEST
 ###############################
@@ -133,7 +133,7 @@ def test_create_car(client, mongo_proc):
             "model": "Ford Escape",
             "color": "Black",
             "bad_field": "bad_data",
-            "license_plate": "0123"
+            "license_plate": "0123",
         },
     )
 
@@ -148,6 +148,7 @@ def test_create_car(client, mongo_proc):
     assert ret_dict["result"]["cars"][0]["license_plate"] == "0123"
     assert ret_dict["result"]["cars"][0]["model"] == "Ford Escape"
 
+
 def test_update_car(client, mongo_proc):
     rs = client.get("/users")
     ret_dict = rs.json
@@ -156,10 +157,7 @@ def test_update_car(client, mongo_proc):
 
     rs = client.put(
         f"/users/{user_id}/cars/{car_id}",
-        json={
-            "model": "Honda Civic",
-            "color": "Purple"
-        },
+        json={"model": "Honda Civic", "color": "Purple"},
     )
 
     ret_dict = rs.json
@@ -171,6 +169,7 @@ def test_update_car(client, mongo_proc):
     assert len(ret_dict["result"]["cars"]) == 1
     assert ret_dict["result"]["cars"][0]["color"] == "Purple"
     assert ret_dict["result"]["cars"][0]["model"] == "Honda Civic"
+
 
 def test_delete_car(client, mongo_proc):
     rs = client.get("/users")

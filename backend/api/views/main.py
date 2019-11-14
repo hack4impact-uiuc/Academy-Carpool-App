@@ -182,7 +182,6 @@ def update_user(id):
 def get_user_cars(id):
     user = get_user_by_id(id)
 
-
     if user is None:
         return create_response(message=f"No user with id {id} was found.", status=404)
 
@@ -191,7 +190,7 @@ def get_user_cars(id):
     for user_car in user.cars:
         cars.append(Car.objects(id=user_car.id)[0])
 
-    #TODO: Create list of cars
+    # TODO: Create list of cars
 
     return create_response(data={"cars": cars}, status=200)
 
@@ -289,6 +288,7 @@ def get_user_by_id(user_id):
         return None
 
     return user.get(id=user_id)
+
 
 def get_car_by_id(user, car_id):
     car = Car.objects(id=car_id)
