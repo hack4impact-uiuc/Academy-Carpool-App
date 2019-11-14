@@ -10,6 +10,9 @@ jobs:
             cd backend/
             pip install -r requirements-dev.txt --user
             pip install -r requirements.txt --user
+            ls /usr/
+            ls /usr/local/bin
+            ls /usr/bin
             pytest tests
   backend_format:
     docker:
