@@ -36,3 +36,4 @@ workflows:
     jobs:
       - frontend_format
       - backend_format
+      - backend_tests

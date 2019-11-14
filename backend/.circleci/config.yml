@@ -27,4 +27,4 @@ workflows:
   build-test:
     jobs:
       - backend_format
-        #      - backend_test
+      - backend_test
