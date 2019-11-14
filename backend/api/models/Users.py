@@ -20,9 +20,6 @@ class User(Document, Mixin):
     # past_passenger_trips = ListField(ReferenceField("Trips"))
     # current_trips = ListField(ReferenceField("Trips"))
 
-    def __repr__(self):
-        return f"<User {self.name}>"
-
     @staticmethod
     def getRequiredKeys():
         return ["age", "email", "name", "phone"]
@@ -46,3 +43,6 @@ class User(Document, Mixin):
             "past_passanger_trips",
             "current_trips",
         ]
+
+    def __repr__(self):
+        return f"<User {self.name}>"

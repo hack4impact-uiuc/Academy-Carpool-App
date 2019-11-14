@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from api.models.Users import User
 from api.models.Cars import Car
-from api.models import db, Users, Person, Email, CensusResponse, Cars
+from api.models import db, Users, Person, Email, CensusResponse
 from api.core import create_response, serialize_list, logger
 
 from .populate_db import parse_census_data
@@ -113,8 +113,10 @@ def populate_db():
 
 
 ###################################
-# USER ENDPOINTS
+# CARPOOL IMPLEMENTATIONS
 ##################################
+
+
 @main.route("/users", methods=["GET"])
 def get_users():
     users = User.objects()
@@ -182,10 +184,19 @@ def update_user(id):
 def get_user_cars(id):
     user = get_user_by_id(id)
 
+
     if user is None:
         return create_response(message=f"No user with id {id} was found.", status=404)
 
-    cars = user.cars
+    cars = []
+
+    logger.info(f"Cars: {len(user.cars)}")
+
+    for user_car in user.cars:
+        logger.info(f"Car: {Car.objects(id=user_car.id)}")
+        cars.append(Car.objects(id=user_car.id))
+
+    #TODO: Create list of cars
 
     return create_response(data={"cars": cars}, status=200)
 
@@ -213,6 +224,7 @@ def create_user_car(id):
     car.save()
 
     user.cars.append(car)
+
     user.save()
 
     return create_response(
@@ -226,7 +238,7 @@ def update_user_car(user_id, car_id):
     data = request.get_json()
     logger.info(f"Recieved data {data}")
 
-    userToUpdate = get_user_by_id(id)
+    userToUpdate = get_user_by_id(user_id)
     if userToUpdate is None:
         return create_response(
             message=f"No user with id {user_id} was found.", status=404
@@ -238,8 +250,9 @@ def update_user_car(user_id, car_id):
             message=f"No car with id {car_id} belongs to user {user_id}", status=404
         )
 
-    for key in Cars.getAllKeys():
-        carToUpdate[key] = data[key]
+    for key in Car.getAllKeys():
+        if key in data:
+            carToUpdate[key] = data[key]
 
     carToUpdate.save()
     return create_response(
@@ -255,12 +268,11 @@ def delete_user_car(user_id, car_id):
             message=f"No user with id {user_id} was found.", status=404
         )
 
-    car = None
+    car = get_car_by_id(user, car_id)
     index = 0
 
     for user_car in user.cars:
         if str(user_car.id) == car_id:
-            car = user_car
             user.cars.pop(index)
         index += 1
 
@@ -283,16 +295,11 @@ def get_user_by_id(user_id):
 
     return user.get(id=user_id)
 
+def get_car_by_id(user, car_id):
+    car = Car.objects(id=car_id)
 
-# def get_car_by_id(user, car_id):
-#     ret_car = None
+    if not car:
+        logger.info(f"There are no cars with id {car_id} belonging to user {user.id}.")
+        return None
 
-#     for car in user.cars:
-#         if str(car.id) == car_id:
-#             ret_car = car
-
-#     if ret_car is None:
-#         logger.info(f"There are no cars with id {car_id} belonging to user {user.id}.")
-#         return None
-
-#     return ret_car
+    return car.get(id=car_id)
