@@ -14,9 +14,6 @@ jobs:
             echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
             sudo apt-get update
             sudo apt-get install -y mongodb-org
-            ls /usr/bin
-            echo aldfjalkdjflkajdflksjalkfjsdlfjalfjlasjdfklajfdljalfdjlajfdljsklfjas
-            ls /usr/local/bin
             pytest tests
   backend_format:
     docker:
