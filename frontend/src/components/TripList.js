@@ -1,4 +1,5 @@
 import React from 'react';
+import TripComponent from './TripComponent.js';
 import {
   CardBody,
   CardSubtitle,
@@ -18,8 +19,21 @@ import {
   Badge
 } from 'reactstrap';
 class TripList extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
-    return <div>{/* Call Angela's Component(s) */}</div>;
+    if (!this.props.details) {
+      return null;
+    }
+    return (
+      <div>
+        <b style={{ textAlign: 'center' }}>Active Trips</b>
+        {this.props.trips.map(value => {
+          return <TripComponent details={value} />;
+        })}
+      </div>
+    );
   }
 }
 export default TripList;
