@@ -11,8 +11,11 @@ jobs:
             pip install -r requirements-dev.txt --user
             pip install -r requirements.txt --user
             ls /usr/
+            echo aaaaaaaagh
             ls /usr/local/bin
+            echo aaaaaaaagh
             ls /usr/bin
+            echo aaaaaaaagh
             pytest tests
   backend_format:
     docker:
