@@ -20,14 +20,13 @@ import {
   ToastHeader,
   Badge
 } from 'reactstrap';
-import TripComponent from './TripComponent';
 class App extends React.Component {
   render() {
     return (
       <div>
-        <div class="websitetitle">
+        <div className="websitetitle">
           <b>Carpool4UIUC</b>
-          <div class="titlesubheader">&nbsp;a Hack4Impact project</div>
+          <div className="titlesubheader">&nbsp;a Hack4Impact project</div>
           <hr />
         </div>
         <Homepage />

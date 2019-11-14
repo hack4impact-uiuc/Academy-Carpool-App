@@ -21,7 +21,7 @@ class FilterBar extends React.Component {
   render() {
     return (
       <div>
-        <b>Filter</b>
+        <b style={{textAlign:"center"}}>Filters</b>
         <br />
         <div className="filterpanel">
           <FormGroup row>
