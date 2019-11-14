@@ -81,3 +81,7 @@ code {
   padding-top: 25px;
   scroll-padding-bottom: 25px;
 }
+.map {
+  height:200%;
+  width:100%;
+}
