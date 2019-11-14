@@ -4,28 +4,6 @@ import { MDBIcon } from 'mdbreact';
 import './TripFormPage.css';
 import { TimePicker, DatePicker, InputNumber, Input } from 'antd';
 import LocationSearchInput from './PlacesAutocomplete';
-/**
- * using ant design
- * https://developers.google.com/maps/documentation/javascript/places-autocomplete
- * Things Needed:
- * Add Trip title
- * Name (First and Last) - then concatonate
- * Date and Time chooser
- * Location: uber wrapper (start and end)
- * Cost number form (money form?)
- * Vehicle info: color, make, model, license (all as strings)
- * Seats: int
- * Trunk: options: small, medium, large, extra large
- * Notes: A String
- *
- * do this: date picker and location picker
- * set these to variables
- * if have time: make form slide up, change cost input
- *
- * wednesday: make the location show up when clicking with mouse
- * what data for the locations should be collected??
- * connect the data.
- */
 class TripFormPage extends React.Component {
   constructor(props) {
     super(props);
@@ -132,11 +110,9 @@ class TripFormPage extends React.Component {
             <div>
               <Row>
                 <Col>
-                  {/* <Form.Control placeholder="Vehicle Model"/> */}
                   <Input placeholder="Vehicle Model" size="large" />
                 </Col>
                 <Col>
-                  {/* <Form.Control placeholder="Vehicle Make"/> */}
                   <Input placeholder="Vehicle Make" size="large" />
                 </Col>
               </Row>
