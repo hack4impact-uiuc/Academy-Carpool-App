@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-import { Card, Button, Row, Col, OverlayTrigger, Tooltip, Popover } from 'react-bootstrap';
+import React from 'react';
+import { Card, Row, Col } from 'react-bootstrap';
 import { MDBIcon } from 'mdbreact';
-import { AdditionalDetails } from '.';
-let active = true;
 
 class TripComponent extends React.Component {
   constructor(props) {
