@@ -5,7 +5,6 @@ from api.core import Mixin
 from api.models import Cars  # ,Trips
 
 
-
 class User(Document, Mixin):
     age = IntField(required=True)
     email = EmailField(required=True)

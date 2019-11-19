@@ -3,6 +3,7 @@ from flask_mongoengine import Document
 from .base import db
 from api.core import Mixin
 
+
 class Car(Document, Mixin):
     year = IntField(required=False)
     model = StringField(required=True)

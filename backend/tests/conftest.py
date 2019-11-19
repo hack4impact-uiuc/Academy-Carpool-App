@@ -14,9 +14,7 @@ from api import create_app
 # in which we inject it into the app
 @pytest.fixture(scope="session")
 def client():
-    config_dict = {
-        "DEBUG": True,
-    }
+    config_dict = {"DEBUG": True}
     app = create_app(config_dict)
     app.app_context().push()
 
