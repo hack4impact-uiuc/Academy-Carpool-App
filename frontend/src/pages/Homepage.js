@@ -1,24 +1,7 @@
 import React from 'react';
-import { FilterBar, TripList, AdditionalDetails } from '../components';
+import { FilterBar, AdditionalDetails } from '../components';
 import TripComponent from '../components/TripComponent.js';
-import {
-  CardBody,
-  CardSubtitle,
-  Card,
-  CardTitle,
-  CardText,
-  Button,
-  Table,
-  Row,
-  Col,
-  FormGroup,
-  Label,
-  Input,
-  Toast,
-  ToastBody,
-  ToastHeader,
-  Badge
-} from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 class Homepage extends React.Component {
   constructor(props) {
     super(props);
