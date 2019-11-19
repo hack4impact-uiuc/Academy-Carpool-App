@@ -11,3 +11,77 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+.distright {
+  padding-right: 20px;
+}
+.websitetitle {
+  font-size: 2vw;
+  padding-top: 15px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.titlesubheader {
+  padding-top: 0px;
+  font-size: 0.3cm;
+}
+.filter {
+  padding-left: 50px;
+}
+.dropdown {
+  width: 10cm;
+}
+.postsheader {
+  padding-left: 20px;
+}
+.fixright {
+  right: 5px;
+}
+.cost {
+  font-size: 1cm;
+}
+.toastinfo{
+  
+}
+.moreinfo{
+  padding-top: 15px;
+}
+.infocard{
+  padding-right: 50px;
+}
+.drivername {
+  font-size: 0.75cm;
+}
+.starttoend {
+  text-align: center;
+  font-size: 0.85cm;
+}
+.datentime{
+  text-align:center;
+  font-size:0.45cm
+}
+.costinfo {
+  float: right;
+  padding-right: 10px;
+  font-size: 1.25cm;
+}
+.additionaldetails{
+  padding-top: 25px;
+}
+.filterpanel{
+  padding-top: 20px;
+}
+.trunkspace {
+  width: 5px;
+}
+.panelTitle {
+  font-size: 0.55cm;
+  text-align: center;
+}
+.indTrip {
+  padding-top: 25px;
+  scroll-padding-bottom: 25px;
+}
+.map {
+  height:200%;
+  width:100%;
+}
