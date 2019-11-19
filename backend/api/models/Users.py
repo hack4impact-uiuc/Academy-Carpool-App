@@ -14,7 +14,7 @@ class User(Document, Mixin):
     venmo_handle = StringField(required=False)
 
     photo = StringField()
-    cars = ListField(ReferenceField("Cars"))
+    cars = ListField(ReferenceField("Car"))
     # past_driver_trips = ListField(ReferenceField("Trips"))
     # past_passenger_trips = ListField(ReferenceField("Trips"))
     # current_trips = ListField(ReferenceField("Trips"))
@@ -25,7 +25,7 @@ class User(Document, Mixin):
 
     @staticmethod
     def getReferenceKeys():
-        return ["past_driver_trips", "past_passanger_trips", "current_trips"]
+        return ["cars", "past_driver_trips", "past_passanger_trips", "current_trips"]
 
     @staticmethod
     def getAllKeys():
