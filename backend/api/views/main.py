@@ -250,7 +250,7 @@ def update_user_car(user_id, car_id):
 
     carToUpdate.save()
     return create_response(
-        message=f"Successfully updated car {carToUpdate.id}.", status=201,
+        message=f"Successfully updated car {carToUpdate.id}.", status=201
     )
 
 

@@ -1,22 +1,38 @@
-import React from 'react';
+import Homepage from './pages/Homepage.js';
 import logo from './logo.svg';
 import './App.css';
-import TripComponent from './TripComponent';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from 'react';
+import {
+  CardBody,
+  CardSubtitle,
+  Card,
+  CardTitle,
+  CardText,
+  Button,
+  Table,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Input,
+  Toast,
+  ToastBody,
+  ToastHeader,
+  Badge
+} from 'reactstrap';
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <div className="websitetitle">
+          <b>Carpool4UIUC</b>
+          <div className="titlesubheader">&nbsp;a Hack4Impact project</div>
+          <hr />
+        </div>
+        <Homepage />
+      </div>
+    );
+  }
 }
 
 export default App;
