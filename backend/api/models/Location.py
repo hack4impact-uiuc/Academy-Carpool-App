@@ -5,9 +5,9 @@ from api.core import Mixin
 
 
 class Location(Document, Mixin):
-    name = StringField(required=true)
-    latitude = FloatField(required=true)
-    longitude = FloatField(required=true)
+    name = StringField(required=True)
+    latitude = FloatField(required=True)
+    longitude = FloatField(required=True)
 
     def __repr__(self):
         return f"<Location {self.name}>"
