@@ -1,22 +1,5 @@
 import React from 'react';
-import {
-  CardBody,
-  CardSubtitle,
-  Card,
-  CardTitle,
-  CardText,
-  Button,
-  Table,
-  Row,
-  Col,
-  FormGroup,
-  Label,
-  Input,
-  Toast,
-  ToastBody,
-  ToastHeader,
-  Badge
-} from 'reactstrap';
+import { Col, FormGroup, Label, Input } from 'reactstrap';
 class FilterBar extends React.Component {
   render() {
     return (

@@ -1,5 +1,4 @@
 import Homepage from './pages/Homepage.js';
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import {getUsers, createUser, deleteUser} from './Requests/requests.js'

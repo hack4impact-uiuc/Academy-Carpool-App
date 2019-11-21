@@ -1,23 +1,5 @@
 import React from 'react';
-import {
-  CardBody,
-  CardSubtitle,
-  Card,
-  CardTitle,
-  CardText,
-  Button,
-  Table,
-  Row,
-  Col,
-  FormGroup,
-  Label,
-  Input,
-  Toast,
-  ToastBody,
-  ToastHeader,
-  Badge,
-  Container
-} from 'reactstrap';
+import { CardBody, CardSubtitle, Card, CardTitle, Container } from 'reactstrap';
 import MapContainer from './MapContainer';
 class AdditionalDetails extends React.Component {
   render() {
@@ -56,6 +38,7 @@ class AdditionalDetails extends React.Component {
                   <b>Special Instructions: </b> {this.props.details.notes} <br />
                 </div>
                 <iframe
+                  title="map"
                   className="map"
                   src={`https://maps.google.com/maps?q=${this.props.details.destination}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
                 >
