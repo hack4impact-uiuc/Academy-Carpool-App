@@ -2,11 +2,8 @@ from flask import Blueprint, request, jsonify
 from api.models.Trips import Trip
 from api.models.Users import User
 from api.models.Cars import Car
-from api.models import db, Users, Person, Email, CensusResponse
+from api.models import db, Users, Person, Trips, Location, Email, CensusResponse
 from api.core import create_response, serialize_list, logger
-
-from api.models.Trips import Trip
-from api.models import db, Trips, Location, CensusResponse
 
 from .populate_db import parse_census_data
 from .web_scrap import extract_data_links
