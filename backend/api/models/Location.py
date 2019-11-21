@@ -12,6 +12,6 @@ class Location(Document, Mixin):
     @staticmethod
     def get_elements():
         return ["name", "latitude", "longitude"]
-    
+
     def __repr__(self):
         return f"<Location {self.name}>"

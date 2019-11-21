@@ -27,13 +27,37 @@ class Trip(Document, Mixin):
 
     @staticmethod
     def get_elements():
-        return ["driver", "origin", "destination", "checkpoints", "start_time", "posted_time", "cost", "car", "seats_available",
-            "trunk_space", "passengers", "past_drivers", "past_passengers", "current_users"]
+        return [
+            "driver",
+            "origin",
+            "destination",
+            "checkpoints",
+            "start_time",
+            "posted_time",
+            "cost",
+            "car",
+            "seats_available",
+            "trunk_space",
+            "passengers",
+            "past_drivers",
+            "past_passengers",
+            "current_users",
+        ]
 
     @staticmethod
     def get_required_elements():
-        return ["driver", "origin", "destination", "start_time", "posted_time", "cost", "car", "seats_available",
-            "trunk_space", "passengers"]
+        return [
+            "driver",
+            "origin",
+            "destination",
+            "start_time",
+            "posted_time",
+            "cost",
+            "car",
+            "seats_available",
+            "trunk_space",
+            "passengers",
+        ]
 
     @staticmethod
     def get_reference_keys():
