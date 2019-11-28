@@ -4,13 +4,16 @@ from .base import db
 from api.core import Mixin
 from api.models import Users, Cars, Location
 
+
 class Trip(Document, Mixin):
     driver = ReferenceField("User", required=True)
     passengers = ListField(ReferenceField("User"))
 
     origin = ReferenceField("Location", required=True)
     destination = ReferenceField("Location", required=True)
-    checkpoints = ListField(ReferenceField("Location")) #does not include the origin or destination
+    checkpoints = ListField(
+        ReferenceField("Location")
+    )  # does not include the origin or destination
 
     start_time = StringField(required=True)
     posted_time = DateTimeField(required=True)

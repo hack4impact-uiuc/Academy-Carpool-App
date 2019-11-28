@@ -169,19 +169,22 @@ def update_trip(id):
     if trip_to_update is None:
         return create_response(message=f"No trip with id {id} was found.", status=404)
 
-    # Update each key, but not users, location, or cars
+    # Update each key, but not Users, Location, or Cars
     for key in Trip.get_elements():
         if key in info and key not in [
-            "past_drivers",
-            "past_passengers",
-            "current_users",
+            "driver",
+            "passengers",
+            "origin",
+            "destination",
+            "checkpoints",
+            "car",
         ]:
             trip_to_update[key] = info[key]
 
     trip_to_update.save()
 
     return create_response(
-        message=f"Successfully updated trip with driver {trip_to_update.driver} and id {trip_to_update.id}.",
+        message=f"Successfully updated non-reference field components of trip with driver {trip_to_update.driver} and id {trip_to_update.id}.",
         status=201,
     )
 
@@ -194,9 +197,10 @@ def delete_trip(id):
     if to_delete is None:
         return create_response(message=f"No trip with id {id} was found.", status=404)
 
+    deleted_driver = to_delete.driver
     to_delete.delete()
     return create_response(
-        message=f"Trip with driver {to_delete.driver} and id {id} has been deleted."
+        message=f"Trip with driver {deleted_driver} and id {id} has been deleted."
     )
 
 
@@ -244,7 +248,7 @@ def create_users_for_trip(id):
             msg = f"User was not created because missing required User field '{key}'."
             logger.info(msg)
             return create_response(message=msg, status=442)
-        elif key in Users.getRequiredKeys() and key in info:
+        elif key in info:  # and key in Users.getRequiredKeys():
             user[key] = info[key]
 
     user.save()
@@ -272,7 +276,6 @@ def update_users_in_trip(trip_id, user_id):
         )
 
     user_to_update = None
-    index = 0
 
     for user_in_trip in trip_to_update.passengers:
         if str(user_in_trip.id) == str(user_id):
@@ -285,8 +288,6 @@ def update_users_in_trip(trip_id, user_id):
                 message=f"Successfully updated user {user_to_update.id} in trip with driver {trip_to_update.driver} and id {trip_to_update.id}.",
                 status=201,
             )
-        else:
-            index += 1
 
     # executed in the case that user_to_update is None
     return create_response(
@@ -309,12 +310,13 @@ def delete_users_in_trip(trip_id, user_id):
 
     for user_in_trip in trip.passengers:
         if str(user_in_trip.id) == str(user_id):
+            deleted_trip_driver = trip.driver
             trip.passengers.pop(
                 index
             )  # only delete the user from the trip (not from the database)
             trip.save()
             return create_response(
-                message=f"User with id {user_id} was deleted from trip with driver {trip.driver} and id {trip_id}."
+                message=f"User with id {user_id} was deleted from trip with driver {deleted_trip_driver} and id {trip_id}."
             )
         else:
             index += 1
@@ -339,7 +341,7 @@ def get_locations_in_trip(id):
 
     for locations_in_trip in trip.checkpoints:
         logger.info(f"Locations: {Location.objects(id=locations_in_trip.id)}")
-        passengers.append(Location.objects(id=locations_in_trip.id))
+        locations.append(Location.objects(id=locations_in_trip.id))
 
     return create_response(data={"locations": locations}, status=200)
 
@@ -358,11 +360,11 @@ def create_locations_in_trip(id):
     location = Location()
 
     for key in Location.get_elements():
-        if key in Location.get_elements() and key not in info:
-            msg = f"Location was not created because missing required Location field '{key}'."
+        if key not in info:
+            msg = f"Checkpoint was not created because missing required Location field '{key}'."
             logger.info(msg)
             return create_response(message=msg, status=442)
-        elif key in Location.get_elements() and key in info:
+        elif key in info:
             location[key] = info[key]
 
     location.save()
@@ -412,6 +414,7 @@ def update_locations_in_trip(trip_id, location_id):
             status=404,
         )
 
+    location_to_update.save()
     trip_to_update.save()
     return create_response(
         message=f"Successfully updated location {location_to_update.id} in trip with driver {trip_to_update.driver} and id {trip_to_update.id}.",
