@@ -4,14 +4,13 @@ from .base import db
 from api.core import Mixin
 from api.models import Users, Cars, Location
 
-
 class Trip(Document, Mixin):
     driver = ReferenceField("User", required=True)
-    passengers = ListField(ReferenceField("User", required=True))
+    passengers = ListField(ReferenceField("User"))
 
     origin = ReferenceField("Location", required=True)
     destination = ReferenceField("Location", required=True)
-    checkpoints = ListField(ReferenceField("Location"))
+    checkpoints = ListField(ReferenceField("Location")) #does not include the origin or destination
 
     start_time = StringField(required=True)
     posted_time = DateTimeField(required=True)
@@ -21,14 +20,11 @@ class Trip(Document, Mixin):
     seats_available = IntField(required=True)
     trunk_space = StringField(required=True)
 
-    past_drivers = ListField(ReferenceField("User"))
-    past_passengers = ListField(ReferenceField("User"))
-    current_users = ListField(ReferenceField("User"))
-
     @staticmethod
     def get_elements():
         return [
             "driver",
+            "passengers",
             "origin",
             "destination",
             "checkpoints",
@@ -38,10 +34,6 @@ class Trip(Document, Mixin):
             "car",
             "seats_available",
             "trunk_space",
-            "passengers",
-            "past_drivers",
-            "past_passengers",
-            "current_users",
         ]
 
     @staticmethod
@@ -56,12 +48,7 @@ class Trip(Document, Mixin):
             "car",
             "seats_available",
             "trunk_space",
-            "passengers",
         ]
-
-    @staticmethod
-    def get_reference_keys():
-        return ["past_drivers", "past_passengers", "current_users"]
 
     def __repr__(self):
         return f"<Trip {self.driver}>"
