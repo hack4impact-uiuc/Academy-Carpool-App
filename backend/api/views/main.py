@@ -132,12 +132,12 @@ def create_trip():
 
     trip = Trip()
 
-    for key in Trips.get_elements():
-        if key in Trips.get_required_elements() and key not in info:
+    for key in Trip.get_elements():
+        if key in Trip.get_required_elements() and key not in info:
             msg = f"{key} is required and is not in info."
             logger.info(f"Trip was not created, missing field '{key}'.")
             return create_response(status=442, message=msg)
-        elif key in Trips.get_required_elements() and key in info:
+        elif key in Trip.get_required_elements() and key in info:
             trip[key] = info[key]
 
     trip.save()
@@ -171,14 +171,7 @@ def update_trip(id):
 
     # Update each key, but not Users, Location, or Cars
     for key in Trip.get_elements():
-        if key in info and key not in [
-            "driver",
-            "passengers",
-            "origin",
-            "destination",
-            "checkpoints",
-            "car",
-        ]:
+        if key in info and key not in Trip.get_reference_elements():
             trip_to_update[key] = info[key]
 
     trip_to_update.save()
@@ -222,7 +215,7 @@ def get_users_in_trip(id):
 
     for passengers_in_trip in trip.passengers:
         logger.info(f"Passengers: {User.objects(id=passengers_in_trip.id)}")
-        passengers.append(User.objects(id=passengers_in_trip.id))
+        passengers.append(User.objects(id=passengers_in_trip.id)[0])
 
     return create_response(
         data={"driver": driver, "passengers": passengers}, status=200
@@ -341,7 +334,7 @@ def get_locations_in_trip(id):
 
     for locations_in_trip in trip.checkpoints:
         logger.info(f"Locations: {Location.objects(id=locations_in_trip.id)}")
-        locations.append(Location.objects(id=locations_in_trip.id))
+        locations.append(Location.objects(id=locations_in_trip.id)[0])
 
     return create_response(data={"locations": locations}, status=200)
 

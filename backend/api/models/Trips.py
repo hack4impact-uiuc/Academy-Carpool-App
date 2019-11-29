@@ -53,5 +53,16 @@ class Trip(Document, Mixin):
             "trunk_space",
         ]
 
+    @staticmethod
+    def get_reference_elements():
+        return [
+            "driver",
+            "passengers",
+            "origin",
+            "destination",
+            "checkpoints",
+            "car",
+        ]
+
     def __repr__(self):
         return f"<Trip {self.driver}>"
