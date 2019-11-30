@@ -1,19 +1,19 @@
 import Homepage from './pages/Homepage.js';
 import './App.css';
-import React from 'react';
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <div className="websitetitle">
-          <b>Carpool4UIUC</b>
-          <div className="titlesubheader">&nbsp;a Hack4Impact project</div>
-          <hr />
-        </div>
-        <Homepage />
-      </div>
-    );
-  }
+import TripComponent from './TripComponent';
+import TripFormPage from './TripFormPage';
+import LocationSearchInput from './PlacesAutocomplete';
+import Map from './Map';
+
+function App() {
+  return (
+    <div>
+      {/* <LocationSearchInput/> */}
+      {/* <Map/>  */}
+      <TripFormPage />
+    </div>
+  );
+
 }
 
 export default App;
