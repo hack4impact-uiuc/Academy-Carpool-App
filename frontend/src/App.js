@@ -1,5 +1,4 @@
-import React from 'react';
-import logo from './logo.svg';
+import Homepage from './pages/Homepage.js';
 import './App.css';
 import TripComponent from './TripComponent';
 import TripFormPage from './TripFormPage';
@@ -14,6 +13,7 @@ function App() {
       <TripFormPage />
     </div>
   );
+
 }
 
 export default App;
