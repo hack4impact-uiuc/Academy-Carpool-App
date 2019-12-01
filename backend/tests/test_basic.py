@@ -37,29 +37,14 @@ def test_get_trip(client, mongo_proc):
 
     # Create trip and test if it's returned
     driver_temp = User(
-        age=20,
-        email="email@domain.com",
-        name="Test",
-        phone="0123456789",
+        age=20, email="email@domain.com", name="Test", phone="0123456789",
     )
     driver_temp.save()
-    origin_temp = Location(
-        name="Start",
-        latitude=0.0,
-        longitude=0.1,
-    )
+    origin_temp = Location(name="Start", latitude=0.0, longitude=0.1,)
     origin_temp.save()
-    destination_temp = Location(
-        name="End",
-        latitude=0.2,
-        longitude=0.3,
-    )
+    destination_temp = Location(name="End", latitude=0.2, longitude=0.3,)
     destination_temp.save()
-    car_temp = Car(
-        model="RX350",
-        color="white",
-        license_plate="TEST",
-    )
+    car_temp = Car(model="RX350", color="white", license_plate="TEST",)
     car_temp.save()
 
     trip = Trip(
@@ -107,29 +92,14 @@ def test_get_trip(client, mongo_proc):
 def test_delete_trip(client, mongo_proc):
     # Create trip to test on
     driver_temp = User(
-        age=20,
-        email="email@domain.com",
-        name="Test",
-        phone="0123456789",
+        age=20, email="email@domain.com", name="Test", phone="0123456789",
     )
     driver_temp.save()
-    origin_temp = Location(
-        name="Start",
-        latitude=0.0,
-        longitude=0.1,
-    )
+    origin_temp = Location(name="Start", latitude=0.0, longitude=0.1,)
     origin_temp.save()
-    destination_temp = Location(
-        name="End",
-        latitude=0.2,
-        longitude=0.3,
-    )
+    destination_temp = Location(name="End", latitude=0.2, longitude=0.3,)
     destination_temp.save()
-    car_temp = Car(
-        model="RX350",
-        color="white",
-        license_plate="TEST",
-    )
+    car_temp = Car(model="RX350", color="white", license_plate="TEST",)
     car_temp.save()
 
     trip = Trip(
@@ -160,29 +130,14 @@ def test_delete_trip(client, mongo_proc):
 def test_update_trip(client, mongo_proc):
     # Create trip to test on
     driver_temp = User(
-        age=20,
-        email="email@domain.com",
-        name="Test",
-        phone="0123456789",
+        age=20, email="email@domain.com", name="Test", phone="0123456789",
     )
     driver_temp.save()
-    origin_temp = Location(
-        name="Start",
-        latitude=0.0,
-        longitude=0.1,
-    )
+    origin_temp = Location(name="Start", latitude=0.0, longitude=0.1,)
     origin_temp.save()
-    destination_temp = Location(
-        name="End",
-        latitude=0.2,
-        longitude=0.3,
-    )
+    destination_temp = Location(name="End", latitude=0.2, longitude=0.3,)
     destination_temp.save()
-    car_temp = Car(
-        model="RX350",
-        color="white",
-        license_plate="TEST",
-    )
+    car_temp = Car(model="RX350", color="white", license_plate="TEST",)
     car_temp.save()
 
     trip = Trip(
@@ -207,9 +162,10 @@ def test_update_trip(client, mongo_proc):
         json={
             "cost": "$10",
             "seats_available": 2,
-            "origin": (
-                "latitude": 4.0
-            ), # Location cannot be updated on put
+            "origin": {
+                "name": "Grainger",
+                "latitude": 4.0,
+            },  # Location cannot be updated on put
             "badKey": "badValue",  # Bad values should be ignored
         },
     )
@@ -222,6 +178,7 @@ def test_update_trip(client, mongo_proc):
 
     assert ret_dict["result"]["trips"][1]["cost"] == "$10"
     assert ret_dict["result"]["trips"][1]["seats_available"] == 2
+    assert ret_dict["result"]["trips"][1]["origin"]["name"] == "Start"
     assert ret_dict["result"]["trips"][1]["origin"]["latitude"] == 0.0
 
 
@@ -235,24 +192,12 @@ def test_create_trip(client, mongo_proc):
                 "name": "Test",
                 "phone": "0123456789",
             },
-            "origin": {
-                "name": "Start",
-                "latitude": 0.0,
-                "longitude": 0.1,
-            },
-            "destination": {
-                "name": "End",
-                "latitude": 0.2,
-                "longitude": 0.3,
-            },
+            "origin": {"name": "Start", "latitude": 0.0, "longitude": 0.1,},
+            "destination": {"name": "End", "latitude": 0.2, "longitude": 0.3,},
             "start_time": "12:01 PM",
             "posted_time": "2014-02-10T10:50:42.389Z",
             "cost": "$5",
-            "car": {
-                "model": "RX350",
-                "color": "white",
-                "license_plate": "TEST",
-            },
+            "car": {"model": "RX350", "color": "white", "license_plate": "TEST",},
             "seats_available": 3,
             "trunk_space": "2 backpacks/person",
         },
@@ -286,7 +231,6 @@ def test_create_trip(client, mongo_proc):
 
     assert ret_dict["result"]["trips"][2]["seats_available"] == 3
     assert ret_dict["result"]["trips"][2]["trunk_space"] == "2 backpacks/person"
-
 
 
 ###############################
