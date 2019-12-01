@@ -26,211 +26,148 @@ def test_get_person(client, mongo_proc):
     assert ret_dict["result"]["persons"][0]["name"] == "Tim"
 
 
-# Trips Endpoints
-def test_get_trip(client, mongo_proc):
-    rs = client.get("/trips")
-
-    assert rs.status_code == 200
-    ret_dict = rs.json
-    assert ret_dict["success"] == True
-    assert ret_dict["result"]["trips"] == []
-
-    # Create trip and test if it's returned
-    driver_temp = User(
-        age=20, email="email@domain.com", name="Test", phone="0123456789",
-    )
-    driver_temp.save()
-    origin_temp = Location(name="Start", latitude=0.0, longitude=0.1,)
-    origin_temp.save()
-    destination_temp = Location(name="End", latitude=0.2, longitude=0.3,)
-    destination_temp.save()
-    car_temp = Car(model="RX350", color="white", license_plate="TEST",)
-    car_temp.save()
-
-    trip = Trip(
-        driver=driver_temp,
-        origin=origin_temp,
-        destination=destination_temp,
-        start_time="12:01 PM",
-        posted_time="2014-02-10T10:50:42.389Z",
-        cost="$5",
-        car=car_temp,
-        seats_available=3,
-        trunk_space="2 backpacks/person",
-    )
-    trip.save()
-
+###########################
+# Trips Location Test
+###########################
+def test_create_trip_location(client, mongo_proc):
     rs = client.get("/trips")
     ret_dict = rs.json
-    assert len(ret_dict["result"]["trips"]) == 1
-
-    assert ret_dict["result"]["trips"][0]["driver"]["age"] == 20
-    assert ret_dict["result"]["trips"][0]["driver"]["email"] == "email@domain.com"
-    assert ret_dict["result"]["trips"][0]["driver"]["name"] == "Test"
-    assert ret_dict["result"]["trips"][0]["driver"]["phone"] == "0123456789"
-
-    assert ret_dict["result"]["trips"][0]["origin"]["name"] == "Start"
-    assert ret_dict["result"]["trips"][0]["driver"]["latitude"] == 0.0
-    assert ret_dict["result"]["trips"][0]["driver"]["longitude"] == 0.1
-
-    assert ret_dict["result"]["trips"][0]["destination"]["name"] == "End"
-    assert ret_dict["result"]["trips"][0]["destination"]["latitude"] == 0.2
-    assert ret_dict["result"]["trips"][0]["destination"]["longitude"] == 0.3
-
-    assert ret_dict["result"]["trips"][0]["start_time"] == "12:01 PM"
-    assert ret_dict["result"]["trips"][0]["posted_time"] == "2014-02-10T10:50:42.389Z"
-    assert ret_dict["result"]["trips"][0]["cost"] == "$5"
-
-    assert ret_dict["result"]["trips"][0]["car"]["model"] == "RX350"
-    assert ret_dict["result"]["trips"][0]["car"]["color"] == "white"
-    assert ret_dict["result"]["trips"][0]["car"]["license_plate"] == "TEST"
-
-    assert ret_dict["result"]["trips"][0]["seats_available"] == 3
-    assert ret_dict["result"]["trips"][0]["trunk_space"] == "2 backpacks/person"
-
-
-def test_delete_trip(client, mongo_proc):
-    # Create trip to test on
-    driver_temp = User(
-        age=20, email="email@domain.com", name="Test", phone="0123456789",
-    )
-    driver_temp.save()
-    origin_temp = Location(name="Start", latitude=0.0, longitude=0.1,)
-    origin_temp.save()
-    destination_temp = Location(name="End", latitude=0.2, longitude=0.3,)
-    destination_temp.save()
-    car_temp = Car(model="RX350", color="white", license_plate="TEST",)
-    car_temp.save()
-
-    trip = Trip(
-        driver=driver_temp,
-        origin=origin_temp,
-        destination=destination_temp,
-        start_time="12:01 PM",
-        posted_time="2014-02-10T10:50:42.389Z",
-        cost="$5",
-        car=car_temp,
-        seats_available=3,
-        trunk_space="2 backpacks/person",
-    )
-    trip.save()
-
-    rs = client.get("/trips")
-    ret_dict = rs.json
-    assert len(ret_dict["result"]["trips"]) == 2
-
     trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
 
-    rs = client.delete(f"/trips/{trip_id}")
+    rs = client.post(
+        f"/trips/{trip_id}/locations",
+        json={
+            "name": "place",
+            "latitude": 0.0,
+            "longitude": 0.1,
+            "bad_field": "bad_data",
+        },
+    )
+
+    ret_dict = rs.json
+    assert rs.status_code == 201
+
+    rs = client.get(f"/trips/{trip_id}/locations")
+    ret_dict = rs.json
+    assert len(ret_dict["result"]["locations"]) == 1
+
+    print(f"DB: {ret_dict}")
+
+    assert ret_dict["result"]["locations"][0]["name"] == "place"
+    assert ret_dict["result"]["locations"][0]["latitude"] == 0.0
+    assert ret_dict["result"]["locations"][0]["longitude"] == 0.1
+
+
+def test_update_trip_location(client, mongo_proc):
     rs = client.get("/trips")
     ret_dict = rs.json
-    assert len(ret_dict["result"]["trips"]) == 1
-
-
-def test_update_trip(client, mongo_proc):
-    # Create trip to test on
-    driver_temp = User(
-        age=20, email="email@domain.com", name="Test", phone="0123456789",
-    )
-    driver_temp.save()
-    origin_temp = Location(name="Start", latitude=0.0, longitude=0.1,)
-    origin_temp.save()
-    destination_temp = Location(name="End", latitude=0.2, longitude=0.3,)
-    destination_temp.save()
-    car_temp = Car(model="RX350", color="white", license_plate="TEST",)
-    car_temp.save()
-
-    trip = Trip(
-        driver=driver_temp,
-        origin=origin_temp,
-        destination=destination_temp,
-        start_time="12:01 PM",
-        posted_time="2014-02-10T10:50:42.389Z",
-        cost="$5",
-        car=car_temp,
-        seats_available=3,
-        trunk_space="2 backpacks/person",
-    )
-    trip.save()
-
-    rs = client.get("/trips")
-    ret_dict = rs.json
-    trip_id = ret_dict["result"]["trips"][1]["_id"]["$oid"]
+    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
+    location_id = ret_dict["result"]["trips"][0]["locations"][0]["$oid"]
 
     rs = client.put(
-        f"/trips/{trip_id}",
-        json={
-            "cost": "$10",
-            "seats_available": 2,
-            "origin": {
-                "name": "Grainger",
-                "latitude": 4.0,
-            },  # Location cannot be updated on put
-            "badKey": "badValue",  # Bad values should be ignored
-        },
+        f"/trips/{trip_id}/locations/{location_id}",
+        json={"name": "Grainger", "latitude": 1.0, "longitude": 1.1,},
     )
 
     ret_dict = rs.json
     assert rs.status_code == 201
 
-    rs = client.get("/trips")
+    rs = client.get(f"/trips/{trip_id}/locations")
     ret_dict = rs.json
 
-    assert ret_dict["result"]["trips"][1]["cost"] == "$10"
-    assert ret_dict["result"]["trips"][1]["seats_available"] == 2
-    assert ret_dict["result"]["trips"][1]["origin"]["name"] == "Start"
-    assert ret_dict["result"]["trips"][1]["origin"]["latitude"] == 0.0
+    assert len(ret_dict["result"]["locations"]) == 1
+
+    assert ret_dict["result"]["locations"][0]["name"] == "Grainger"
+    assert ret_dict["result"]["locations"][0]["latitude"] == 1.0
+    assert ret_dict["result"]["locations"][0]["longitude"] == 1.1
 
 
-def test_create_trip(client, mongo_proc):
+def test_delete_trip_location(client, mongo_proc):
+    rs = client.get("/trips")
+    ret_dict = rs.json
+    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
+    location_id = ret_dict["result"]["trips"][0]["locations"][0]["$oid"]
+
+    rs = client.delete(f"/trips/{trip_id}/locations/{location_id}")
+
+    ret_dict = rs.json
+    assert rs.status_code == 200
+
+    rs = client.get(f"/trips/{trip_id}/locations")
+    ret_dict = rs.json
+    assert len(ret_dict["result"]["locations"]) == 0
+
+
+###########################
+# Trips Users Test
+###########################
+def test_create_trip_user(client, mongo_proc):
+    rs = client.get("/trips")
+    ret_dict = rs.json
+    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
+
     rs = client.post(
-        f"/trips",
+        f"/trips/{trip_id}/users",
         json={
-            "driver": {
-                "age": 20,
-                "email": "email@domain.com",
-                "name": "Test",
-                "phone": "0123456789",
-            },
-            "origin": {"name": "Start", "latitude": 0.0, "longitude": 0.1,},
-            "destination": {"name": "End", "latitude": 0.2, "longitude": 0.3,},
-            "start_time": "12:01 PM",
-            "posted_time": "2014-02-10T10:50:42.389Z",
-            "cost": "$5",
-            "car": {"model": "RX350", "color": "white", "license_plate": "TEST",},
-            "seats_available": 3,
-            "trunk_space": "2 backpacks/person",
+            "age": 20,
+            "email": "email@domain.com",
+            "name": "test",
+            "phone": "0123456789",
+            "bad_field": "bad_data",
         },
     )
 
     ret_dict = rs.json
     assert rs.status_code == 201
 
+    rs = client.get(f"/trips/{trip_id}/users")
+    ret_dict = rs.json
+    assert len(ret_dict["result"]["users"]) == 1
+
+    print(f"DB: {ret_dict}")
+
+    assert ret_dict["result"]["users"][0]["age"] == 20
+    assert ret_dict["result"]["users"][0]["email"] == "email@domain.com"
+    assert ret_dict["result"]["users"][0]["name"] == "test"
+    assert ret_dict["result"]["users"][0]["phone"] == "0123456789"
+
+
+def test_update_trip_user(client, mongo_proc):
     rs = client.get("/trips")
     ret_dict = rs.json
-    assert ret_dict["result"]["trips"][2]["driver"]["age"] == 20
-    assert ret_dict["result"]["trips"][2]["driver"]["email"] == "email@domain.com"
-    assert ret_dict["result"]["trips"][2]["driver"]["name"] == "Test"
-    assert ret_dict["result"]["trips"][2]["driver"]["phone"] == "0123456789"
+    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
+    user_id = ret_dict["result"]["trips"][0]["users"][0]["$oid"]
 
-    assert ret_dict["result"]["trips"][2]["origin"]["name"] == "Start"
-    assert ret_dict["result"]["trips"][2]["origin"]["latitude"] == 0.0
-    assert ret_dict["result"]["trips"][2]["origin"]["longitude"] == 0.1
+    rs = client.put(
+        f"/trips/{trip_id}/users/{user_id}", json={"age": 21, "phone": "1234567890",},
+    )
 
-    assert ret_dict["result"]["trips"][2]["destination"]["name"] == "End"
-    assert ret_dict["result"]["trips"][2]["destination"]["latitude"] == 0.2
-    assert ret_dict["result"]["trips"][2]["destination"]["longitude"] == 0.3
+    ret_dict = rs.json
+    assert rs.status_code == 201
 
-    assert ret_dict["result"]["trips"][2]["start_time"] == "12:01 PM"
-    assert ret_dict["result"]["trips"][2]["posted_time"] == "2014-02-10T10:50:42.389Z"
-    assert ret_dict["result"]["trips"][2]["cost"] == "$5"
+    rs = client.get(f"/trips/{trip_id}/users")
+    ret_dict = rs.json
 
-    assert ret_dict["result"]["trips"][2]["car"]["model"] == "RX350"
-    assert ret_dict["result"]["trips"][2]["car"]["color"] == "white"
-    assert ret_dict["result"]["trips"][2]["car"]["license_plate"] == "TEST"
+    assert len(ret_dict["result"]["users"]) == 1
 
-    assert ret_dict["result"]["trips"][2]["seats_available"] == 3
-    assert ret_dict["result"]["trips"][2]["trunk_space"] == "2 backpacks/person"
+    assert ret_dict["result"]["users"][0]["age"] == 21
+    assert ret_dict["result"]["users"][0]["phone"] == "1234567890"
+
+
+def test_delete_trip_user(client, mongo_proc):
+    rs = client.get("/trips")
+    ret_dict = rs.json
+    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
+    user_id = ret_dict["result"]["trips"][0]["users"][0]["$oid"]
+
+    rs = client.delete(f"/trips/{trip_id}/users/{user_id}")
+
+    ret_dict = rs.json
+    assert rs.status_code == 200
+
+    rs = client.get(f"/trips/{trip_id}/users")
+    ret_dict = rs.json
+    assert len(ret_dict["result"]["users"]) == 0
 
 
 ###############################
