@@ -45,7 +45,7 @@ class TripComponent extends React.Component {
         >
           {/* Angelas border hover to add above: border={this.state.cardSize}*/}
 
-          <Card style={{ width: '22rem' }}>
+          <Card style={{width: '97%', marginLeft: "0.3%" }}>
             {/* Angelas thing: border={this.state.cardSize}*/}
             <Card.Body>
               <Row>

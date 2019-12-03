@@ -23,8 +23,8 @@ class AdditionalDetails extends React.Component {
   render() {
     return (
       <div>
-        <b style={{ textAlign: 'center' }}>Additional Information</b>
-        <div className="infocard" style={{ paddingTop: '20px' }}>
+        <b style={{ textAlign: 'center'}}>Additional Information</b>
+        <div className="infocard" style={{ paddingTop: '2.5%', paddingBottom:"5%" }}>
           <Card>
             <CardBody>
               <CardTitle>
@@ -53,13 +53,14 @@ class AdditionalDetails extends React.Component {
                   <br />
                   <b>Trunk Space: </b> {this.props.details.space}
                   <br />
-                  <b>Special Instructions: </b> {this.props.details.notes} <br />
+                  <b>Special Instructions: </b> {this.props.details.notes} <br/> <br/>
                 </div>
                 <iframe
                   className="map"
                   src={`https://maps.google.com/maps?q=${this.props.details.destination}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                  style={{height: "325px"}}
                 >
-                  <MapContainer style={{ float: 'center' }} />
+                  <MapContainer style={{ float: 'center'}}  />
                 </iframe>
               </Container>
             </CardBody>
