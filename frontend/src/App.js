@@ -5,6 +5,7 @@ import TripComponent from './TripComponent';
 import TripFormPage from './TripFormPage';
 import LocationSearchInput from './PlacesAutocomplete';
 import Map from './Map';
+import TestForm from './TestForm';
 
 function App() {
   return (
