@@ -125,12 +125,12 @@ def get_trips():
     trips = Trip.objects()
     return create_response(data={"trips": trips}, status=200)
 
+
 @main.route("/locations/<locationId>", methods=["GET"])
 def get_location_by_id(locationId):
     location = Location.objects(id=locationId).get(id=locationId)
-    return create_response(
-        data={"location": location}
-    )
+    return create_response(data={"location": location})
+
 
 # function that is called when you visit /trips
 @main.route("/trips", methods=["POST"])
@@ -145,9 +145,6 @@ def create_trip():
             msg = f"{key} is required and is not in info."
             logger.info(f"Trip was not created, missing field '{key}'.")
             return create_response(status=442, message=msg)
-<<<<<<< HEAD
-        elif key in Trip.get_required_elements() and key in info:
-=======
         elif key in info and key == "car":
             user = get_user_by_id(info["driver"])
             car = get_car_by_id(user, info["car"])
@@ -160,7 +157,6 @@ def create_trip():
             for locationData in info["checkpoints"]:
                 location = create_location(locationData)
                 locations.append(location)
-
             trip["checkpoints"] = locations
         elif key in info and key == "driver":
             driver = get_user_by_id(info[key])
@@ -175,21 +171,21 @@ def create_trip():
                 passenger = get_user_by_id(passengerId)
                 if passenger is None:
                     return create_response(
-                        message=f"No passenger with id {passengerId} was found.", status=404
+                        message=f"No passenger with id {passengerId} was found.",
+                        status=404,
                     )
                 passengers.append(passenger)
-            
             trip["passengers"] = passengers
         elif key in info:
->>>>>>> 034e9268e8807584e8978fd904097976713ffc40
             trip[key] = info[key]
 
     trip.save()
 
     return create_response(
-        message=f"Successfully created trip with driver {trip.driver} and id {trip.id}.",
+        message=f"Successfully created trip ({trip.id}) with driver {trip.driver} and id {trip.id}.",
         status=201,
     )
+
 
 def create_location(data):
     location = Location()
@@ -204,7 +200,8 @@ def create_location(data):
     location.save()
 
     return location
-        
+
+
 # function that identifies the trip based on its id
 def get_trip_by_id(trip_id):
     trip = Trip.objects(id=trip_id)
@@ -228,11 +225,11 @@ def update_trip(id):
 
     # Update each key, but not Users, Location, or Cars
     for key in Trip.get_elements():
-<<<<<<< HEAD
-        if key in info and key not in Trip.get_reference_elements():
-=======
-        if key in info and key not in Trips.get_refrence_keys():
->>>>>>> 034e9268e8807584e8978fd904097976713ffc40
+        if (
+            key in info
+            and key in Trip.get_elements()
+            and key not in Trip.get_reference_elements()
+        ):
             trip_to_update[key] = info[key]
 
     trip_to_update.save()
@@ -257,39 +254,11 @@ def delete_trip(id):
         message=f"Trip with driver {deleted_driver} and id {id} has been deleted."
     )
 
-<<<<<<< HEAD
 
-# function that is called when you visit /trips/<id>/users
-@main.route("/trips/<id>/users", methods=["GET"])
-def get_users_in_trip(id):
-    trip = get_trip_by_id(id)
-
-    if trip is None:
-        return create_response(message=f"No trip with id {id} was found.", status=404)
-
-    driver = User.objects(id=trip.driver.id)
-    passengers = []
-
-    logger.info(f"Driver: {len(trip.driver)}")
-    logger.info(f"Passengers: {len(trip.passengers)}")
-
-    logger.info(f"Driver: {User.objects(id=driver_in_trip.id)}")
-
-    for passengers_in_trip in trip.passengers:
-        logger.info(f"Passengers: {User.objects(id=passengers_in_trip.id)}")
-        passengers.append(User.objects(id=passengers_in_trip.id)[0])
-
-    return create_response(
-        data={"driver": driver, "passengers": passengers}, status=200
-    )
-
-
-=======
->>>>>>> 034e9268e8807584e8978fd904097976713ffc40
-# function that is called when you visit /trips/<id>/users
+# function that is called when you visit /trips/<id>/passengers
 # NOTE: can only add passengers, but CANNOT add drivers to a trip
-@main.route("/trips/<id>/users", methods=["POST"])
-def create_users_for_trip(id):
+@main.route("/trips/<id>/passengers", methods=["POST"])
+def create_passengers_for_trip(id):
     info = request.get_json()
     logger.info(f"Recieved info {info}")
 
@@ -305,7 +274,7 @@ def create_users_for_trip(id):
             msg = f"User was not created because missing required User field '{key}'."
             logger.info(msg)
             return create_response(message=msg, status=442)
-        elif key in info:  # and key in Users.getRequiredKeys():
+        elif key in Users.getRequiredKeys() and key in info:
             user[key] = info[key]
 
     user.save()
@@ -318,47 +287,10 @@ def create_users_for_trip(id):
         status=201,
     )
 
-<<<<<<< HEAD
 
-# function that is called when you visit /trips/<trip_id>/users/<user_id>
-@main.route("/trips/<trip_id>/users/<user_id>", methods=["PUT"])
-def update_users_in_trip(trip_id, user_id):
-    info = request.get_json()
-    logger.info(f"Recieved info {info}")
-
-    trip_to_update = get_trip_by_id(trip_id)
-
-    if trip_to_update is None:
-        return create_response(
-            message=f"No trip with id {trip_id} was found.", status=404
-        )
-
-    user_to_update = None
-
-    for user_in_trip in trip_to_update.passengers:
-        if str(user_in_trip.id) == str(user_id):
-            user_to_update = user_in_trip
-            for key in Users.getAllKeys():
-                if key in info:
-                    user_to_update[key] = info[key]
-            trip_to_update.save()
-            return create_response(
-                message=f"Successfully updated user {user_to_update.id} in trip with driver {trip_to_update.driver} and id {trip_to_update.id}.",
-                status=201,
-            )
-
-    # executed in the case that user_to_update is None
-    return create_response(
-        message=f"No user with id {user_id} is included in trip with driver {trip_to_update.driver} and id {trip_id}",
-        status=404,
-    )
-
-
-=======
->>>>>>> 034e9268e8807584e8978fd904097976713ffc40
-# function that is called when you visit /trips/<trip_id>/users/<user_id>
-@main.route("/trips/<trip_id>/users/<user_id>", methods=["DELETE"])
-def delete_users_in_trip(trip_id, user_id):
+# function that is called when you visit /trips/<trip_id>/passengers/<user_id>
+@main.route("/trips/<trip_id>/passengers/<user_id>", methods=["DELETE"])
+def delete_passengers_in_trip(trip_id, user_id):
     trip = get_trip_by_id(trip_id)
 
     if trip is None:
@@ -401,7 +333,7 @@ def get_locations_in_trip(id):
 
     for locations_in_trip in trip.checkpoints:
         logger.info(f"Locations: {Location.objects(id=locations_in_trip.id)}")
-        locations.append(Location.objects(id=locations_in_trip.id)[0])
+        locations.append(Location.objects.get_location_by_id(locations_in_trip.id))
 
     return create_response(data={"locations": locations}, status=200)
 
@@ -420,11 +352,11 @@ def create_locations_in_trip(id):
     location = Location()
 
     for key in Location.get_elements():
-        if key not in info:
+        if key in Location.get_elements() and key not in info:
             msg = f"Checkpoint was not created because missing required Location field '{key}'."
             logger.info(msg)
             return create_response(message=msg, status=442)
-        elif key in info:
+        elif key in Location.get_elements() and key in info:
             location[key] = info[key]
 
     location.save()
@@ -582,16 +514,12 @@ def update_user(id):
         status=201,
     )
 
+
 @main.route("/users/<email>", methods=["GET"])
 def get_user_by_email(email):
     users = User.objects(email=email)
 
-    return create_response(
-        data={"users": users}
-    )
-    
-
-
+    return create_response(data={"users": users})
 
 
 ##############################################

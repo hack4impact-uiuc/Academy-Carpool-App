@@ -22,6 +22,7 @@ class Trip(Document, Mixin):
     car = ReferenceField("Car", required=True)
     seats_available = IntField(required=True)
     trunk_space = StringField(required=True)
+    notes = StringField()
 
     @staticmethod
     def get_elements():
@@ -37,6 +38,7 @@ class Trip(Document, Mixin):
             "car",
             "seats_available",
             "trunk_space",
+            "notes",
         ]
 
     @staticmethod

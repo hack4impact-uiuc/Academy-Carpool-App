@@ -2,7 +2,7 @@ from mongoengine import *
 from flask_mongoengine import Document
 from .base import db
 from api.core import Mixin
-from api.models import Cars ,Trips
+from api.models import Cars, Trips
 
 
 class User(Document, Mixin):
