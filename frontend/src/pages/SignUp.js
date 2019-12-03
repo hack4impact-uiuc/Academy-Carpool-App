@@ -3,7 +3,6 @@ import { Component } from 'react';
 
 import OAuthPage from './OAuthPage.js';
 
-
 import {
   CardBody,
   CardSubtitle,
@@ -26,9 +25,7 @@ import {
 
 class SignUp extends React.Component {
   render() {
-    return (
-      <OAuthPage/>
-    );
+    return <OAuthPage />;
   }
 }
 export default SignUp;

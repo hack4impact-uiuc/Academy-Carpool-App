@@ -21,7 +21,7 @@ class FilterBar extends React.Component {
   render() {
     return (
       <div>
-        <b style={{ textAlign: 'center'}}>Filters</b>
+        <b style={{ textAlign: 'center' }}>Filters</b>
         <br />
         <div className="filterpanel">
           <FormGroup row>
@@ -42,17 +42,16 @@ class FilterBar extends React.Component {
           </FormGroup>
           <FormGroup row>
             <Label for="seats" sm={4}>
-             Min Seats Left
+              Min Seats Left
             </Label>
             <Col sm={8}>
               <Input id="seats" placeholder="Enter a Seat Number" />
             </Col>
-            <Button color="primary" style={{ marginTop: "10%",marginRight: "auto"}}>
-                        Submit
+            <Button color="primary" style={{ marginTop: '10%', marginRight: 'auto' }}>
+              Submit
             </Button>
           </FormGroup>
         </div>
-
       </div>
     );
   }
