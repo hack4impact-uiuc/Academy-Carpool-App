@@ -1,5 +1,6 @@
 import Homepage from './pages/Homepage.js';
 import SignUp from './pages/SignUp.js';
+import TripFormPage from './pages/TripFormPage.js';
 
 import logo from './logo.svg';
 import './App.css';
@@ -38,17 +39,17 @@ class App extends React.Component {
             <div className="websitetitle">
               <b>Carpool4UIUC</b>
                   <Link to='/login' style={{color:"white"}}>
-                    <Button color="success" style={{float:"right", marginRight: "1%" }}>
+                    <Button color="primary" style={{float:"right", marginRight: "1%" }}>
                       Login
                   </Button>
                   </Link>
                   <Link to='/trips' style={{color:"white"}}>
-                     <Button color="success" style={{float:"right", marginRight: "0.5%" }}>
+                     <Button color="primary" style={{float:"right", marginRight: "0.5%" }}>
                         Trips
                       </Button>
                   </Link>
-                  <Link to='/login' style={{color:"white"}}>
-                    <Button color="success" style={{float:"right", marginRight: "0.5%" }}>
+                  <Link to='/addtrip' style={{color:"white"}}>
+                    <Button color="primary" style={{float:"right", marginRight: "0.5%" }}>
                       Add Trip
                     </Button>
                   </Link>
@@ -59,7 +60,8 @@ class App extends React.Component {
               </div>
               <Switch>
                 <Route exact path='/trips' component={Homepage} />          
-                <Route path='/login' component={SignUp} />        
+                <Route path='/login' component={SignUp} />  
+                <Route path='/addtrip' component={TripFormPage} />        
               </Switch>
               </div>
           </Router>

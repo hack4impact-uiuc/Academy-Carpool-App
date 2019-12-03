@@ -24,7 +24,7 @@ class AdditionalDetails extends React.Component {
     return (
       <div>
         <b style={{ textAlign: 'center'}}>Additional Information</b>
-        <div className="infocard" style={{ paddingTop: '2.5%', paddingBottom:"5%" }}>
+        <div className="infocard" style={{ paddingTop: '2.5%', paddingBottom:"25%" }}>
           <Card>
             <CardBody>
               <CardTitle>

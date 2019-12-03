@@ -32,7 +32,12 @@ class Homepage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      redirect: false,
+      //Filters
+      filterPrice: "",
+      filterDest: "",
+      filterSeat: "",
+
+      //current trip
       currentTrip: {
         origin: 'Schlopkins',
          destination: 'Red Lion',
@@ -50,6 +55,8 @@ class Homepage extends React.Component {
          plate: 'XXXX',
          id: '1' 
       },
+
+      //All trips
       allTrips: [
         {
           origin: 'West Quad',
@@ -227,6 +234,9 @@ class Homepage extends React.Component {
   handleClickAD(trip) {
     this.setState({ currentTrip: trip });
   }
+  handleFilter() {
+    this.setState()
+  }
 
   retRedirect = () => {
     console.log("Hello")
@@ -260,7 +270,7 @@ class Homepage extends React.Component {
           <Col xs="3" >
             <b style={{ textAlign: 'center'}}>Active Trips</b>
             
-          <div style={{height:"760px", overflowY: "auto"}}>
+          <div style={{height:"730px", overflowY: "auto"}}>
             {this.state.allTrips.map(value => {
               return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;
             })}
