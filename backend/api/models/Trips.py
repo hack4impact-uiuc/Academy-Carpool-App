@@ -21,10 +21,6 @@ class Trip(Document, Mixin):
     seats_available = IntField(required=True)
     trunk_space = StringField(required=True)
 
-    past_drivers = ListField(ReferenceField("User"))
-    past_passengers = ListField(ReferenceField("User"))
-    current_users = ListField(ReferenceField("User"))
-
     @staticmethod
     def get_elements():
         return [
@@ -55,13 +51,12 @@ class Trip(Document, Mixin):
             "cost",
             "car",
             "seats_available",
-            "trunk_space",
-            "passengers",
+            "trunk_space"
         ]
 
     @staticmethod
     def get_reference_keys():
-        return ["past_drivers", "past_passengers", "current_users"]
+        return ["driver", "passengers", "origin", "destination"]
 
     def __repr__(self):
         return f"<Trip {self.driver}>"

@@ -70,6 +70,7 @@ class App extends React.Component {
         <Homepage />
 
         <div>
+          <h4>Create User</h4>
           <Label for="email">Email</Label>
           <Input type="email" name="email" id="email" placeholder="email" value={this.state.email} onChange={this.handleChange} />
 
@@ -90,7 +91,6 @@ class App extends React.Component {
 
           <Button onClick={this.onFormSubmit}>Submit</Button>
         </div>
-
       </div>
     );
   }
