@@ -2,11 +2,13 @@ from flask import Blueprint, request, jsonify
 from api.models.Trips import Trip
 from api.models.Users import User
 from api.models.Cars import Car
-from api.models import db, Users, Person, Trips, Location, Email, CensusResponse
+from api.models.Location import Location
+from api.models import db, Users, Person, Trips, Email, CensusResponse
 from api.core import create_response, serialize_list, logger
 
 from .populate_db import parse_census_data
 from .web_scrap import extract_data_links
+import datetime
 
 # Kelly's code
 
@@ -123,6 +125,12 @@ def get_trips():
     trips = Trip.objects()
     return create_response(data={"trips": trips}, status=200)
 
+@main.route("/locations/<locationId>", methods=["GET"])
+def get_location_by_id(locationId):
+    location = Location.objects(id=locationId).get(id=locationId)
+    return create_response(
+        data={"location": location}
+    )
 
 # function that is called when you visit /trips
 @main.route("/trips", methods=["POST"])
@@ -137,7 +145,43 @@ def create_trip():
             msg = f"{key} is required and is not in info."
             logger.info(f"Trip was not created, missing field '{key}'.")
             return create_response(status=442, message=msg)
+<<<<<<< HEAD
         elif key in Trip.get_required_elements() and key in info:
+=======
+        elif key in info and key == "car":
+            user = get_user_by_id(info["driver"])
+            car = get_car_by_id(user, info["car"])
+            trip["car"] = car
+        elif key in info and (key == "origin" or key == "destination"):
+            location = create_location(info[key])
+            trip[key] = location
+        elif key in info and key == "checkpoints":
+            locations = []
+            for locationData in info["checkpoints"]:
+                location = create_location(locationData)
+                locations.append(location)
+
+            trip["checkpoints"] = locations
+        elif key in info and key == "driver":
+            driver = get_user_by_id(info[key])
+            if driver is None:
+                return create_response(
+                    message=f"No driver with id {info[key]} was found.", status=404
+                )
+            trip[key] = driver
+        elif key in info and key == "passengers":
+            passengers = []
+            for passengerId in info["passengers"]:
+                passenger = get_user_by_id(passengerId)
+                if passenger is None:
+                    return create_response(
+                        message=f"No passenger with id {passengerId} was found.", status=404
+                    )
+                passengers.append(passenger)
+            
+            trip["passengers"] = passengers
+        elif key in info:
+>>>>>>> 034e9268e8807584e8978fd904097976713ffc40
             trip[key] = info[key]
 
     trip.save()
@@ -147,7 +191,20 @@ def create_trip():
         status=201,
     )
 
+def create_location(data):
+    location = Location()
 
+    for key in Location.get_elements():
+        if key not in data:
+            msg = f"{key} is required and is not in info."
+            return create_response(status=442, message=msg)
+
+        location[key] = data[key]
+
+    location.save()
+
+    return location
+        
 # function that identifies the trip based on its id
 def get_trip_by_id(trip_id):
     trip = Trip.objects(id=trip_id)
@@ -171,7 +228,11 @@ def update_trip(id):
 
     # Update each key, but not Users, Location, or Cars
     for key in Trip.get_elements():
+<<<<<<< HEAD
         if key in info and key not in Trip.get_reference_elements():
+=======
+        if key in info and key not in Trips.get_refrence_keys():
+>>>>>>> 034e9268e8807584e8978fd904097976713ffc40
             trip_to_update[key] = info[key]
 
     trip_to_update.save()
@@ -196,6 +257,7 @@ def delete_trip(id):
         message=f"Trip with driver {deleted_driver} and id {id} has been deleted."
     )
 
+<<<<<<< HEAD
 
 # function that is called when you visit /trips/<id>/users
 @main.route("/trips/<id>/users", methods=["GET"])
@@ -222,6 +284,8 @@ def get_users_in_trip(id):
     )
 
 
+=======
+>>>>>>> 034e9268e8807584e8978fd904097976713ffc40
 # function that is called when you visit /trips/<id>/users
 # NOTE: can only add passengers, but CANNOT add drivers to a trip
 @main.route("/trips/<id>/users", methods=["POST"])
@@ -254,6 +318,7 @@ def create_users_for_trip(id):
         status=201,
     )
 
+<<<<<<< HEAD
 
 # function that is called when you visit /trips/<trip_id>/users/<user_id>
 @main.route("/trips/<trip_id>/users/<user_id>", methods=["PUT"])
@@ -289,6 +354,8 @@ def update_users_in_trip(trip_id, user_id):
     )
 
 
+=======
+>>>>>>> 034e9268e8807584e8978fd904097976713ffc40
 # function that is called when you visit /trips/<trip_id>/users/<user_id>
 @main.route("/trips/<trip_id>/users/<user_id>", methods=["DELETE"])
 def delete_users_in_trip(trip_id, user_id):
@@ -454,7 +521,7 @@ def delete_locations_in_trip(trip_id, location_id):
 
 
 ###################################
-# CARPOOL IMPLEMENTATIONS
+# User Endpoints
 ##################################
 @main.route("/users", methods=["GET"])
 def get_users():
@@ -515,6 +582,17 @@ def update_user(id):
         status=201,
     )
 
+@main.route("/users/<email>", methods=["GET"])
+def get_user_by_email(email):
+    users = User.objects(email=email)
+
+    return create_response(
+        data={"users": users}
+    )
+    
+
+
+
 
 ##############################################
 # Car Endpoints
@@ -530,8 +608,6 @@ def get_user_cars(id):
 
     for user_car in user.cars:
         cars.append(Car.objects(id=user_car.id)[0])
-
-    # TODO: Create list of cars
 
     return create_response(data={"cars": cars}, status=200)
 

@@ -3,12 +3,12 @@ from api.models.Users import User
 
 # client passed from client - look into pytest for more info about fixtures
 # test client api: http://flask.pocoo.org/docs/1.0/api/#test-client
-def test_index(client, mongo_proc):
+def test_index(client):
     rs = client.get("/")
     assert rs.status_code == 200
 
 
-def test_get_person(client, mongo_proc):
+def test_get_person(client):
     rs = client.get("/persons")
 
     assert rs.status_code == 200
@@ -29,7 +29,7 @@ def test_get_person(client, mongo_proc):
 ###########################
 # Trips Location Test
 ###########################
-def test_create_trip_location(client, mongo_proc):
+def test_create_trip_location(client):
     rs = client.get("/trips")
     ret_dict = rs.json
     trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -58,7 +58,7 @@ def test_create_trip_location(client, mongo_proc):
     assert ret_dict["result"]["locations"][0]["longitude"] == 0.1
 
 
-def test_update_trip_location(client, mongo_proc):
+def test_update_trip_location(client):
     rs = client.get("/trips")
     ret_dict = rs.json
     trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -82,7 +82,7 @@ def test_update_trip_location(client, mongo_proc):
     assert ret_dict["result"]["locations"][0]["longitude"] == 1.1
 
 
-def test_delete_trip_location(client, mongo_proc):
+def test_delete_trip_location(client):
     rs = client.get("/trips")
     ret_dict = rs.json
     trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -101,7 +101,7 @@ def test_delete_trip_location(client, mongo_proc):
 ###########################
 # Trips Users Test
 ###########################
-def test_create_trip_user(client, mongo_proc):
+def test_create_trip_user(client):
     rs = client.get("/trips")
     ret_dict = rs.json
     trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -132,7 +132,7 @@ def test_create_trip_user(client, mongo_proc):
     assert ret_dict["result"]["users"][0]["phone"] == "0123456789"
 
 
-def test_update_trip_user(client, mongo_proc):
+def test_update_trip_user(client):
     rs = client.get("/trips")
     ret_dict = rs.json
     trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -154,7 +154,7 @@ def test_update_trip_user(client, mongo_proc):
     assert ret_dict["result"]["users"][0]["phone"] == "1234567890"
 
 
-def test_delete_trip_user(client, mongo_proc):
+def test_delete_trip_user(client):
     rs = client.get("/trips")
     ret_dict = rs.json
     trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -170,10 +170,16 @@ def test_delete_trip_user(client, mongo_proc):
     assert len(ret_dict["result"]["users"]) == 0
 
 
+###########################
+# Trips Endpoints
+###########################
+# def test_get_trip(client):
+
+
 ###############################
 # USER ENDPOINTS
 ###############################
-def test_get_user(client, mongo_proc):
+def test_get_user(client):
     rs = client.get("/users")
 
     assert rs.status_code == 200
@@ -194,7 +200,7 @@ def test_get_user(client, mongo_proc):
     assert ret_dict["result"]["users"][0]["phone"] == "0123456789"
 
 
-def test_delete_user(client, mongo_proc):
+def test_delete_user(client):
     # Create user to test on
     user = User(age=20, email="email@domain.com", name="Test", phone="0123456789")
     user.save()
@@ -211,7 +217,7 @@ def test_delete_user(client, mongo_proc):
     assert len(ret_dict["result"]["users"]) == 1
 
 
-def test_update_user(client, mongo_proc):
+def test_update_user(client):
     # Create user to test on
     user = User(age=20, email="email@domain.com", name="Test", phone="0123456789")
     user.save()
@@ -241,7 +247,7 @@ def test_update_user(client, mongo_proc):
     assert ret_dict["result"]["users"][1]["cars"] == []
 
 
-def test_create_user(client, mongo_proc):
+def test_create_user(client):
     rs = client.post(
         f"/users",
         json={
@@ -266,7 +272,7 @@ def test_create_user(client, mongo_proc):
 ###############################
 # CAR TEST
 ###############################
-def test_create_car(client, mongo_proc):
+def test_create_car(client):
     rs = client.get("/users")
     ret_dict = rs.json
     user_id = ret_dict["result"]["users"][0]["_id"]["$oid"]
@@ -293,7 +299,7 @@ def test_create_car(client, mongo_proc):
     assert ret_dict["result"]["cars"][0]["model"] == "Ford Escape"
 
 
-def test_update_car(client, mongo_proc):
+def test_update_car(client):
     rs = client.get("/users")
     ret_dict = rs.json
     user_id = ret_dict["result"]["users"][0]["_id"]["$oid"]
@@ -315,7 +321,7 @@ def test_update_car(client, mongo_proc):
     assert ret_dict["result"]["cars"][0]["model"] == "Honda Civic"
 
 
-def test_delete_car(client, mongo_proc):
+def test_delete_car(client):
     rs = client.get("/users")
     ret_dict = rs.json
     user_id = ret_dict["result"]["users"][0]["_id"]["$oid"]
