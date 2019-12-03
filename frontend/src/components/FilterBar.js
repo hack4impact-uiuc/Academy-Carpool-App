@@ -1,10 +1,27 @@
 import React from 'react';
-import { Col, FormGroup, Label, Input } from 'reactstrap';
+import {
+  CardBody,
+  CardSubtitle,
+  Card,
+  CardTitle,
+  CardText,
+  Button,
+  Table,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Input,
+  Toast,
+  ToastBody,
+  ToastHeader,
+  Badge
+} from 'reactstrap';
 class FilterBar extends React.Component {
   render() {
     return (
       <div>
-        <b style={{ textAlign: 'center' }}>Filters</b>
+        <b style={{ textAlign: 'center'}}>Filters</b>
         <br />
         <div className="filterpanel">
           <FormGroup row>
@@ -25,13 +42,17 @@ class FilterBar extends React.Component {
           </FormGroup>
           <FormGroup row>
             <Label for="seats" sm={4}>
-              Seats Left
+             Min Seats Left
             </Label>
             <Col sm={8}>
               <Input id="seats" placeholder="Enter a Seat Number" />
             </Col>
+            <Button color="primary" style={{ marginTop: "10%",marginRight: "auto"}}>
+                        Submit
+            </Button>
           </FormGroup>
         </div>
+
       </div>
     );
   }

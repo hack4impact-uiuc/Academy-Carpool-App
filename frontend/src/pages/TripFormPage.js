@@ -42,8 +42,9 @@ class TripFormPage extends React.Component {
     const { getFieldDecorator } = this.props.form;
     const { errorMessages, validators, requiredError, validatorListener, ...rest } = this.props;
     return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <div></div>
+      <div style={{background: "#ededed", overflowY: "visible"}}>
+      <div style={{ float: "center" ,display: 'flex', justifyContent: 'center', paddingTop: "3%"}}>
+        
         <div>
           <Jumbotron style={{ width: '50rem' }}>
             <h1>New Trip</h1>
@@ -221,6 +222,7 @@ class TripFormPage extends React.Component {
                       })(
                         <InputNumber
                           size="large"
+                          min= {0}
                           defaultValue={5}
                           formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                           parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -270,6 +272,7 @@ class TripFormPage extends React.Component {
             </Form>
           </Jumbotron>
         </div>
+      </div>
       </div>
     );
   }

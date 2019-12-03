@@ -20,3 +20,102 @@
 .App-link {
   color: #09d3ac;
 }
+html {
+  overflow: hidden;
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.distright {
+  padding-right: 1%;
+}
+.websitetitle {
+  font-size: 2vw;
+  padding-top: 0.75%;
+  padding-left: 2.5%;
+  padding-bottom: 0.75%;
+  background-color: #5A5A63;
+  color: white;
+}
+.titlesubheader {
+  padding-top: 0%;
+  font-size: 0.57%;
+}
+.filter {
+  padding-left: 2.5%;
+}
+.dropdown {
+  width: 1.5%;
+}
+.postsheader {
+  padding-left: 1%;
+}
+.fixright {
+  right: 0.25%;
+}
+.cost {
+  font-size: 1.9%;
+}
+.toastinfo{
+  
+}
+.moreinfo{
+  padding-top: 0.75%;
+}
+.infocard{
+  padding-right: 2.5%;
+}
+.drivername {
+  font-size: 30px;
+}
+.starttoend {
+  text-align: center;
+  font-size: 25px;
+}
+.datentime{
+  text-align:center;
+  font-size:20px;
+}
+.costinfo {
+  float: right;
+  padding-right: 0.5%;
+  font-size: 30px;
+}
+.additionaldetails{
+  padding-top: 2.25%;
+}
+.filterpanel{
+  padding-top: 5.1%;
+}
+.trunkspace {
+  width: 0.25%;
+}
+.panelTitle {
+  font-size: 20px;
+  text-align: center;
+}
+.indTrip {
+  padding-top: 1.25%;
+  scroll-padding-bottom: 1.25%;
+}
+.map {
+  height:200%;
+  width:100%;
+}
+.makesticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
