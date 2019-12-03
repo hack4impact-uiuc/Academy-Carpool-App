@@ -48,11 +48,11 @@ class TripComponent extends React.Component {
             <Card.Body>
               <Row>
                 <Col xs={12} md={5}>
-                  {this.props.details.origin.length > 15 && (
-                    <Card.Title class="small">{this.props.details.origin.substring(0, 12)} ...</Card.Title>
+                  {this.props.details.origin.location.name.length > 15 && (
+                    <Card.Title class="small">{this.props.details.origin.location.name.substring(0, 12)} ...</Card.Title>
                   )}
-                  {this.props.details.origin.length < 15 && (
-                    <Card.Title class="small">{this.props.details.origin}</Card.Title>
+                  {this.props.details.origin.location.name.length < 15 && (
+                    <Card.Title class="small">{this.props.details.origin.location.name}</Card.Title>
                   )}
                 </Col>
                 <Col xs={12} md={2}>
@@ -61,23 +61,23 @@ class TripComponent extends React.Component {
                   </Card.Title>
                 </Col>
                 <Col xs={6} md={5}>
-                  <Card.Title class="small"> {this.props.details.destination} </Card.Title>
+                  <Card.Title class="small"> {this.props.details.destination.location.name} </Card.Title>
                 </Col>
               </Row>
               <Row>
                 <Col xs={12} md={7}>
                   <Card.Subtitle>
-                    <i class="far fa-calendar-alt"></i> {this.props.details.date}{' '}
+                    <i class="far fa-calendar-alt"></i> {this.props.details.posted_time.$date}{' '}
                   </Card.Subtitle>
                   <Card.Text>
                     {' '}
-                    {'\xa0\xa0\xa0\xa0'}@{this.props.details.time}
+                    {'\xa0\xa0\xa0\xa0'}@{this.props.details.start_time}
                   </Card.Text>
                 </Col>
                 <Col xs={6} md={5}>
-                  <Card.Subtitle>{this.props.details.name}</Card.Subtitle>
+                  <Card.Subtitle>{this.props.details.driver.users.name}</Card.Subtitle>
                   <Card.Text>
-                    <i class="fas fa-users"></i> {'\xa0'} {this.props.details.seats}
+                    <i class="fas fa-users"></i> {'\xa0'} {this.props.details.seats_available}
                   </Card.Text>
                 </Col>
               </Row>

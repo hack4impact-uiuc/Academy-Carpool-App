@@ -1,7 +1,6 @@
 import Homepage from './pages/Homepage.js';
 import './App.css';
 import React from 'react';
-import {getUsers, createUser, deleteUser} from './Requests/requests.js'
 import {
   CardBody,
   CardSubtitle,
@@ -44,8 +43,8 @@ class App extends React.Component {
 
   onFormSubmit() {
     //alert(JSON.stringify(this.state, null, '  '));
-    let result = createUser(this.state)
-    console.log(result);
+    //let result = createUser(this.state)
+    //console.log(result);
   }
 
   handleChange(event) {

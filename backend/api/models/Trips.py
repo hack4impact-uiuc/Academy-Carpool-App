@@ -13,6 +13,7 @@ class Trip(Document, Mixin):
     destination = ReferenceField("Location", required=True)
     checkpoints = ListField(ReferenceField("Location"))
 
+    start_date = StringField(required=True)
     start_time = StringField(required=True)
     posted_time = DateTimeField(required=True)
 
@@ -20,6 +21,7 @@ class Trip(Document, Mixin):
     car = ReferenceField("Car", required=True)
     seats_available = IntField(required=True)
     trunk_space = StringField(required=True)
+    notes = StringField(default="None")
 
     @staticmethod
     def get_elements():
@@ -38,6 +40,7 @@ class Trip(Document, Mixin):
             "past_drivers",
             "past_passengers",
             "current_users",
+            "notes"
         ]
 
     @staticmethod
@@ -47,6 +50,7 @@ class Trip(Document, Mixin):
             "origin",
             "destination",
             "start_time",
+            "start_date",
             "posted_time",
             "cost",
             "car",

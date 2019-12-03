@@ -118,6 +118,12 @@ def populate_db():
 
 
 # CARPOOL APP CODE:
+@main.route("/locations/<locationId>", methods=["GET"])
+def get_location_by_id(locationId):
+    location = Location.objects(id=locationId).get(id=locationId)
+    return create_response(
+        data={"location": location}
+    )
 
 # function that is called when you visit /trips
 @main.route("/trips", methods=["GET"])
@@ -568,12 +574,15 @@ def update_user(id):
         status=201,
     )
 
-@main.route("/users/<email>", methods=["GET"])
-def get_user_by_email(email):
-    users = User.objects(email=email)
+@main.route("/users/<user_id>", methods=["GET"])
+def get_user_by_email(user_id):
+    user = User.objects(id=user_id).get(id=user_id)
+
+    if (user is None):
+        return create_response(message=f"No user with id {user_id} was found.", status=404)
 
     return create_response(
-        data={"users": users}
+        data={"users": user}
     )
     
 
