@@ -116,20 +116,6 @@ class Homepage extends React.Component {
   render() {
     return (
       <div>
-        {/* <div style={{backgroundColor: "white"}}>
-        <div className="websitetitle">
-          <b>Carpool4UIUC</b>
-          <Router>
-            <Button color="success" style={{float:"right", marginRight: "2.5%" }}>
-              <Link to='/signup' style={{color:"white"}}>Sign Up</Link>
-            </Button>
-              <Switch>
-                <Route path='/signup' component={SignUp}/>            
-              </Switch>
-          </Router>
-          
-        </div>
-      </div> */}
         <div class="filter" style={{ background: '#ededed', paddingTop: '1%', width: '100%' }}>
           {/* "#E7E7F8" */}
           <div>
