@@ -2,7 +2,7 @@ from mongoengine import *
 from flask_mongoengine import Document
 from .base import db
 from api.core import Mixin
-from api.models import Cars  # ,Trips
+from api.models import Cars, Trips
 
 
 class User(Document, Mixin):
@@ -11,17 +11,17 @@ class User(Document, Mixin):
     name = StringField(required=True)
     phone = StringField(required=True)
     rating = FloatField(required=False)
-    venmo_handle = StringField(required=False)
+    venmo_handle = StringField(required=True)
 
     photo = StringField()
     cars = ListField(ReferenceField("Car"))
-    # past_driver_trips = ListField(ReferenceField("Trips"))
-    # past_passenger_trips = ListField(ReferenceField("Trips"))
-    # current_trips = ListField(ReferenceField("Trips"))
+    past_driver_trips = ListField(ReferenceField("Trips"))
+    past_passenger_trips = ListField(ReferenceField("Trips"))
+    current_trips = ListField(ReferenceField("Trips"))
 
     @staticmethod
     def getRequiredKeys():
-        return ["age", "email", "name", "phone"]
+        return ["age", "email", "name", "phone", "venmo_handle"]
 
     @staticmethod
     def getReferenceKeys():
