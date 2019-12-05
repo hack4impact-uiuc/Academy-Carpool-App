@@ -31,12 +31,17 @@ class Homepage extends React.Component {
       allTrips: [],
       currentTrip: null,
       //Filters
-      filterPrice: '',
-      filterDest: '',
-      filterSeat: ''
+      mapHeight: 0,
+      filterPrice: '1000',
+      filterDest: 'Red Lion',
+      filterSeat: '1000'
     };
 
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.handleClickAD = this.handleClickAD.bind(this);
+    this.handlePrice = this.handlePrice.bind(this);
+    this.handleDest = this.handleDest.bind(this);
+    this.handleSeat = this.handleSeat.bind(this);
   }
 
   async componentDidMount() {
@@ -57,12 +62,50 @@ class Homepage extends React.Component {
     this.setState({ allTrips: allTrips });
   }
 
+  async componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+
+    let tripsArray = await getTrips();
+    let allTrips = [];
+
+    tripsArray.forEach(trip => {
+      allTrips.push(trip);
+    });
+
+    if (allTrips.length > 0) {
+      this.setState({ currentTrip: allTrips[0] });
+    }
+
+    this.setState({ allTrips: allTrips });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ height: window.innerHeight });
+    this.setState({ mapheight: window.innerHeight / 1.25 });
+  }
+
   handleClickAD(trip) {
     this.setState({ currentTrip: trip });
   }
 
-  handleFilter() {
-    this.setState();
+  handlePrice(event) {
+    this.setState({ filterPrice: event.target.value });
+    setTimeout(() => {
+      console.log(this.state.filterPrice);
+    }, 2000);
+  }
+
+  handleDest(event) {
+    this.setState({ filterDest: event.target.value });
+  }
+
+  handleSeat(event) {
+    this.setState({ filterSeat: event.target.value });
   }
 
   retRedirect = () => {
@@ -92,12 +135,11 @@ class Homepage extends React.Component {
           <div>
             <Row>
               <Col xs="3">
-                <FilterBar />
+                <FilterBar price={this.handlePrice} dest={this.handleDest} seat={this.handleSeat} />
               </Col>
               <Col xs="3">
                 <b style={{ textAlign: 'center' }}>Active Trips</b>
-
-                <div style={{ height: '730px', overflowY: 'auto' }}>
+                <div style={{ height: `${this.state.mapheight}px`, overflowY: 'auto' }}>
                   {this.state.allTrips.map(value => {
                     return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;
                   })}
