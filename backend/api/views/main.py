@@ -131,13 +131,6 @@ def get_trips():
     trips = Trip.objects()
     return create_response(data={"trips": trips}, status=200)
 
-@main.route("/locations/<locationId>", methods=["GET"])
-def get_location_by_id(locationId):
-    location = Location.objects(id=locationId).get(id=locationId)
-    return create_response(
-        data={"location": location}
-    )
-
 # function that is called when you visit /trips
 @main.route("/trips", methods=["POST"])
 def create_trip():

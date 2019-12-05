@@ -1,12 +1,30 @@
 import React from 'react';
-import { CardBody, CardSubtitle, Card, CardTitle, Container } from 'reactstrap';
+import {
+  CardBody,
+  CardSubtitle,
+  Card,
+  CardTitle,
+  CardText,
+  Button,
+  Table,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Input,
+  Toast,
+  ToastBody,
+  ToastHeader,
+  Badge,
+  Container
+} from 'reactstrap';
 import MapContainer from './MapContainer';
 class AdditionalDetails extends React.Component {
   render() {
     return (
       <div>
         <b style={{ textAlign: 'center' }}>Additional Information</b>
-        <div className="infocard" style={{ paddingTop: '20px' }}>
+        <div className="infocard" style={{ paddingTop: '2.5%', paddingBottom: '25%' }}>
           <Card>
             <CardBody>
               <CardTitle>
@@ -35,12 +53,12 @@ class AdditionalDetails extends React.Component {
                   <br />
                   <b>Trunk Space: </b> {this.props.details.trunk_space}
                   <br />
-                  <b>Special Instructions: </b> {this.props.details.notes} <br />
+                  <b>Special Instructions: </b> {this.props.details.notes} <br /> <br />
                 </div>
                 <iframe
-                  title="map"
                   className="map"
                   src={`https://maps.google.com/maps?q=${this.props.details.destination.location.name}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                  style={{ height: '325px' }}
                 >
                   <MapContainer style={{ float: 'center' }} />
                 </iframe>
