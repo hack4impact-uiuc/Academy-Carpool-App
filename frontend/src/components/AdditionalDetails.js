@@ -49,36 +49,37 @@ class AdditionalDetails extends React.Component {
           <Card>
             <CardBody>
               <CardTitle>
-                <b className="drivername"> {this.props.details.name}</b>
+                <b className="drivername"> {this.props.details.origin.location.name}</b>
                 <b className="costinfo"> ${this.props.details.cost} </b>
               </CardTitle>
-              <CardSubtitle>Venmo: {this.props.details.venmo}</CardSubtitle>
+              <CardSubtitle>Venmo: {this.props.details.driver.users.venmo}</CardSubtitle>
               <hr />
               <div className="starttoend">
                 <b>
                   {' '}
-                  {this.props.details.origin} &#8594;{this.props.details.destination}{' '}
+                  {this.props.details.origin.location.name} &#8594;{this.props.details.destination.location.name}{' '}
                 </b>
               </div>
               <div className="datentime">
-                @ <b>{this.props.details.time}</b> on <b>{this.props.details.date}</b>
+                @ <b>{this.props.details.start_time}</b> on <b>{this.props.details.start_date}</b>
               </div>
               <br />
               <Container>
                 <div>
                   <b>Car Model: </b>
-                  {this.props.details.make} {this.props.details.model} <br />
-                  <b>Color: </b> {this.props.details.color} <br />
-                  <b>License Plate: </b> {this.props.details.plate} <br />
-                  <b>Seats Available: </b> {this.props.details.seats}
+                  {this.props.details.car.model}
                   <br />
-                  <b>Trunk Space: </b> {this.props.details.space}
+                  <b>Color: </b> {this.props.details.car.color} <br />
+                  <b>License Plate: </b> {this.props.details.car.license_plate} <br />
+                  <b>Seats Available: </b> {this.props.details.seats_available}
+                  <br />
+                  <b>Trunk Space: </b> {this.props.details.trunk_space}
                   <br />
                   <b>Special Instructions: </b> {this.props.details.notes} <br /> <br />
                 </div>
                 <iframe
                   className="map"
-                  src={`https://maps.google.com/maps?q=${this.props.details.destination}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                  src={`https://maps.google.com/maps?q=${this.props.details.destination.location.name}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
                   style={{ height: `${this.state.mapheight}px` }}
                 >
                   <MapContainer style={{ float: 'center' }} />

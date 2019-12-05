@@ -22,216 +22,64 @@ import {
   Section
 } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
+import { getTrips } from '../Requests/requests.js';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 class Homepage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      allTrips: [],
+      currentTrip: null,
       //Filters
       mapHeight: 0,
-      filterPrice: '100',
-      filterDest: '',
-      filterSeat: '',
-
-      //current trip
-      currentTrip: {
-        origin: 'Schlopkins',
-        destination: 'Red Lion',
-        venmo: 'Angela-Luo',
-        cost: '24',
-        model: 'Lancer',
-        seats: '1',
-        space: 'full',
-        color: 'white',
-        make: 'Mitsubishi',
-        notes: 'I take preworkout before I drink.',
-        name: 'Angela-Luo',
-        date: '11/7/19',
-        time: '4:20',
-        plate: 'XXXX',
-        id: '1'
-      },
-
-      //All trips
-      allTrips: [
-        {
-          origin: 'West Quad',
-          destination: 'State Farm Center',
-          venmo: 'Ashank-Behara',
-          cost: '5',
-          model: 'Prius',
-          seats: '3',
-          space: 'empty',
-          color: 'blue',
-          make: 'Toyota',
-          notes: 'Meet me in the back entrance behind the building. If you arrive late I will leave.',
-          name: 'Ashank Behara',
-          date: '11/4/19',
-          time: '6:30',
-          plate: 'XXXX',
-          id: '0'
-        },
-        {
-          origin: 'Schlopkins',
-          destination: 'Red Lion',
-          venmo: 'Angela-Luo',
-          cost: '24',
-          model: 'Lancer',
-          seats: '1',
-          space: 'full',
-          color: 'white',
-          make: 'Mitsubishi',
-          notes: 'I take preworkout before I drink.',
-          name: 'Angela-Luo',
-          date: '11/7/19',
-          time: '4:20',
-          plate: 'XXXX',
-          id: '1'
-        },
-        {
-          origin: '606E Stoughton',
-          destination: 'Canopy Club',
-          venmo: 'Shreyas-Mohan',
-          cost: '83',
-          model: 'Fit',
-          seats: '2',
-          space: 'empty',
-          color: 'blue',
-          make: 'Honda',
-          notes: 'breh',
-          name: 'Shreyas Mohan',
-          date: '11/13/19',
-          time: '5:47',
-          plate: 'XXXX',
-          id: '2'
-        },
-        {
-          origin: 'Schlopkins',
-          destination: 'Red Lion',
-          venmo: 'Angela-Luo',
-          cost: '24',
-          model: 'Lancer',
-          seats: '1',
-          space: 'full',
-          color: 'white',
-          make: 'Mitsubishi',
-          notes: 'I take preworkout before I drink.',
-          name: 'Angela-Luo',
-          date: '11/7/19',
-          time: '4:20',
-          plate: 'XXXX',
-          id: '1'
-        },
-        {
-          origin: 'West Quad',
-          destination: 'State Farm Center',
-          venmo: 'Ashank-Behara',
-          cost: '5',
-          model: 'Prius',
-          seats: '3',
-          space: 'empty',
-          color: 'blue',
-          make: 'Toyota',
-          notes: 'Meet me in the back entrance behind the building. If you arrive late I will leave.',
-          name: 'Ashank Behara',
-          date: '11/4/19',
-          time: '6:30',
-          plate: 'XXXX',
-          id: '0'
-        },
-        {
-          origin: 'Schlopkins',
-          destination: 'Red Lion',
-          venmo: 'Angela-Luo',
-          cost: '24',
-          model: 'Lancer',
-          seats: '1',
-          space: 'full',
-          color: 'white',
-          make: 'Mitsubishi',
-          notes: 'I take preworkout before I drink.',
-          name: 'Angela-Luo',
-          date: '11/7/19',
-          time: '4:20',
-          plate: 'XXXX',
-          id: '1'
-        },
-        {
-          origin: '606E Stoughton',
-          destination: 'Canopy Club',
-          venmo: 'Shreyas-Mohan',
-          cost: '83',
-          model: 'Fit',
-          seats: '2',
-          space: 'empty',
-          color: 'blue',
-          make: 'Honda',
-          notes: 'breh',
-          name: 'Shreyas Mohan',
-          date: '11/13/19',
-          time: '5:47',
-          plate: 'XXXX',
-          id: '2'
-        },
-        {
-          origin: 'Schlopkins',
-          destination: 'Red Lion',
-          venmo: 'Angela-Luo',
-          cost: '24',
-          model: 'Lancer',
-          seats: '1',
-          space: 'full',
-          color: 'white',
-          make: 'Mitsubishi',
-          notes: 'I take preworkout before I drink.',
-          name: 'Angela-Luo',
-          date: '11/7/19',
-          time: '4:20',
-          plate: 'XXXX',
-          id: '1'
-        },
-        {
-          origin: 'West Quad',
-          destination: 'State Farm Center',
-          venmo: 'Ashank-Behara',
-          cost: '5',
-          model: 'Prius',
-          seats: '3',
-          space: 'empty',
-          color: 'blue',
-          make: 'Toyota',
-          notes: 'Meet me in the back entrance behind the building. If you arrive late I will leave.',
-          name: 'Ashank Behara',
-          date: '11/4/19',
-          time: '6:30',
-          plate: 'XXXX',
-          id: '0'
-        },
-        {
-          origin: 'Schlopkins',
-          destination: 'Red Lion',
-          venmo: 'Angela-Luo',
-          cost: '24',
-          model: 'Lancer',
-          seats: '1',
-          space: 'full',
-          color: 'white',
-          make: 'Mitsubishi',
-          notes: 'I take preworkout before I drink.',
-          name: 'Angela-Luo',
-          date: '11/7/19',
-          time: '4:20',
-          plate: 'XXXX',
-          id: '1'
-        }
-      ]
+      filterPrice: '1000',
+      filterDest: 'Red Lion',
+      filterSeat: '1000'
     };
+
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.handleClickAD = this.handleClickAD.bind(this);
+    this.handlePrice = this.handlePrice.bind(this);
+    this.handleDest = this.handleDest.bind(this);
+    this.handleSeat = this.handleSeat.bind(this);
   }
-  updateWindowDimensions = this.updateWindowDimensions.bind(this);
-  componentDidMount() {
+
+  async componentDidMount() {
+    let tripsArray = await getTrips();
+
+    let allTrips = [];
+
+    tripsArray.forEach(trip => {
+      allTrips.push(trip);
+    });
+
+    if (allTrips.length > 0) {
+      this.setState({ currentTrip: allTrips[0] });
+    }
+
+    console.log(allTrips);
+
+    this.setState({ allTrips: allTrips });
+  }
+
+  async componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
+
+    let tripsArray = await getTrips();
+    let allTrips = [];
+
+    tripsArray.forEach(trip => {
+      allTrips.push(trip);
+    });
+
+    if (allTrips.length > 0) {
+      this.setState({ currentTrip: allTrips[0] });
+    }
+
+    this.setState({ allTrips: allTrips });
   }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
   }
@@ -261,23 +109,29 @@ class Homepage extends React.Component {
     return <Redirect to="/signup" />;
   };
 
+  handlePrice(event) {
+    this.setState({ filterPrice: event.target.value });
+    setTimeout(() => {
+      console.log(this.state.filterPrice);
+    }, 2000);
+  }
+
+  handleDest(event) {
+    this.setState({ filterDest: event.target.value });
+  }
+
+  handleSeat(event) {
+    this.setState({ filterSeat: event.target.value });
+  }
+
+  retRedirect = () => {
+    console.log('Hello');
+    return <Redirect to="/signup" />;
+  };
+
   render() {
     return (
       <div>
-        {/* <div style={{backgroundColor: "white"}}>
-        <div className="websitetitle">
-          <b>Carpool4UIUC</b>
-          <Router>
-            <Button color="success" style={{float:"right", marginRight: "2.5%" }}>
-              <Link to='/signup' style={{color:"white"}}>Sign Up</Link>
-            </Button>
-              <Switch>
-                <Route path='/signup' component={SignUp}/>            
-              </Switch>
-          </Router>
-          
-        </div>
-      </div> */}
         <div class="filter" style={{ background: '#ededed', paddingTop: '1%', width: '100%' }}>
           {/* "#E7E7F8" */}
           <div>
@@ -306,7 +160,11 @@ class Homepage extends React.Component {
                 </div>
               </Col>
               <Col>
-                <AdditionalDetails details={this.state.currentTrip} />
+                {this.state.currentTrip == null ? (
+                  <h5>There are no trip details to display.</h5>
+                ) : (
+                  <AdditionalDetails details={this.state.currentTrip} />
+                )}
               </Col>
             </Row>
           </div>
