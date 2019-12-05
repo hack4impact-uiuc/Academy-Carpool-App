@@ -29,7 +29,7 @@ class FilterBar extends React.Component {
               Max Price
             </Label>
             <Col sm={8}>
-              <Input id="price" placeholder="Enter a Price" />
+              <Input id="price" placeholder="Enter a Price"  onChange={this.props.price}/>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -37,7 +37,7 @@ class FilterBar extends React.Component {
               Destination
             </Label>
             <Col sm={8}>
-              <Input id="destination" placeholder="Enter a Destination" />
+              <Input id="destination" placeholder="Enter a Destination" onChange={this.props.dest}/>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -45,11 +45,8 @@ class FilterBar extends React.Component {
               Min Seats Left
             </Label>
             <Col sm={8}>
-              <Input id="seats" placeholder="Enter a Seat Number" />
+              <Input id="seats" placeholder="Enter a Seat Number"  onChange={this.props.seat}/>
             </Col>
-            <Button color="primary" style={{ marginTop: '10%', marginRight: 'auto' }}>
-              Submit
-            </Button>
           </FormGroup>
         </div>
       </div>

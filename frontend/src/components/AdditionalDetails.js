@@ -18,8 +18,32 @@ import {
   Badge,
   Container
 } from 'reactstrap';
+
 import MapContainer from './MapContainer';
 class AdditionalDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      height: 0,
+      mapheight: 800
+    }
+    
+    
+  }
+  updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+  updateWindowDimensions() {
+    this.setState({height: window.innerHeight });
+    this.setState({mapheight: window.innerHeight/2.8 });
+  }
+  
+
   render() {
     return (
       <div>
@@ -58,7 +82,7 @@ class AdditionalDetails extends React.Component {
                 <iframe
                   className="map"
                   src={`https://maps.google.com/maps?q=${this.props.details.destination}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
-                  style={{ height: '325px' }}
+                  style={{ height: `${this.state.mapheight}px` }}
                 >
                   <MapContainer style={{ float: 'center' }} />
                 </iframe>
