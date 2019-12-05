@@ -60,8 +60,7 @@ class BookTripComponent extends React.Component {
           <Card.Body>
             <Row>
               <Col xs={12} md={5}>
-              {/* {this.props.details.origin.location.name} */}
-                <Card.Title size="small">{this.props.details.origin}</Card.Title>
+                <Card.Title size="small">{this.props.details.origin.location.name}</Card.Title>
               </Col>
               <Col xs={12} md={2}>
                 <Card.Title>
@@ -69,19 +68,18 @@ class BookTripComponent extends React.Component {
                 </Card.Title>
               </Col>
               <Col xs={6} md={5}>
-                <Card.Title size="small"> {this.props.details.destination} </Card.Title>
+                <Card.Title size="small"> {this.props.details.destination.name} </Card.Title>
               </Col>
             </Row>
             <Row>
               <Col md="auto">
-              {/* this.props.details.driver.name */}
-                <Card.Subtitle> {this.props.details.name}</Card.Subtitle>
+                <Card.Subtitle> {this.props.details.driver.name}</Card.Subtitle>
               </Col>
               <Col md="auto">
-                <Card.Subtitle> {this.props.details.date}</Card.Subtitle>
+                <Card.Subtitle> {this.props.details.start_date}</Card.Subtitle>
               </Col>
               <Col md="auto">
-                <Card.Subtitle> {this.props.details.time}</Card.Subtitle>
+                <Card.Subtitle> {this.props.details.start_time}</Card.Subtitle>
               </Col>
             </Row>
             <Form>

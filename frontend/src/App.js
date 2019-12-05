@@ -46,10 +46,6 @@ class App extends React.Component {
                 Add Trip
               </Button>
             </Link>
-            {/* <ul style={{display: "inline"}}>
-                    <li><Link to={'/trips'} className="nav-link"> Trips </Link></li>
-                    <li><Link to={'/signup'} className="nav-link">SignUp</Link></li>
-                  </ul> */}
           </div>
           <Switch>
             <Route exact path="/trips" component={Homepage} />
