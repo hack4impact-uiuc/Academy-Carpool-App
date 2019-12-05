@@ -84,15 +84,31 @@ class Homepage extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
   }
-
   updateWindowDimensions() {
     this.setState({ height: window.innerHeight });
     this.setState({ mapheight: window.innerHeight / 1.25 });
   }
+  handlePrice = this.handlePrice.bind(this);
+  handleDest = this.handleDest.bind(this);
+  handleSeat = this.handleSeat.bind(this);
 
   handleClickAD(trip) {
     this.setState({ currentTrip: trip });
   }
+  handlePrice(event) {
+    this.setState({ filterPrice: event.target.value });
+  }
+  handleDest(event) {
+    this.setState({ filterDest: event.target.value });
+  }
+  handleSeat(event) {
+    this.setState({ filterSeat: event.target.value });
+  }
+
+  retRedirect = () => {
+    console.log('Hello');
+    return <Redirect to="/signup" />;
+  };
 
   handleClickBookTrip(trip) {
     this.setState({ currentTrip: trip });
@@ -150,13 +166,19 @@ class Homepage extends React.Component {
                 <b style={{ textAlign: 'center' }}>Active Trips</b>
                 <div style={{ height: `${this.state.mapheight}px`, overflowY: 'auto' }}>
                   {this.state.allTrips.map(value => {
-                    return (
-                      <TripComponent
-                        onClick={() => this.handleClickAD(value)}
-                        onClickBook={() => this.handleClickBookTrip(value)}
-                        details={value}
-                      />
-                    );
+                    if (this.state.filterPrice == '') {
+                      this.setState({ filterPrice: '1000' });
+                    }
+                    if (this.state.filterSeat == '') {
+                      this.setState({ filterSeat: '0' });
+                    }
+                    if (
+                      parseFloat(value.cost) <= parseFloat(this.state.filterPrice) &&
+                      parseFloat(value.seats) >= parseFloat(this.state.filterSeat) &&
+                      (value.destination.toLowerCase().includes(this.state.filterDest.toLowerCase()) ||
+                        this.state.filterDest == '')
+                    )
+                      return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;
                   })}
                 </div>
               </Col>
