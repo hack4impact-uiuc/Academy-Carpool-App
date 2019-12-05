@@ -8,9 +8,7 @@ const { Option } = Select;
 class UserFormPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      
-    };
+    this.state = {};
   }
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
@@ -43,7 +41,6 @@ class UserFormPage extends React.Component {
     this.props.form.setFieldsValue({ value });
   };
 
-
   render() {
     const { getFieldDecorator } = this.props.form;
     const { errorMessages, validators, requiredError, validatorListener, ...rest } = this.props;
@@ -74,64 +71,62 @@ class UserFormPage extends React.Component {
               </div>
 
               <Form.Item>
-                      {getFieldDecorator('email', {
-                        rules: [{ required: true, message: 'Please enter email' }]
-                      })(<Input placeholder="Email" size="large" />)}
-                    </Form.Item>
-            
-              <Form.Item  hasFeedback>
+                {getFieldDecorator('email', {
+                  rules: [{ required: true, message: 'Please enter email' }]
+                })(<Input placeholder="Email" size="large" />)}
+              </Form.Item>
+
+              <Form.Item hasFeedback>
                 {getFieldDecorator('password', {
-                    rules: [
+                  rules: [
                     {
-                        required: true,
-                        message: 'Please input your password!',
+                      required: true,
+                      message: 'Please input your password!'
                     },
                     {
-                        validator: this.validateToNextPassword,
-                    },
-                    ],
-                })(<Input.Password size = "large" placeholder="Please enter password"/>)}
-                </Form.Item>
-                <Form.Item  hasFeedback>
+                      validator: this.validateToNextPassword
+                    }
+                  ]
+                })(<Input.Password size="large" placeholder="Please enter password" />)}
+              </Form.Item>
+              <Form.Item hasFeedback>
                 {getFieldDecorator('confirm', {
-                    rules: [
+                  rules: [
                     {
-                        required: true,
-                        message: 'Please confirm your password!',
+                      required: true,
+                      message: 'Please confirm your password!'
                     },
                     {
-                        validator: this.compareToFirstPassword,
-                    },
-                    ],
-                })(<Input.Password size = "large" placeholder="Please confirm password" onBlur={this.handleConfirmBlur} />)}
-                </Form.Item>
-                
-                <Row>
-                  <Col>
-                    <Form.Item >
+                      validator: this.compareToFirstPassword
+                    }
+                  ]
+                })(
+                  <Input.Password size="large" placeholder="Please confirm password" onBlur={this.handleConfirmBlur} />
+                )}
+              </Form.Item>
+
+              <Row>
+                <Col>
+                  <Form.Item>
                     {getFieldDecorator('phone', {
-                        rules: [{ required: true, message: 'Please input your phone number!' }],
-                    })(<Input size = "large" placeholder = "Phone #" addonBefore={'+1'} style={{ width: '100%' }} />)}
-                    </Form.Item>
-                  
-                  </Col>
-                  <Col>
-                    <Form.Item>
-                      {getFieldDecorator('venmo', {
-                        rules: [{ required: true, message: 'Please enter venmo' }]
-                      })(<Input placeholder="Venmo Handle" size="large" />)}
-                    </Form.Item>
-                  </Col>
-                </Row>
+                      rules: [{ required: true, message: 'Please input your phone number!' }]
+                    })(<Input size="large" placeholder="Phone #" addonBefore={'+1'} style={{ width: '100%' }} />)}
+                  </Form.Item>
+                </Col>
+                <Col>
+                  <Form.Item>
+                    {getFieldDecorator('venmo', {
+                      rules: [{ required: true, message: 'Please enter venmo' }]
+                    })(<Input placeholder="Venmo Handle" size="large" />)}
+                  </Form.Item>
+                </Col>
+              </Row>
 
-                <Form.Item>
-                    {getFieldDecorator('age', {
-                        rules: [{ required: true, message: 'Please enter age' }]
-                    })(
-                        <InputNumber placeholder = "Age" size="large" min={1} max={120} defaultValue={18}/>
-                    )}
-                </Form.Item>
-
+              <Form.Item>
+                {getFieldDecorator('age', {
+                  rules: [{ required: true, message: 'Please enter age' }]
+                })(<InputNumber placeholder="Age" size="large" min={1} max={120} defaultValue={18} />)}
+              </Form.Item>
 
               <div class="submittop-buffer" style={{ paddingLeft: '75%' }}>
                 <Button onClick={this.handleSubmit} variant="primary" type="submit">
