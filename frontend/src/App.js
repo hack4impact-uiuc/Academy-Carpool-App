@@ -12,7 +12,7 @@ import BookTripComponent from './components/BookTripComponent';
 function App() {
   return (
     <div>
-      
+      <HomePage/>
     </div>
   );
 }
