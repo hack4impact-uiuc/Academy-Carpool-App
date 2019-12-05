@@ -473,7 +473,7 @@ def create_user():
     user.save()
 
     return create_response(
-        message=f"Successfully created user {user.name} with id {user.id}.", status=201
+        message=f"Successfully created user {user.name} with id {user.id}.", status=201, data={"userId": str(user.id)}
     )
 
 
