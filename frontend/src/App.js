@@ -13,6 +13,7 @@ function App() {
       <TripFormPage />
     </div>
   );
+
 }
 
 export default App;
