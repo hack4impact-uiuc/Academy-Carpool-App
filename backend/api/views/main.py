@@ -131,6 +131,12 @@ def get_trips():
     trips = Trip.objects()
     return create_response(data={"trips": trips}, status=200)
 
+@main.route("/locations/<locationId>", methods=["GET"])
+def get_location_by_id(locationId):
+    location = Location.objects(id=locationId).get(id=locationId)
+    return create_response(
+        data={"location": location}
+    )
 
 # function that is called when you visit /trips
 @main.route("/trips", methods=["POST"])
@@ -201,8 +207,6 @@ def create_location(data):
 
     return location
         
-
-
 # function that identifies the trip based on its id
 def get_trip_by_id(trip_id):
     trip = Trip.objects(id=trip_id)
@@ -226,11 +230,7 @@ def update_trip(id):
 
     # Update each key, but not users, location, or cars
     for key in Trip.get_elements():
-        if key in info and key not in [
-            "past_drivers",
-            "past_passengers",
-            "current_users",
-        ]:
+        if key in info and key not in Trips.get_refrence_keys():
             trip_to_update[key] = info[key]
 
     trip_to_update.save()
@@ -253,32 +253,6 @@ def delete_trip(id):
     return create_response(
         message=f"Trip with driver {to_delete.driver} and id {id} has been deleted."
     )
-
-
-# function that is called when you visit /trips/<id>/users
-@main.route("/trips/<id>/users", methods=["GET"])
-def get_users_in_trip(id):
-    trip = get_trip_by_id(id)
-
-    if trip is None:
-        return create_response(message=f"No trip with id {id} was found.", status=404)
-
-    driver = User.objects(id=trip.driver.id)
-    passengers = []
-
-    logger.info(f"Driver: {len(trip.driver)}")
-    logger.info(f"Passengers: {len(trip.passengers)}")
-
-    logger.info(f"Driver: {User.objects(id=driver_in_trip.id)}")
-
-    for passengers_in_trip in trip.passengers:
-        logger.info(f"Passengers: {User.objects(id=passengers_in_trip.id)}")
-        passengers.append(User.objects(id=passengers_in_trip.id))
-
-    return create_response(
-        data={"driver": driver, "passengers": passengers}, status=200
-    )
-
 
 # function that is called when you visit /trips/<id>/users
 # NOTE: can only add passengers, but CANNOT add drivers to a trip
@@ -311,44 +285,6 @@ def create_users_for_trip(id):
         message=f"Successfully created user (passenger) with id {user.id} for trip with driver {trip.driver} and id {trip.id}.",
         status=201,
     )
-
-
-# function that is called when you visit /trips/<trip_id>/users/<user_id>
-@main.route("/trips/<trip_id>/users/<user_id>", methods=["PUT"])
-def update_users_in_trip(trip_id, user_id):
-    info = request.get_json()
-    logger.info(f"Recieved info {info}")
-
-    trip_to_update = get_trip_by_id(trip_id)
-
-    if trip_to_update is None:
-        return create_response(
-            message=f"No trip with id {trip_id} was found.", status=404
-        )
-
-    user_to_update = None
-    index = 0
-
-    for user_in_trip in trip_to_update.passengers:
-        if str(user_in_trip.id) == str(user_id):
-            user_to_update = user_in_trip
-            for key in Users.getAllKeys():
-                if key in info:
-                    user_to_update[key] = info[key]
-            trip_to_update.save()
-            return create_response(
-                message=f"Successfully updated user {user_to_update.id} in trip with driver {trip_to_update.driver} and id {trip_to_update.id}.",
-                status=201,
-            )
-        else:
-            index += 1
-
-    # executed in the case that user_to_update is None
-    return create_response(
-        message=f"No user with id {user_id} is included in trip with driver {trip_to_update.driver} and id {trip_id}",
-        status=404,
-    )
-
 
 # function that is called when you visit /trips/<trip_id>/users/<user_id>
 @main.route("/trips/<trip_id>/users/<user_id>", methods=["DELETE"])
