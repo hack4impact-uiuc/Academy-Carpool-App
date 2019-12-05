@@ -7,12 +7,12 @@ import { getTrips } from '../Requests/requests.js'
 class Homepage extends React.Component {
   constructor(props) {
     super(props);
-    this.handleClickAD = this.handleClickAD.bind(this);
     this.state = {
       allTrips: [],
       currentTrip: null
     };
-
+    
+    this.handleClickAD = this.handleClickAD.bind(this);
   }
   
   async componentDidMount(){
