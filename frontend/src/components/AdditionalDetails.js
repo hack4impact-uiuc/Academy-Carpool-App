@@ -1,12 +1,54 @@
 import React from 'react';
-import { CardBody, CardSubtitle, Card, CardTitle, Container } from 'reactstrap';
+import {
+  CardBody,
+  CardSubtitle,
+  Card,
+  CardTitle,
+  CardText,
+  Button,
+  Table,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Input,
+  Toast,
+  ToastBody,
+  ToastHeader,
+  Badge,
+  Container
+} from 'reactstrap';
+
 import MapContainer from './MapContainer';
 class AdditionalDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      height: 0,
+      mapheight: 800
+    }
+    
+    
+  }
+  updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+  updateWindowDimensions() {
+    this.setState({height: window.innerHeight });
+    this.setState({mapheight: window.innerHeight/2.8 });
+  }
+  
+
   render() {
     return (
       <div>
         <b style={{ textAlign: 'center' }}>Additional Information</b>
-        <div className="infocard" style={{ paddingTop: '20px' }}>
+        <div className="infocard" style={{ paddingTop: '2.5%', paddingBottom: '25%' }}>
           <Card>
             <CardBody>
               <CardTitle>
@@ -35,12 +77,12 @@ class AdditionalDetails extends React.Component {
                   <br />
                   <b>Trunk Space: </b> {this.props.details.space}
                   <br />
-                  <b>Special Instructions: </b> {this.props.details.notes} <br />
+                  <b>Special Instructions: </b> {this.props.details.notes} <br /> <br />
                 </div>
                 <iframe
-                  title="map"
                   className="map"
                   src={`https://maps.google.com/maps?q=${this.props.details.destination}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                  style={{ height: `${this.state.mapheight}px` }}
                 >
                   <MapContainer style={{ float: 'center' }} />
                 </iframe>

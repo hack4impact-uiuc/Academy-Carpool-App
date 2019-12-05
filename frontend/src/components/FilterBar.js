@@ -1,5 +1,22 @@
 import React from 'react';
-import { Col, FormGroup, Label, Input } from 'reactstrap';
+import {
+  CardBody,
+  CardSubtitle,
+  Card,
+  CardTitle,
+  CardText,
+  Button,
+  Table,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Input,
+  Toast,
+  ToastBody,
+  ToastHeader,
+  Badge
+} from 'reactstrap';
 class FilterBar extends React.Component {
   render() {
     return (
@@ -12,7 +29,7 @@ class FilterBar extends React.Component {
               Max Price
             </Label>
             <Col sm={8}>
-              <Input id="price" placeholder="Enter a Price" />
+              <Input id="price" placeholder="Enter a Price"  onChange={this.props.price}/>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -20,15 +37,15 @@ class FilterBar extends React.Component {
               Destination
             </Label>
             <Col sm={8}>
-              <Input id="destination" placeholder="Enter a Destination" />
+              <Input id="destination" placeholder="Enter a Destination" onChange={this.props.dest}/>
             </Col>
           </FormGroup>
           <FormGroup row>
             <Label for="seats" sm={4}>
-              Seats Left
+              Min Seats Left
             </Label>
             <Col sm={8}>
-              <Input id="seats" placeholder="Enter a Seat Number" />
+              <Input id="seats" placeholder="Enter a Seat Number"  onChange={this.props.seat}/>
             </Col>
           </FormGroup>
         </div>

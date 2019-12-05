@@ -1,6 +1,8 @@
-import React from 'react';
-import { Card, Row, Col } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Card, Button, Row, Col, OverlayTrigger, Tooltip, Popover } from 'react-bootstrap';
 import { MDBIcon } from 'mdbreact';
+import { AdditionalDetails } from '.';
+let active = true;
 
 class TripComponent extends React.Component {
   constructor(props) {
@@ -43,7 +45,7 @@ class TripComponent extends React.Component {
         >
           {/* Angelas border hover to add above: border={this.state.cardSize}*/}
 
-          <Card style={{ width: '22rem' }}>
+          <Card style={{ width: '97%', marginLeft: '0.3%' }}>
             {/* Angelas thing: border={this.state.cardSize}*/}
             <Card.Body>
               <Row>
@@ -89,7 +91,7 @@ class TripComponent extends React.Component {
 
               <Row>
                 <Col xs={12} md={7}>
-                  <Card.Link style={{ color: 'blue' }}>Book Now!</Card.Link>
+                  <Card.Link onClick={this.props.onClickBook} style={{ color: 'blue' }}>Book Now!</Card.Link>
                 </Col>
                 <Col xs={6} md={5}>
                   <Card.Link onClick={this.props.onClick} name={this.props.details.id} style={{ color: 'blue' }}>

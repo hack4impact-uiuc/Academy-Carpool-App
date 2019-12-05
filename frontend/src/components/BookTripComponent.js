@@ -3,8 +3,6 @@ import { Card, Row, Col } from 'react-bootstrap';
 import { MDBIcon } from 'mdbreact';
 import { TimePicker, DatePicker, InputNumber, Input, Select, Form, Button, Modal } from 'antd';
 
-// origin, destination, name, date, time, and whether it should be visible or not
-//set visibility to true when the Book Now! link from the TripComponent is pressed
 class BookTripComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -38,6 +36,7 @@ class BookTripComponent extends React.Component {
     this.setState({
       visible: false
     });
+    this.props.callbackFromParent(false);
   };
 
   handleCancel = e => {
@@ -45,6 +44,7 @@ class BookTripComponent extends React.Component {
     this.setState({
       visible: false
     });
+    this.props.callbackFromParent(false);
   };
 
   render() {
@@ -52,7 +52,7 @@ class BookTripComponent extends React.Component {
     return (
       <div>
         <Modal
-          title="Basic Modal"
+          title="Book Trip"
           visible={this.state.visible}
           onOk={(this.handleOk, this.handleSubmit)}
           onCancel={this.handleCancel}
@@ -60,7 +60,8 @@ class BookTripComponent extends React.Component {
           <Card.Body>
             <Row>
               <Col xs={12} md={5}>
-                <Card.Title size="small">{this.props.details.origin.location.name}</Card.Title>
+              {/* {this.props.details.origin.location.name} */}
+                <Card.Title size="small">{this.props.details.origin}</Card.Title>
               </Col>
               <Col xs={12} md={2}>
                 <Card.Title>
@@ -68,18 +69,19 @@ class BookTripComponent extends React.Component {
                 </Card.Title>
               </Col>
               <Col xs={6} md={5}>
-                <Card.Title size="small"> {this.props.details.destination.name} </Card.Title>
+                <Card.Title size="small"> {this.props.details.destination} </Card.Title>
               </Col>
             </Row>
             <Row>
               <Col md="auto">
-                <Card.Subtitle> {this.props.details.driver.name}</Card.Subtitle>
+              {/* this.props.details.driver.name */}
+                <Card.Subtitle> {this.props.details.name}</Card.Subtitle>
               </Col>
               <Col md="auto">
-                <Card.Subtitle> {this.props.details.start_date}</Card.Subtitle>
+                <Card.Subtitle> {this.props.details.date}</Card.Subtitle>
               </Col>
               <Col md="auto">
-                <Card.Subtitle> {this.props.details.start_time}</Card.Subtitle>
+                <Card.Subtitle> {this.props.details.time}</Card.Subtitle>
               </Col>
             </Row>
             <Form>
