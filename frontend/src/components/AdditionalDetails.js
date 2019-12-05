@@ -26,9 +26,7 @@ class AdditionalDetails extends React.Component {
     this.state = {
       height: 0,
       mapheight: 800
-    }
-    
-    
+    };
   }
   updateWindowDimensions = this.updateWindowDimensions.bind(this);
   componentDidMount() {
@@ -39,10 +37,9 @@ class AdditionalDetails extends React.Component {
     window.removeEventListener('resize', this.updateWindowDimensions);
   }
   updateWindowDimensions() {
-    this.setState({height: window.innerHeight });
-    this.setState({mapheight: window.innerHeight/2.8 });
+    this.setState({ height: window.innerHeight });
+    this.setState({ mapheight: window.innerHeight / 3.5 });
   }
-  
 
   render() {
     return (

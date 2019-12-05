@@ -29,9 +29,9 @@ class Homepage extends React.Component {
     this.state = {
       //Filters
       mapHeight: 0,
-      filterPrice: '1000',
-      filterDest: 'Red Lion',
-      filterSeat: '1000',
+      filterPrice: '100',
+      filterDest: '',
+      filterSeat: '',
 
       //current trip
       currentTrip: {
@@ -226,20 +226,19 @@ class Homepage extends React.Component {
         }
       ]
     };
-    
   }
   updateWindowDimensions = this.updateWindowDimensions.bind(this);
-    componentDidMount() {
-      this.updateWindowDimensions();
-      window.addEventListener('resize', this.updateWindowDimensions);
-    }
-    componentWillUnmount() {
-      window.removeEventListener('resize', this.updateWindowDimensions);
-    }
-    updateWindowDimensions() {
-      this.setState({height: window.innerHeight });
-      this.setState({mapheight: window.innerHeight/1.25 });
-     }
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+  updateWindowDimensions() {
+    this.setState({ height: window.innerHeight });
+    this.setState({ mapheight: window.innerHeight / 1.25 });
+  }
   handlePrice = this.handlePrice.bind(this);
   handleDest = this.handleDest.bind(this);
   handleSeat = this.handleSeat.bind(this);
@@ -247,26 +246,21 @@ class Homepage extends React.Component {
   handleClickAD(trip) {
     this.setState({ currentTrip: trip });
   }
-
   handlePrice(event) {
-    
-    this.setState({filterPrice: event.target.value});
-    setTimeout(() => {console.log(this.state.filterPrice);}, 2000);
-    
-    
+    this.setState({ filterPrice: event.target.value });
   }
   handleDest(event) {
-    this.setState({ filterDest : event.target.value});
+    this.setState({ filterDest: event.target.value });
   }
   handleSeat(event) {
-    this.setState({filterSeat: event.target.value});
+    this.setState({ filterSeat: event.target.value });
   }
 
   retRedirect = () => {
     console.log('Hello');
     return <Redirect to="/signup" />;
   };
-  
+
   render() {
     return (
       <div>
@@ -289,13 +283,25 @@ class Homepage extends React.Component {
           <div>
             <Row>
               <Col xs="3">
-                <FilterBar price={this.handlePrice} dest={this.handleDest} seat={this.handleSeat}/>
+                <FilterBar price={this.handlePrice} dest={this.handleDest} seat={this.handleSeat} />
               </Col>
               <Col xs="3">
                 <b style={{ textAlign: 'center' }}>Active Trips</b>
                 <div style={{ height: `${this.state.mapheight}px`, overflowY: 'auto' }}>
                   {this.state.allTrips.map(value => {
-                    return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;
+                    if (this.state.filterPrice == '') {
+                      this.setState({ filterPrice: '1000' });
+                    }
+                    if (this.state.filterSeat == '') {
+                      this.setState({ filterSeat: '0' });
+                    }
+                    if (
+                      parseFloat(value.cost) <= parseFloat(this.state.filterPrice) &&
+                      parseFloat(value.seats) >= parseFloat(this.state.filterSeat) &&
+                      (value.destination.toLowerCase().includes(this.state.filterDest.toLowerCase()) ||
+                        this.state.filterDest == '')
+                    )
+                      return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;
                   })}
                 </div>
               </Col>
