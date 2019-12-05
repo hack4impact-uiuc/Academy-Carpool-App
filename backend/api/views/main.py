@@ -121,15 +121,15 @@ def populate_db():
 @main.route("/locations/<locationId>", methods=["GET"])
 def get_location_by_id(locationId):
     location = Location.objects(id=locationId).get(id=locationId)
-    return create_response(
-        data={"location": location}
-    )
+    return create_response(data={"location": location})
+
 
 # function that is called when you visit /trips
 @main.route("/trips", methods=["GET"])
 def get_trips():
     trips = Trip.objects()
     return create_response(data={"trips": trips}, status=200)
+
 
 # function that is called when you visit /trips
 @main.route("/trips", methods=["POST"])
@@ -171,10 +171,11 @@ def create_trip():
                 passenger = get_user_by_id(passengerId)
                 if passenger is None:
                     return create_response(
-                        message=f"No passenger with id {passengerId} was found.", status=404
+                        message=f"No passenger with id {passengerId} was found.",
+                        status=404,
                     )
                 passengers.append(passenger)
-            
+
             trip["passengers"] = passengers
         elif key in info:
             trip[key] = info[key]
@@ -185,6 +186,7 @@ def create_trip():
         message=f"Successfully created trip with driver {trip.driver} and id {trip.id}.",
         status=201,
     )
+
 
 def create_location(data):
     location = Location()
@@ -199,7 +201,8 @@ def create_location(data):
     location.save()
 
     return location
-        
+
+
 # function that identifies the trip based on its id
 def get_trip_by_id(trip_id):
     trip = Trip.objects(id=trip_id)
@@ -247,6 +250,7 @@ def delete_trip(id):
         message=f"Trip with driver {to_delete.driver} and id {id} has been deleted."
     )
 
+
 # function that is called when you visit /trips/<id>/users
 # NOTE: can only add passengers, but CANNOT add drivers to a trip
 @main.route("/trips/<id>/users", methods=["POST"])
@@ -278,6 +282,7 @@ def create_users_for_trip(id):
         message=f"Successfully created user (passenger) with id {user.id} for trip with driver {trip.driver} and id {trip.id}.",
         status=201,
     )
+
 
 # function that is called when you visit /trips/<trip_id>/users/<user_id>
 @main.route("/trips/<trip_id>/users/<user_id>", methods=["DELETE"])
@@ -503,19 +508,17 @@ def update_user(id):
         status=201,
     )
 
+
 @main.route("/users/<user_id>", methods=["GET"])
 def get_user_by_email(user_id):
     user = User.objects(id=user_id).get(id=user_id)
 
-    if (user is None):
-        return create_response(message=f"No user with id {user_id} was found.", status=404)
+    if user is None:
+        return create_response(
+            message=f"No user with id {user_id} was found.", status=404
+        )
 
-    return create_response(
-        data={"users": user}
-    )
-    
-
-
+    return create_response(data={"users": user})
 
 
 ##############################################

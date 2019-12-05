@@ -46,7 +46,8 @@ class AdditionalDetails extends React.Component {
               <Container>
                 <div>
                   <b>Car Model: </b>
-                  {this.props.details.car.model}<br />
+                  {this.props.details.car.model}
+                  <br />
                   <b>Color: </b> {this.props.details.car.color} <br />
                   <b>License Plate: </b> {this.props.details.car.license_plate} <br />
                   <b>Seats Available: </b> {this.props.details.seats_available}

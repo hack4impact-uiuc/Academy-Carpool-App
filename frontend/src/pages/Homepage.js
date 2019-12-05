@@ -22,7 +22,7 @@ import {
   Section
 } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
-import { getTrips } from '../Requests/requests.js'
+import { getTrips } from '../Requests/requests.js';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 class Homepage extends React.Component {
   constructor(props) {
@@ -35,11 +35,11 @@ class Homepage extends React.Component {
       filterDest: '',
       filterSeat: ''
     };
-    
+
     this.handleClickAD = this.handleClickAD.bind(this);
   }
-  
-  async componentDidMount(){
+
+  async componentDidMount() {
     let tripsArray = await getTrips();
 
     let allTrips = [];
@@ -48,14 +48,13 @@ class Homepage extends React.Component {
       allTrips.push(trip);
     });
 
-    if(allTrips.length > 0) {
-      this.setState({currentTrip: allTrips[0]});
+    if (allTrips.length > 0) {
+      this.setState({ currentTrip: allTrips[0] });
     }
 
     console.log(allTrips);
 
-    this.setState({allTrips: allTrips});
-
+    this.setState({ allTrips: allTrips });
   }
 
   handleClickAD(trip) {
@@ -72,8 +71,6 @@ class Homepage extends React.Component {
   };
 
   render() {
-
-
     return (
       <div>
         {/* <div style={{backgroundColor: "white"}}>
@@ -107,11 +104,11 @@ class Homepage extends React.Component {
                 </div>
               </Col>
               <Col>
-                {
-                  this.state.currentTrip == null ?
-                  <h5>There are no trip details to display.</h5> :
+                {this.state.currentTrip == null ? (
+                  <h5>There are no trip details to display.</h5>
+                ) : (
                   <AdditionalDetails details={this.state.currentTrip} />
-                }
+                )}
               </Col>
             </Row>
           </div>

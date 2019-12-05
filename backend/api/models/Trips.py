@@ -41,7 +41,7 @@ class Trip(Document, Mixin):
             "past_drivers",
             "past_passengers",
             "current_users",
-            "notes"
+            "notes",
         ]
 
     @staticmethod
@@ -56,7 +56,7 @@ class Trip(Document, Mixin):
             "cost",
             "car",
             "seats_available",
-            "trunk_space"
+            "trunk_space",
         ]
 
     @staticmethod

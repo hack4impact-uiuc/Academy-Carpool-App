@@ -51,7 +51,9 @@ class TripComponent extends React.Component {
               <Row>
                 <Col xs={12} md={5}>
                   {this.props.details.origin.location.name.length > 15 && (
-                    <Card.Title class="small">{this.props.details.origin.location.name.substring(0, 12)} ...</Card.Title>
+                    <Card.Title class="small">
+                      {this.props.details.origin.location.name.substring(0, 12)} ...
+                    </Card.Title>
                   )}
                   {this.props.details.origin.location.name.length < 15 && (
                     <Card.Title class="small">{this.props.details.origin.location.name}</Card.Title>
