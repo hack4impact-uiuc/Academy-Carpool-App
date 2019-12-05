@@ -31,6 +31,7 @@ class Trip(Document, Mixin):
             "destination",
             "checkpoints",
             "start_time",
+            "start_date",
             "posted_time",
             "cost",
             "car",
