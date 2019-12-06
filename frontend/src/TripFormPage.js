@@ -14,15 +14,30 @@ class TripFormPage extends React.Component {
     };
   }
   handleLocationChange = address => {
-    this.setState({ searchValue: address });
+    this.setState({ searchValue: geocodeByAddress(address) });
   };
 
   handleLocationSelect = address => {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
+      .then(latLng => 
+        console.log('Success', latLng),
+        )
       .catch(error => console.error('Error', error));
   };
+  mapPropsToFields(props) {
+    return {
+      firstName: Form.createFormField({
+        ...props.firstName,
+        value: props.firstName.value,
+        lat: 12,
+        long: 2
+      }),
+    };
+  }
+  onFieldsChange(props, changedFields) {
+    props.onChange(changedFields);
+  }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -127,6 +142,7 @@ class TripFormPage extends React.Component {
                             </div>
                           )}
                         </PlacesAutocomplete>
+                      
                       )}
                     </Form.Item>
                   </Col>
