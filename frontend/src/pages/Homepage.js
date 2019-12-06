@@ -34,8 +34,8 @@ class Homepage extends React.Component {
       //Filters
       mapHeight: 0,
       filterPrice: '1000',
-      filterDest: 'Red Lion',
-      filterSeat: '1000'
+      filterDest: '',
+      filterSeat: '0'
     };
 
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -84,13 +84,11 @@ class Homepage extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
   }
+
   updateWindowDimensions() {
     this.setState({ height: window.innerHeight });
     this.setState({ mapheight: window.innerHeight / 1.25 });
   }
-  handlePrice = this.handlePrice.bind(this);
-  handleDest = this.handleDest.bind(this);
-  handleSeat = this.handleSeat.bind(this);
 
   handleClickAD(trip) {
     this.setState({ currentTrip: trip });
@@ -137,6 +135,26 @@ class Homepage extends React.Component {
     return <Redirect to="/signup" />;
   };
 
+  handlePrice(event) {
+    this.setState({ filterPrice: event.target.value });
+    setTimeout(() => {
+      console.log(this.state.filterPrice);
+    }, 2000);
+  }
+
+  handleDest(event) {
+    this.setState({ filterDest: event.target.value });
+  }
+
+  handleSeat(event) {
+    this.setState({ filterSeat: event.target.value });
+  }
+
+  retRedirect = () => {
+    console.log('Hello');
+    return <Redirect to="/signup" />;
+  };
+
   render() {
     return (
       <div>
@@ -174,8 +192,8 @@ class Homepage extends React.Component {
                     }
                     if (
                       parseFloat(value.cost) <= parseFloat(this.state.filterPrice) &&
-                      parseFloat(value.seats) >= parseFloat(this.state.filterSeat) &&
-                      (value.destination.toLowerCase().includes(this.state.filterDest.toLowerCase()) ||
+                      parseFloat(value.seats_available) >= parseFloat(this.state.filterSeat) &&
+                      (value.destination.location.name.toLowerCase().includes(this.state.filterDest.toLowerCase()) ||
                         this.state.filterDest == '')
                     )
                       return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;

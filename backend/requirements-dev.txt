@@ -2,11 +2,4 @@ pylint>=2.1.1
 black>=18.9b0
 mypy
 pytest>=3.7.1
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 pytest-mongo>=1.2.1
->>>>>>> 1f71f82766712d3a6f3cfb29b341b78d46ad649e
-=======
-pytest-mongo>=1.2.1
->>>>>>> b7391023070224ca1f51a3da0bb86889e7834a15
