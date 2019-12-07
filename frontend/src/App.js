@@ -1,24 +1,6 @@
 import Homepage from './pages/Homepage.js';
-<<<<<<< HEAD
-import './App.css';
-//import TripComponent from './TripComponent';
-import TripFormPage from './TripFormPage';
-import React, { Component } from 'react';
-//import LocationSearchInput from './PlacesAutocomplete';
-//import Map from './Map';
-
-function App() {
-  return (
-    <div>
-      {/* <LocationSearchInput/> */}
-      {/* <Map/>  */}
-      <TripFormPage />
-    </div>
-  );
-=======
 import SignUp from './pages/SignUp.js';
 import TripFormPage from './pages/TripFormPage.js';
->>>>>>> 91d03944fe64d7c56b15cf87f5a038684e70343d
 
 import logo from './logo.svg';
 import './App.css';
