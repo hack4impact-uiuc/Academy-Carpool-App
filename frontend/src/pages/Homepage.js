@@ -2,7 +2,6 @@ import React from 'react';
 import { FilterBar, TripList, AdditionalDetails } from '../components';
 import TripComponent from '../components/TripComponent.js';
 import SignUp from './SignUp.js';
-import BookTripComponent from '../components/BookTripComponent';
 import {
   CardBody,
   CardSubtitle,
@@ -29,8 +28,8 @@ class Homepage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //visibility of Book Trip module
-      bookTripVisibility: false,
+      allTrips: [],
+      currentTrip: null,
       //Filters
       mapHeight: 0,
       filterPrice: '1000',
@@ -93,14 +92,19 @@ class Homepage extends React.Component {
   handleClickAD(trip) {
     this.setState({ currentTrip: trip });
   }
-
-  handleClickBookTrip(trip) {
-    this.setState({ currentTrip: trip });
-    this.setState({ bookTripVisibility: true });
+  handlePrice(event) {
+    this.setState({ filterPrice: event.target.value });
+  }
+  handleDest(event) {
+    this.setState({ filterDest: event.target.value });
+  }
+  handleSeat(event) {
+    this.setState({ filterSeat: event.target.value });
   }
 
-  myCallback = visibilityfromBookTripComponent => {
-    this.setState({ bookTripVisibility: visibilityfromBookTripComponent });
+  retRedirect = () => {
+    console.log('Hello');
+    return <Redirect to="/signup" />;
   };
 
   handlePrice(event) {
@@ -109,9 +113,11 @@ class Homepage extends React.Component {
       console.log(this.state.filterPrice);
     }, 2000);
   }
+
   handleDest(event) {
     this.setState({ filterDest: event.target.value });
   }
+
   handleSeat(event) {
     this.setState({ filterSeat: event.target.value });
   }
@@ -144,21 +150,6 @@ class Homepage extends React.Component {
   render() {
     return (
       <div>
-        {/* <div style={{backgroundColor: "white"}}>
-        <div className="websitetitle">
-          <b>Carpool4UIUC</b>
-          <Router>
-            <Button color="success" style={{float:"right", marginRight: "2.5%" }}>
-              <Link to='/signup' style={{color:"white"}}>Sign Up</Link>
-            </Button>
-              <Switch>
-                <Route path='/signup' component={SignUp}/>            
-              </Switch>
-          </Router>
-          
-        </div>
-      </div> */}
-        {console.log(this.state.bookTripVisibility)}
         <div class="filter" style={{ background: '#ededed', paddingTop: '1%', width: '100%' }}>
           {/* "#E7E7F8" */}
           <div>
@@ -170,17 +161,30 @@ class Homepage extends React.Component {
                 <b style={{ textAlign: 'center' }}>Active Trips</b>
                 <div style={{ height: `${this.state.mapheight}px`, overflowY: 'auto' }}>
                   {this.state.allTrips.map(value => {
-                    return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;
+                    if (this.state.filterPrice == '') {
+                      this.setState({ filterPrice: '1000' });
+                    }
+                    if (this.state.filterSeat == '') {
+                      this.setState({ filterSeat: '0' });
+                    }
+                    if (
+                      parseFloat(value.cost) <= parseFloat(this.state.filterPrice) &&
+                      parseFloat(value.seats_available) >= parseFloat(this.state.filterSeat) &&
+                      (value.destination.location.name.toLowerCase().includes(this.state.filterDest.toLowerCase()) ||
+                        this.state.filterDest == '')
+                    )
+                      return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;
                   })}
                 </div>
               </Col>
               <Col>
-                <AdditionalDetails details={this.state.currentTrip} />
+                {this.state.currentTrip == null ? (
+                  <h5>There are no trip details to display.</h5>
+                ) : (
+                  <AdditionalDetails details={this.state.currentTrip} />
+                )}
               </Col>
             </Row>
-            {this.state.bookTripVisibility && (
-              <BookTripComponent visible={true} details={this.state.currentTrip} callbackFromParent={this.myCallback} />
-            )}
           </div>
         </div>
       </div>
