@@ -3,13 +3,24 @@ import { Button, Col, Jumbotron, Row } from 'react-bootstrap';
 import { TimePicker, DatePicker, InputNumber, Input, Select, Form } from 'antd';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { GoogleApiWrapper } from 'google-maps-react';
+import { createUser } from '../Requests/requests.js';
 const { Option } = Select;
 
 class UserFormPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      firstname: '',
+      lastname: '',
+      email: '',
+      age: '',
+      phone: '',
+      venmo_handle: ''
+    };
+
+    this.handleChange = this.handleChange.bind(this);
   }
+
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue('password')) {
@@ -32,8 +43,19 @@ class UserFormPage extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        let userAttributes = this.state;
+        userAttributes.name = userAttributes.firstname + ' ' + userAttributes.lastname;
+        createUser(userAttributes);
       }
     });
+  };
+
+  handleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  handleAgeChange = age => {
+    this.setState({ age: age });
   };
 
   handleSelectChange = value => {
@@ -57,14 +79,30 @@ class UserFormPage extends React.Component {
                     <Form.Item>
                       {getFieldDecorator('firstName', {
                         rules: [{ required: true, message: 'Please enter first name' }]
-                      })(<Input placeholder="First name" size="large" value={this.state.name} />)}
+                      })(
+                        <Input
+                          placeholder="First name"
+                          name="firstname"
+                          size="large"
+                          value={this.state.firstname}
+                          onChange={this.handleChange}
+                        />
+                      )}
                     </Form.Item>
                   </Col>
                   <Col>
                     <Form.Item>
                       {getFieldDecorator('lastName', {
                         rules: [{ required: true, message: 'Please enter last name' }]
-                      })(<Input placeholder="Last name" size="large" />)}
+                      })(
+                        <Input
+                          placeholder="Last name"
+                          name="lastname"
+                          size="large"
+                          value={this.state.lastname}
+                          onChange={this.handleChange}
+                        />
+                      )}
                     </Form.Item>
                   </Col>
                 </Row>
@@ -73,7 +111,7 @@ class UserFormPage extends React.Component {
               <Form.Item>
                 {getFieldDecorator('email', {
                   rules: [{ required: true, message: 'Please enter email' }]
-                })(<Input placeholder="Email" size="large" />)}
+                })(<Input placeholder="Email" name="email" size="large" onChange={this.handleChange} />)}
               </Form.Item>
 
               <Form.Item hasFeedback>
@@ -110,14 +148,25 @@ class UserFormPage extends React.Component {
                   <Form.Item>
                     {getFieldDecorator('phone', {
                       rules: [{ required: true, message: 'Please input your phone number!' }]
-                    })(<Input size="large" placeholder="Phone #" addonBefore={'+1'} style={{ width: '100%' }} />)}
+                    })(
+                      <Input
+                        size="large"
+                        placeholder="Phone #"
+                        name="phone"
+                        addonBefore={'+1'}
+                        onChange={this.handleChange}
+                        style={{ width: '100%' }}
+                      />
+                    )}
                   </Form.Item>
                 </Col>
                 <Col>
                   <Form.Item>
                     {getFieldDecorator('venmo', {
                       rules: [{ required: true, message: 'Please enter venmo' }]
-                    })(<Input placeholder="Venmo Handle" size="large" />)}
+                    })(
+                      <Input placeholder="Venmo Handle" size="large" name="venmo_handle" onChange={this.handleChange} />
+                    )}
                   </Form.Item>
                 </Col>
               </Row>
@@ -125,7 +174,16 @@ class UserFormPage extends React.Component {
               <Form.Item>
                 {getFieldDecorator('age', {
                   rules: [{ required: true, message: 'Please enter age' }]
-                })(<InputNumber placeholder="Age" size="large" min={1} max={120} defaultValue={18} />)}
+                })(
+                  <InputNumber
+                    placeholder="Age"
+                    size="large"
+                    min={1}
+                    max={120}
+                    onChange={this.handleAgeChange}
+                    defaultValue={18}
+                  />
+                )}
               </Form.Item>
 
               <div class="submittop-buffer" style={{ paddingLeft: '75%' }}>

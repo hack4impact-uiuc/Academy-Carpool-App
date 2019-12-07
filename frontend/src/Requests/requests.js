@@ -7,9 +7,6 @@ export async function getUsers() {
 // attribs should be a key, value list of properties
 export async function createUser(attribs) {
   const response = await createRequest('POST', BASE_URL + '/users', attribs);
-  let id = response.result.userId;
-
-  if ('car' in attribs) await createCar(attribs.car, id);
 
   return response.message;
 }
