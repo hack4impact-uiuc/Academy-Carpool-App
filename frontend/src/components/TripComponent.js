@@ -93,7 +93,9 @@ class TripComponent extends React.Component {
 
               <Row>
                 <Col xs={12} md={7}>
-                  <Card.Link style={{ color: 'blue' }}>Book Now!</Card.Link>
+                  <Card.Link onClick={this.props.onClickBook} style={{ color: 'blue' }}>
+                    Book Now!
+                  </Card.Link>
                 </Col>
                 <Col xs={6} md={5}>
                   <Card.Link onClick={this.props.onClick} name={this.props.details.id} style={{ color: 'blue' }}>

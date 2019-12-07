@@ -38,7 +38,7 @@ class AdditionalDetails extends React.Component {
   }
   updateWindowDimensions() {
     this.setState({ height: window.innerHeight });
-    this.setState({ mapheight: window.innerHeight / 3.5 });
+    this.setState({ mapheight: window.innerHeight / 2.8 });
   }
 
   render() {
@@ -79,7 +79,7 @@ class AdditionalDetails extends React.Component {
                 </div>
                 <iframe
                   className="map"
-                  src={`https://maps.google.com/maps?q=${this.props.details.destination.location.name}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                  src={`https://maps.google.com/maps?q=${this.props.details.destination}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
                   style={{ height: `${this.state.mapheight}px` }}
                 >
                   <MapContainer style={{ float: 'center' }} />
