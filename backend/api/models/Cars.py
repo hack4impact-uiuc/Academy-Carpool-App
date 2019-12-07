@@ -8,7 +8,7 @@ class Car(Document, Mixin):
     year = IntField(required=False)
     model = StringField(required=True)
     color = StringField(required=True)
-    license_plate = StringField(required=True, max_length=4)
+    license_plate = StringField(required=True)
 
     @staticmethod
     def getRequiredKeys():
