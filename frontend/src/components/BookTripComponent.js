@@ -18,6 +18,10 @@ class BookTripComponent extends React.Component {
         console.log('Received values of form: ', values);
       }
     });
+    this.setState({
+      visible: false
+    });
+    this.props.callbackFromParent(false);
   };
 
   handleSelectChange = value => {
@@ -29,14 +33,6 @@ class BookTripComponent extends React.Component {
     this.setState({
       visible: true
     });
-  };
-
-  handleOk = e => {
-    console.log(e);
-    this.setState({
-      visible: false
-    });
-    this.props.callbackFromParent(false);
   };
 
   handleCancel = e => {
@@ -54,7 +50,7 @@ class BookTripComponent extends React.Component {
         <Modal
           title="Book Trip"
           visible={this.state.visible}
-          onOk={(this.handleOk, this.handleSubmit)}
+          onOk={this.handleSubmit}
           onCancel={this.handleCancel}
         >
           <Card.Body>
@@ -68,7 +64,7 @@ class BookTripComponent extends React.Component {
                 </Card.Title>
               </Col>
               <Col xs={6} md={5}>
-                <Card.Title size="small"> {this.props.details.destination.name} </Card.Title>
+                <Card.Title size="small"> {this.props.details.destination.location.name} </Card.Title>
               </Col>
             </Row>
             <Row>
