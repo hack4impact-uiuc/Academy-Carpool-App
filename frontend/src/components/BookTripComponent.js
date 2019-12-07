@@ -1,10 +1,8 @@
 import React from 'react';
 import { Card, Row, Col } from 'react-bootstrap';
 import { MDBIcon } from 'mdbreact';
-import { TimePicker, DatePicker, InputNumber, Input, Select, Form, Button, Modal } from 'antd';
+import { InputNumber, Input, Form, Modal } from 'antd';
 
-// origin, destination, name, date, time, and whether it should be visible or not
-//set visibility to true when the Book Now! link from the TripComponent is pressed
 class BookTripComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +18,10 @@ class BookTripComponent extends React.Component {
         console.log('Received values of form: ', values);
       }
     });
+    this.setState({
+      visible: false
+    });
+    this.props.callbackFromParent(false);
   };
 
   handleSelectChange = value => {
@@ -33,30 +35,19 @@ class BookTripComponent extends React.Component {
     });
   };
 
-  handleOk = e => {
-    console.log(e);
-    this.setState({
-      visible: false
-    });
-  };
-
   handleCancel = e => {
     console.log(e);
     this.setState({
       visible: false
     });
+    this.props.callbackFromParent(false);
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Modal
-          title="Basic Modal"
-          visible={this.state.visible}
-          onOk={(this.handleOk, this.handleSubmit)}
-          onCancel={this.handleCancel}
-        >
+        <Modal title="Book Trip" visible={this.state.visible} onOk={this.handleSubmit} onCancel={this.handleCancel}>
           <Card.Body>
             <Row>
               <Col xs={12} md={5}>
@@ -68,7 +59,7 @@ class BookTripComponent extends React.Component {
                 </Card.Title>
               </Col>
               <Col xs={6} md={5}>
-                <Card.Title size="small"> {this.props.details.destination.name} </Card.Title>
+                <Card.Title size="small"> {this.props.details.destination.location.name} </Card.Title>
               </Col>
             </Row>
             <Row>

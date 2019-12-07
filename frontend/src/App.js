@@ -96,7 +96,6 @@ class App extends React.Component {
 =======
 import SignUp from './pages/SignUp.js';
 import TripFormPage from './pages/TripFormPage.js';
-
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
