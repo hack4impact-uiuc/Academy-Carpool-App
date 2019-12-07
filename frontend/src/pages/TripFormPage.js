@@ -10,14 +10,62 @@ class TripFormPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchValue: ''
+      searchValue: '',
+      firstname: '',
+      lastname: '',
+      date: '',
+      time: '',
+      origin: '',
+      destination: '',
+      trunk_size: '',
+      num_seats: 0,
+      cost: 0,
+      car_color: '',
+      car_plate: '',
+      car_make: '',
+      car_model: ''
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    //this.onFormSubmit = this.onFormSubmit.bind(this);
   }
-  handleLocationChange = address => {
-    this.setState({ searchValue: address });
+
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value});
+  }
+
+  handleOriginChange = address => {
+    this.setState({ origin: address });
+  };
+  
+  handleDestChange = address => {
+    this.setState({ destination: address });
+  };
+  
+  handleCostChange = cost => {
+    this.setState({ cost: cost });
   };
 
-  handleLocationSelect = address => {
+  updateDate = date => {
+    this.setState({ date: date});
+  };
+
+  updateTime = time => {
+    this.setState({ time: time});
+  };
+
+  handleOriginLocationSelect = address => {
+    this.setState({origin: address});
+
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => console.log('Success', latLng))
+      .catch(error => console.error('Error', error));
+  };
+
+  handleDestLocationSelect = address => {
+    this.setState({destination: address});
+
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => console.log('Success', latLng))
@@ -30,12 +78,27 @@ class TripFormPage extends React.Component {
       if (!err) {
         console.log('Received values of form: ', values);
       }
+
+      alert(JSON.stringify(this.state, null, '  '));
     });
+
+
   };
 
   handleSelectChange = value => {
     console.log(value);
     this.props.form.setFieldsValue({ value });
+    //this.setState({[name]: tar});
+  };
+
+  handleTrunkChange = value => {
+    this.props.form.setFieldsValue({ value });
+    this.setState({trunk_size: value});
+  };
+
+  handleSeatsChange = value => {
+    this.props.form.setFieldsValue({ value });
+    this.setState({num_seats: value});
   };
 
   render() {
@@ -54,14 +117,14 @@ class TripFormPage extends React.Component {
                       <Form.Item>
                         {getFieldDecorator('firstName', {
                           rules: [{ required: true, message: 'Please enter first name' }]
-                        })(<Input placeholder="First name" size="large" value={this.state.name} />)}
+                        })(<Input placeholder="First name" size="large" name="firstname" value={this.state.name} onChange={this.handleChange}/>)}
                       </Form.Item>
                     </Col>
                     <Col>
                       <Form.Item>
                         {getFieldDecorator('lastName', {
                           rules: [{ required: true, message: 'Please enter last name' }]
-                        })(<Input placeholder="Last name" size="large" />)}
+                        })(<Input placeholder="Last name" name="lastname" size="large" onChange={this.handleChange}/>)}
                       </Form.Item>
                     </Col>
                   </Row>
@@ -73,14 +136,14 @@ class TripFormPage extends React.Component {
                       <Form.Item>
                         {getFieldDecorator('date', {
                           rules: [{ required: true, message: 'Please choose a date' }]
-                        })(<DatePicker style={{ width: '10rem' }} size="large" />)}
+                        })(<DatePicker style={{ width: '10rem' }} size="large" onChange={this.updateDate}/>)}
                       </Form.Item>
                     </Col>
                     <Col>
                       <Form.Item>
                         {getFieldDecorator('time', {
                           rules: [{ required: true, message: 'Please choose a time' }]
-                        })(<TimePicker style={{ width: '10rem' }} size="large" use12Hours format="h:mm a" />)}
+                        })(<TimePicker style={{ width: '10rem' }} size="large" use12Hours format="h:mm a" onChange={this.updateTime}/>)}
                       </Form.Item>
                     </Col>
                   </Row>
@@ -89,11 +152,11 @@ class TripFormPage extends React.Component {
                 <div>
                   <Row>
                     <Col>
-                      <Form.Item>
+                      <Form.Item name="origin" onChange={this.handleChange}>
                         {getFieldDecorator('origin', {
                           rules: [{ required: true, message: 'Please choose origin' }]
                         })(
-                          <PlacesAutocomplete onChange={this.handleLocationChange} onSelect={this.handleLocationSelect}>
+                          <PlacesAutocomplete onChange={this.handleOriginChange} >
                             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                               <div>
                                 <Input
@@ -135,11 +198,12 @@ class TripFormPage extends React.Component {
                         {getFieldDecorator('destination', {
                           rules: [{ required: true, message: 'Please choose destination' }]
                         })(
-                          <PlacesAutocomplete onChange={this.handleLocationChange} onSelect={this.handleLocationSelect}>
+                          <PlacesAutocomplete onChange={this.handleDestChange}>
                             {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                               <div>
                                 <Input
                                   size="large"
+                                  name="destination"
                                   {...getInputProps({
                                     placeholder: 'Destination',
                                     className: 'location-search-input',
@@ -182,7 +246,7 @@ class TripFormPage extends React.Component {
                         {getFieldDecorator('trunk', {
                           rules: [{ required: true, message: 'Please select available trunk size!' }]
                         })(
-                          <Select placeholder="Trunk Size" onChange={this.handleSelectChange} size="large">
+                          <Select placeholder="Trunk Size" onChange={this.handleTrunkChange} size="large" name="trunk_size">
                             <Option value="Small">Small</Option>
                             <Option value="Medium">Medium</Option>
                             <Option value="Large">Large</Option>
@@ -199,7 +263,7 @@ class TripFormPage extends React.Component {
                         {getFieldDecorator('seats', {
                           rules: [{ required: true, message: 'Please select the number of seats available!' }]
                         })(
-                          <Select placeholder="Select Seats" onChange={this.handleSelectChange} size="large">
+                          <Select placeholder="Select Seats" onChange={this.handleSeatsChange} size="large" name="num_seats">
                             <Option value="1">1</Option>
                             <Option value="2">2</Option>
                             <Option value="3">3</Option>
@@ -220,6 +284,8 @@ class TripFormPage extends React.Component {
                           rules: [{ required: true, message: 'Please enter price' }]
                         })(
                           <InputNumber
+                            name="cost"
+                            onChange={this.handleCostChange}
                             size="large"
                             min={0}
                             defaultValue={5}
@@ -236,13 +302,13 @@ class TripFormPage extends React.Component {
                   <Form.Item>
                     {getFieldDecorator('color', {
                       rules: [{ required: true, message: 'Please enter vehicle color' }]
-                    })(<Input placeholder="Vehicle Color" size="large" />)}
+                    })(<Input placeholder="Vehicle Color" size="large" name="car_color" onChange={this.handleChange}/>)}
                   </Form.Item>
                 </div>
                 <Form.Item>
                   {getFieldDecorator('license', {
                     rules: [{ required: true, message: 'Please enter license number' }]
-                  })(<Input placeholder="License Plate" size="large" />)}
+                  })(<Input placeholder="License Plate" size="large" name="car_plate" onChange={this.handleChange}/>)}
                 </Form.Item>
                 <div>
                   <Row>
@@ -250,14 +316,14 @@ class TripFormPage extends React.Component {
                       <Form.Item>
                         {getFieldDecorator('model', {
                           rules: [{ required: true, message: 'Please enter vehicle model' }]
-                        })(<Input placeholder="Vehicle Model" size="large" />)}
+                        })(<Input placeholder="Vehicle Model" size="large" name="car_model" onChange={this.handleChange}/>)}
                       </Form.Item>
                     </Col>
                     <Col>
                       <Form.Item>
                         {getFieldDecorator('make', {
                           rules: [{ required: true, message: 'Please enter vehicle make' }]
-                        })(<Input placeholder="Vehicle Make" size="large" />)}
+                        })(<Input placeholder="Vehicle Make" size="large" name="car_make" onChange={this.handleChange}/>)}
                       </Form.Item>
                     </Col>
                   </Row>

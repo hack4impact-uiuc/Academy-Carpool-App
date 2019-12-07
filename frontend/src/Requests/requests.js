@@ -28,6 +28,12 @@ export async function updateUser(attribs, user_id) {
 }
 
 export async function createTrip(attribs) {
+  const car_color = attribs.car_color;
+  const car_plate = attribs.car_plate;
+  const car_make = attribs.car_make;
+  const car_model = attribs.car_model;
+
+
   const response = await createRequest('POST', BASE_URL + '/trips', attribs);
   return response.message;
 }

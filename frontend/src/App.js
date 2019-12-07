@@ -1,7 +1,6 @@
 import Homepage from './pages/Homepage.js';
 import SignUp from './pages/SignUp.js';
 import TripFormPage from './pages/TripFormPage.js';
-
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
@@ -25,6 +24,7 @@ import {
 } from 'reactstrap';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 class App extends React.Component {
+
   render() {
     return (
       <Router>
