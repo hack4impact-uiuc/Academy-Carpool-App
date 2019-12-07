@@ -47,12 +47,7 @@ class BookTripComponent extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Modal
-          title="Book Trip"
-          visible={this.state.visible}
-          onOk={this.handleSubmit}
-          onCancel={this.handleCancel}
-        >
+        <Modal title="Book Trip" visible={this.state.visible} onOk={this.handleSubmit} onCancel={this.handleCancel}>
           <Card.Body>
             <Row>
               <Col xs={12} md={5}>
