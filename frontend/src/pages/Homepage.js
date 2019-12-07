@@ -168,7 +168,7 @@ class Homepage extends React.Component {
                       this.setState({ filterSeat: '0' });
                     }
                     if (
-                      //parseFloat(value.cost) <= parseFloat(this.state.filterPrice) &&
+                      parseFloat(value.cost) <= parseFloat(this.state.filterPrice) &&
                       parseFloat(value.seats_available) >= parseFloat(this.state.filterSeat) &&
                       (value.destination.location.name.toLowerCase().includes(this.state.filterDest.toLowerCase()) ||
                         this.state.filterDest == '')

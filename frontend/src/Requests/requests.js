@@ -55,6 +55,7 @@ export async function createTrip(attribs) {
   let posted_time = currentDateTime();
   let date = new Date(attribs.time);
   let time = date.getHours() % 12 + ":" + date.getMinutes();
+  time += date.getHours() >= 12 ? " PM" : " AM";
   date = new Date(attribs.date);
   let day = numToDay(date.getDay());
   
@@ -130,6 +131,22 @@ export async function getTrips() {
     tripsJson[i].car = carDetails;
     tripsJson[i].destination = destDetails.result;
     tripsJson[i].origin = originDetails.result;
+
+    let origin = originDetails.result.location.name;
+    let dest = destDetails.result.location.name;
+
+    if(origin.includes(",")){
+      let commaIndex = origin.indexOf(",");
+      origin = origin.substring(0, commaIndex);
+    }
+    if(dest.includes(",")){
+      let commaIndex = dest.indexOf(",");
+      dest = dest.substring(0, commaIndex);
+    }
+
+
+    tripsJson[i].destination.location.name = dest;
+    tripsJson[i].origin.location.name = origin;
     tripsJson[i].driver = driverDetails.result;
   }
 
