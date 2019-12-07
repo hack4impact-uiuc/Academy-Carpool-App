@@ -2,6 +2,7 @@ import React from 'react';
 import { FilterBar, TripList, AdditionalDetails } from '../components';
 import TripComponent from '../components/TripComponent.js';
 import SignUp from './SignUp.js';
+import BookTripComponent from '../components/BookTripComponent.js'
 import {
   CardBody,
   CardSubtitle,
@@ -28,6 +29,7 @@ class Homepage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      bookTripVisibility: false,
       allTrips: [],
       currentTrip: null,
       //Filters
@@ -92,6 +94,16 @@ class Homepage extends React.Component {
   handleClickAD(trip) {
     this.setState({ currentTrip: trip });
   }
+
+  handleClickBookTrip(trip) {
+    this.setState({ currentTrip: trip });
+    this.setState({bookTripVisibility: true})
+  }
+
+  myCallback = (visibilityfromBookTripComponent) => {
+    this.setState({ bookTripVisibility: visibilityfromBookTripComponent });
+  }
+
   handlePrice(event) {
     this.setState({ filterPrice: event.target.value });
   }
@@ -173,7 +185,7 @@ class Homepage extends React.Component {
                       (value.destination.location.name.toLowerCase().includes(this.state.filterDest.toLowerCase()) ||
                         this.state.filterDest == '')
                     )
-                      return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;
+                      return <TripComponent onClick={() => this.handleClickAD(value)} onClickBook = {() => this.handleClickBookTrip(value)} details={value} />;
                   })}
                 </div>
               </Col>
@@ -185,6 +197,8 @@ class Homepage extends React.Component {
                 )}
               </Col>
             </Row>
+            { this.state.bookTripVisibility 
+              && (<BookTripComponent visible = {true} details = {this.state.currentTrip} callbackFromParent={this.myCallback}/>)}
           </div>
         </div>
       </div>
