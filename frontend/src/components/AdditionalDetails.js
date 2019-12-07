@@ -25,7 +25,7 @@ class AdditionalDetails extends React.Component {
     super(props);
     this.state = {
       height: 0,
-      mapheight: 800,
+      mapheight: 800
     };
     console.log(this.props);
   }

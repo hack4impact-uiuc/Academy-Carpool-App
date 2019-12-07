@@ -458,11 +458,12 @@ def get_users():
     users = User.objects()
     return create_response(data={"users": users}, status=200)
 
+
 def get_user_by_name(data):
     if "firstname" not in data or "lastname" not in data:
         return create_response(message="First name and last name must be in body.")
-    
-    fullName = data['firstname'] + " " + data['lastname']
+
+    fullName = data["firstname"] + " " + data["lastname"]
 
     logger.info("Name: " + fullName)
 
@@ -470,10 +471,10 @@ def get_user_by_name(data):
 
     if len(users) == 0:
         return create_response(message=f"No user with name found", status=404)
-    
+
     user = users[0]
 
-    return create_response(data={'user': user})
+    return create_response(data={"user": user})
 
 
 @main.route("/users", methods=["POST"])
@@ -590,7 +591,7 @@ def create_user_car(id):
 
     return create_response(
         message=f"Successfully created car with id {car.id} for user with id {user.id}.",
-        data={'car_id': str(car.id)},
+        data={"car_id": str(car.id)},
         status=201,
     )
 
