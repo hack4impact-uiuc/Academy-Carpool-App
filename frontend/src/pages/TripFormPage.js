@@ -28,6 +28,7 @@ class TripFormPage extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.sendTripReq = this.sendTripReq.bind(this);
   }
 
   handleChange(event) {
@@ -71,20 +72,24 @@ class TripFormPage extends React.Component {
       .then(latLng => console.log('Success', latLng))
       .catch(error => console.error('Error', error));
   };
+  
+  async sendTripReq(){
+    let msg = await createTrip(this.state);
+    alert(msg);
+  }
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        this.sendTripReq();
       }
-
-      createTrip(JSON.stringify(this.state, null, ' '));
-      //alert(JSON.stringify(this.state, null, '  '));
     });
 
 
   };
+
 
   handleSelectChange = value => {
     console.log(value);

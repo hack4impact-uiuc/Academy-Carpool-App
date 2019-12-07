@@ -15,9 +15,9 @@ export async function createUser(attribs) {
 }
 
 export async function createCar(attribs, user_id) {
-  const response = await createRequest('POST', BASE_URL + '/users/' + user_id + '/cards', attribs);
+  const response = await createRequest('POST', BASE_URL + '/users/' + user_id + '/cars', attribs);
 
-  return response.message;
+  return response;
 }
 
 // attribs should be a key, value list of properties
@@ -31,27 +31,29 @@ export async function createTrip(attribs) {
   const firstname = attribs.firstname;
   const lastname = attribs.lastname;
   const userReqData = {firstname: firstname, lastname: lastname};
-
-  // Get User
-  const userData = await createRequest('GET', BASE_URL + '/users', userReqData)
-  if(!userData.success)
-    return userData.message;
   
+  // Get User
+  const userData = await createRequest('GET', BASE_URL + '/users?firstname=' + firstname + "&lastname=" + lastname);
+  if(userData.success != true)
+    return userData.message;
+
   // Create Car
   const userId = userData.result.user._id.$oid;
   const car_color = attribs.car_color;
   const car_plate = attribs.car_plate;
   const car_make = attribs.car_make;
   const car_model = attribs.car_model;
-
+  
   const carReqData = {color: car_color, model: car_model, license_plate: car_plate};
   const carData = await createCar(carReqData, userId);
-  if(!carData.success)
+
+  if(carData.success != true)
     return carData.message;
 
   const carId = carData.result.car_id;
-  let posted_time = currentDateTime();
 
+  let posted_time = currentDateTime();
+  
   let tripReq = {
     driver: userId,
     origin: {
@@ -69,12 +71,11 @@ export async function createTrip(attribs) {
     posted_time: posted_time,
     cost: attribs.cost, 
     car: carId,
-    seats_available: attribs.seats_available,
+    seats_available: attribs.num_seats,
     trunk_space: attribs.trunk_size
   };
 
-
-  const response = await createRequest('POST', BASE_URL + '/trips', attribs);
+  const response = await createRequest('POST', BASE_URL + '/trips', tripReq);
   return response.message;
 }
 

@@ -451,9 +451,9 @@ def delete_locations_in_trip(trip_id, location_id):
 ##################################
 @main.route("/users", methods=["GET"])
 def get_users():
-    data = request.data
-    if data:
-        return get_user_by_name(request.get_json())
+    args = request.args
+    if args:
+        return get_user_by_name(args)
 
     users = User.objects()
     return create_response(data={"users": users}, status=200)
@@ -463,6 +463,8 @@ def get_user_by_name(data):
         return create_response(message="First name and last name must be in body.")
     
     fullName = data['firstname'] + " " + data['lastname']
+
+    logger.info("Name: " + fullName)
 
     users = User.objects(name=fullName)
 
