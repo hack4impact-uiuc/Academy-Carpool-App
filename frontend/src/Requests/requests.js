@@ -7,17 +7,14 @@ export async function getUsers() {
 // attribs should be a key, value list of properties
 export async function createUser(attribs) {
   const response = await createRequest('POST', BASE_URL + '/users', attribs);
-  let id = response.result.userId;
-
-  if ('car' in attribs) await createCar(attribs.car, id);
 
   return response.message;
 }
 
 export async function createCar(attribs, user_id) {
-  const response = await createRequest('POST', BASE_URL + '/users/' + user_id + '/cards', attribs);
+  const response = await createRequest('POST', BASE_URL + '/users/' + user_id + '/cars', attribs);
 
-  return response.message;
+  return response;
 }
 
 // attribs should be a key, value list of properties
@@ -28,7 +25,57 @@ export async function updateUser(attribs, user_id) {
 }
 
 export async function createTrip(attribs) {
-  const response = await createRequest('POST', BASE_URL + '/trips', attribs);
+  const firstname = attribs.firstname;
+  const lastname = attribs.lastname;
+  const userReqData = { firstname: firstname, lastname: lastname };
+
+  // Get User
+  const userData = await createRequest('GET', BASE_URL + '/users?firstname=' + firstname + '&lastname=' + lastname);
+  if (userData.success != true) return userData.message;
+
+  // Create Car
+  const userId = userData.result.user._id.$oid;
+  const car_color = attribs.car_color;
+  const car_plate = attribs.car_plate;
+  const car_make = attribs.car_make;
+  const car_model = attribs.car_model;
+
+  const carReqData = { color: car_color, model: car_model, license_plate: car_plate };
+  const carData = await createCar(carReqData, userId);
+
+  if (carData.success != true) return carData.message;
+
+  const carId = carData.result.car_id;
+
+  let posted_time = currentDateTime();
+  let date = new Date(attribs.time);
+  let time = (date.getHours() % 12) + ':' + date.getMinutes();
+  time += date.getHours() >= 12 ? ' PM' : ' AM';
+  date = new Date(attribs.date);
+  let day = numToDay(date.getDay());
+
+  let tripReq = {
+    driver: userId,
+    origin: {
+      name: attribs.origin,
+      latitude: 0,
+      longitude: 0
+    },
+    destination: {
+      name: attribs.destination,
+      latitude: 0,
+      longitude: 0
+    },
+    start_time: time,
+    start_date: day,
+    posted_time: posted_time,
+    cost: attribs.cost,
+    car: carId,
+    seats_available: attribs.num_seats,
+    trunk_space: attribs.trunk_size
+  };
+
+  const response = await createRequest('POST', BASE_URL + '/trips', tripReq);
   return response.message;
 }
 
@@ -79,6 +126,21 @@ export async function getTrips() {
     tripsJson[i].car = carDetails;
     tripsJson[i].destination = destDetails.result;
     tripsJson[i].origin = originDetails.result;
+
+    let origin = originDetails.result.location.name;
+    let dest = destDetails.result.location.name;
+
+    if (origin.includes(',')) {
+      let commaIndex = origin.indexOf(',');
+      origin = origin.substring(0, commaIndex);
+    }
+    if (dest.includes(',')) {
+      let commaIndex = dest.indexOf(',');
+      dest = dest.substring(0, commaIndex);
+    }
+
+    tripsJson[i].destination.location.name = dest;
+    tripsJson[i].origin.location.name = origin;
     tripsJson[i].driver = driverDetails.result;
   }
 
@@ -110,4 +172,35 @@ async function createRequest(reqMethod = 'POST', url = '', data = null) {
   const response = await fetch(url, requestData);
 
   return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+function currentDateTime() {
+  var currentdate = new Date();
+
+  return (
+    currentdate.getFullYear() +
+    '-' +
+    (currentdate.getMonth() + 1) +
+    '-' +
+    currentdate.getDate() +
+    'T' +
+    currentdate.getHours() +
+    ':' +
+    currentdate.getMinutes() +
+    ':' +
+    currentdate.getSeconds() +
+    '.' +
+    currentdate.getMilliseconds() +
+    'Z'
+  );
+}
+
+function numToDay(num) {
+  if (num == 0) return 'Sunday';
+  if (num == 1) return 'Monday';
+  if (num == 2) return 'Tuesday';
+  if (num == 3) return 'Wednesday';
+  if (num == 4) return 'Thursday';
+  if (num == 5) return 'Friday';
+  return 'Saturday';
 }

@@ -17,7 +17,7 @@ class Trip(Document, Mixin):
     start_time = StringField(required=True)
     posted_time = DateTimeField(required=True)
 
-    cost = StringField(required=True)
+    cost = IntField(required=True)
     car = ReferenceField("Car", required=True)
     seats_available = IntField(required=True)
     trunk_space = StringField(required=True)

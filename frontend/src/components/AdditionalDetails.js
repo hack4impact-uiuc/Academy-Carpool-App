@@ -27,6 +27,7 @@ class AdditionalDetails extends React.Component {
       height: 0,
       mapheight: 800
     };
+    console.log(this.props);
   }
   updateWindowDimensions = this.updateWindowDimensions.bind(this);
   componentDidMount() {
@@ -38,7 +39,7 @@ class AdditionalDetails extends React.Component {
   }
   updateWindowDimensions() {
     this.setState({ height: window.innerHeight });
-    this.setState({ mapheight: window.innerHeight / 3.5 });
+    this.setState({ mapheight: window.innerHeight / 2.8 });
   }
 
   render() {
@@ -52,7 +53,7 @@ class AdditionalDetails extends React.Component {
                 <b className="drivername"> {this.props.details.origin.location.name}</b>
                 <b className="costinfo"> ${this.props.details.cost} </b>
               </CardTitle>
-              <CardSubtitle>Venmo: {this.props.details.driver.users.venmo}</CardSubtitle>
+              <CardSubtitle>Venmo: {this.props.details.driver.users.venmo_handle}</CardSubtitle>
               <hr />
               <div className="starttoend">
                 <b>
