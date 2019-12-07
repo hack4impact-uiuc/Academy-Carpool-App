@@ -53,6 +53,10 @@ export async function createTrip(attribs) {
   const carId = carData.result.car_id;
 
   let posted_time = currentDateTime();
+  let date = new Date(attribs.time);
+  let time = date.getHours() % 12 + ":" + date.getMinutes();
+  date = new Date(attribs.date);
+  let day = numToDay(date.getDay());
   
   let tripReq = {
     driver: userId,
@@ -66,8 +70,8 @@ export async function createTrip(attribs) {
       latitude: 0,
       longitude: 0
     },
-    start_time: attribs.time,
-    start_date: attribs.date,
+    start_time: time,
+    start_date: day,
     posted_time: posted_time,
     cost: attribs.cost, 
     car: carId,
@@ -169,4 +173,20 @@ function currentDateTime() {
                 + currentdate.getMinutes() + ":" 
                 + currentdate.getSeconds() + "."
                 + currentdate.getMilliseconds() + "Z";
+}
+
+function numToDay(num) {
+  if (num == 0)
+    return "Sunday"
+  if (num == 1)
+    return "Monday"
+  if (num == 2)
+    return "Tuesday"
+  if (num == 3)
+    return "Wednesday"
+  if (num == 4)
+    return "Thursday"
+  if (num == 5)
+    return "Friday"
+  return "Saturday"
 }

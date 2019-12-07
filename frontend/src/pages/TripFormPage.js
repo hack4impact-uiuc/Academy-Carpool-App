@@ -72,7 +72,7 @@ class TripFormPage extends React.Component {
       .then(latLng => console.log('Success', latLng))
       .catch(error => console.error('Error', error));
   };
-  
+
   async sendTripReq(){
     let msg = await createTrip(this.state);
     alert(msg);
@@ -82,8 +82,8 @@ class TripFormPage extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         this.sendTripReq();
+        console.log('Received values of form: ', values);
       }
     });
 
