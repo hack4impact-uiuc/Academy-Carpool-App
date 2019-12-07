@@ -3,6 +3,7 @@ import { Button, Col, Jumbotron, Row } from 'react-bootstrap';
 import './TripFormPage.css';
 import { TimePicker, DatePicker, InputNumber, Input, Select, Form } from 'antd';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { createTrip } from '../Requests/requests.js';
 import { GoogleApiWrapper } from 'google-maps-react';
 const { Option } = Select;
 
@@ -27,7 +28,6 @@ class TripFormPage extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    //this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
   handleChange(event) {
@@ -79,7 +79,8 @@ class TripFormPage extends React.Component {
         console.log('Received values of form: ', values);
       }
 
-      alert(JSON.stringify(this.state, null, '  '));
+      createTrip(JSON.stringify(this.state, null, ' '));
+      //alert(JSON.stringify(this.state, null, '  '));
     });
 
 

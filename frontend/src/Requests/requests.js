@@ -28,10 +28,50 @@ export async function updateUser(attribs, user_id) {
 }
 
 export async function createTrip(attribs) {
+  const firstname = attribs.firstname;
+  const lastname = attribs.lastname;
+  const userReqData = {firstname: firstname, lastname: lastname};
+
+  // Get User
+  const userData = await createRequest('GET', BASE_URL + '/users', userReqData)
+  if(!userData.success)
+    return userData.message;
+  
+  // Create Car
+  const userId = userData.result.user._id.$oid;
   const car_color = attribs.car_color;
   const car_plate = attribs.car_plate;
   const car_make = attribs.car_make;
   const car_model = attribs.car_model;
+
+  const carReqData = {color: car_color, model: car_model, license_plate: car_plate};
+  const carData = await createCar(carReqData, userId);
+  if(!carData.success)
+    return carData.message;
+
+  const carId = carData.result.car_id;
+  let posted_time = currentDateTime();
+
+  let tripReq = {
+    driver: userId,
+    origin: {
+      name: attribs.origin,
+      latitude: 0,
+      longitude: 0
+    },
+    destination: {
+      name: attribs.destination,
+      latitude: 0,
+      longitude: 0
+    },
+    start_time: attribs.time,
+    start_date: attribs.date,
+    posted_time: posted_time,
+    cost: attribs.cost, 
+    car: carId,
+    seats_available: attribs.seats_available,
+    trunk_space: attribs.trunk_size
+  };
 
 
   const response = await createRequest('POST', BASE_URL + '/trips', attribs);
@@ -116,4 +156,16 @@ async function createRequest(reqMethod = 'POST', url = '', data = null) {
   const response = await fetch(url, requestData);
 
   return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+function currentDateTime() {
+  var currentdate = new Date();
+
+  return currentdate.getFullYear() + "-"
+                + (currentdate.getMonth()+1)  + "-" 
+                + currentdate.getDate() + "T"  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds() + "."
+                + currentdate.getMilliseconds() + "Z";
 }

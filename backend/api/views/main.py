@@ -588,6 +588,7 @@ def create_user_car(id):
 
     return create_response(
         message=f"Successfully created car with id {car.id} for user with id {user.id}.",
+        data={'car_id': str(car.id)},
         status=201,
     )
 
