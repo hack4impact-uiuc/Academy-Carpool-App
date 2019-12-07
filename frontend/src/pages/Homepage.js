@@ -93,20 +93,6 @@ class Homepage extends React.Component {
   handleClickAD(trip) {
     this.setState({ currentTrip: trip });
   }
-  handlePrice(event) {
-    this.setState({ filterPrice: event.target.value });
-  }
-  handleDest(event) {
-    this.setState({ filterDest: event.target.value });
-  }
-  handleSeat(event) {
-    this.setState({ filterSeat: event.target.value });
-  }
-
-  retRedirect = () => {
-    console.log('Hello');
-    return <Redirect to="/signup" />;
-  };
 
   handleClickBookTrip(trip) {
     this.setState({ currentTrip: trip });
@@ -184,19 +170,7 @@ class Homepage extends React.Component {
                 <b style={{ textAlign: 'center' }}>Active Trips</b>
                 <div style={{ height: `${this.state.mapheight}px`, overflowY: 'auto' }}>
                   {this.state.allTrips.map(value => {
-                    if (this.state.filterPrice == '') {
-                      this.setState({ filterPrice: '1000' });
-                    }
-                    if (this.state.filterSeat == '') {
-                      this.setState({ filterSeat: '0' });
-                    }
-                    if (
-                      parseFloat(value.cost) <= parseFloat(this.state.filterPrice) &&
-                      parseFloat(value.seats_available) >= parseFloat(this.state.filterSeat) &&
-                      (value.destination.location.name.toLowerCase().includes(this.state.filterDest.toLowerCase()) ||
-                        this.state.filterDest == '')
-                    )
-                      return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;
+                    return <TripComponent onClick={() => this.handleClickAD(value)} details={value} />;
                   })}
                 </div>
               </Col>

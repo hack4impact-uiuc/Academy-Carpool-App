@@ -2,6 +2,10 @@ pylint>=2.1.1
 black>=18.9b0
 mypy
 pytest>=3.7.1
+<<<<<<< HEAD
 
 pytest-mongo>=1.2.1
 
+=======
+pytest-mongo>=1.2.1
+>>>>>>> parent of b739102... Filter (#25)
