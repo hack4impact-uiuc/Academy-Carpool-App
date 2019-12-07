@@ -118,7 +118,6 @@ def populate_db():
 
 
 # CARPOOL APP CODE:
-
 # function that is called when you visit /trips
 @main.route("/trips", methods=["GET"])
 def get_trips():
@@ -408,7 +407,9 @@ def create_user():
     user.save()
 
     return create_response(
-        message=f"Successfully created user {user.name} with id {user.id}.", status=201
+        message=f"Successfully created user {user.name} with id {user.id}.",
+        status=201,
+        data={"userId": str(user.id)},
     )
 
 
@@ -444,11 +445,16 @@ def update_user(id):
     )
 
 
-@main.route("/users/<email>", methods=["GET"])
-def get_user_by_email(email):
-    users = User.objects(email=email)
+@main.route("/users/<user_id>", methods=["GET"])
+def get_user_by_email(user_id):
+    user = User.objects(id=user_id).get(id=user_id)
 
-    return create_response(data={"users": users})
+    if user is None:
+        return create_response(
+            message=f"No user with id {user_id} was found.", status=404
+        )
+
+    return create_response(data={"users": user})
 
 
 ##############################################

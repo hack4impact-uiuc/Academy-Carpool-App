@@ -11,7 +11,7 @@ class User(Document, Mixin):
     name = StringField(required=True)
     phone = StringField(required=True)
     rating = FloatField(required=False)
-    venmo_handle = StringField(required=False)
+    venmo_handle = StringField(required=True)
 
     photo = StringField()
     cars = ListField(ReferenceField("Car"))
@@ -21,7 +21,7 @@ class User(Document, Mixin):
 
     @staticmethod
     def getRequiredKeys():
-        return ["age", "email", "name", "phone"]
+        return ["age", "email", "name", "phone", "venmo_handle"]
 
     @staticmethod
     def getReferenceKeys():

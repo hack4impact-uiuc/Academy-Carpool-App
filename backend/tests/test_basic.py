@@ -188,7 +188,13 @@ def test_get_user(client):
     assert ret_dict["result"]["users"] == []
 
     # Create user and test if it's returned
-    user = User(age=20, email="email@domain.com", name="Test", phone="0123456789")
+    user = User(
+        age=20,
+        email="email@domain.com",
+        name="Test",
+        phone="0123456789",
+        venmo_handle="@handle",
+    )
     user.save()
 
     rs = client.get("/users")
@@ -202,7 +208,13 @@ def test_get_user(client):
 
 def test_delete_user(client):
     # Create user to test on
-    user = User(age=20, email="email@domain.com", name="Test", phone="0123456789")
+    user = User(
+        age=20,
+        email="email@domain.com",
+        name="Test",
+        phone="0123456789",
+        venmo_handle="@handle",
+    )
     user.save()
 
     rs = client.get("/users")
@@ -219,7 +231,13 @@ def test_delete_user(client):
 
 def test_update_user(client):
     # Create user to test on
-    user = User(age=20, email="email@domain.com", name="Test", phone="0123456789")
+    user = User(
+        age=20,
+        email="email@domain.com",
+        name="Test",
+        phone="0123456789",
+        venmo_handle="@handle",
+    )
     user.save()
 
     rs = client.get("/users")
@@ -255,6 +273,7 @@ def test_create_user(client):
             "email": "email@gmail.com",
             "name": "TEST",
             "phone": "0123456789",
+            "venmo_handle": "@handle",
         },
     )
 

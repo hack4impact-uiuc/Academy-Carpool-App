@@ -262,6 +262,12 @@ class TripFormPage extends React.Component {
                 </Row>
               </div>
 
+              <Form.Item>
+                {getFieldDecorator('notes', {
+                  rules: [{ required: false, message: 'Optional notes not entered' }]
+                })(<Input placeholder="Add Trip Notes:" size="large" />)}
+              </Form.Item>
+
               <div class="submittop-buffer" style={{ paddingLeft: '75%' }}>
                 <Button onClick={this.handleSubmit} variant="primary" type="submit">
                   Submit
