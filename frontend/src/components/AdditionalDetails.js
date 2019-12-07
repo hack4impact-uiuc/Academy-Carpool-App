@@ -27,6 +27,7 @@ class AdditionalDetails extends React.Component {
       height: 0,
       mapheight: 800
     };
+    console.log(this.props);
   }
   updateWindowDimensions = this.updateWindowDimensions.bind(this);
   componentDidMount() {
@@ -52,7 +53,7 @@ class AdditionalDetails extends React.Component {
                 <b className="drivername"> {this.props.details.origin.location.name}</b>
                 <b className="costinfo"> ${this.props.details.cost} </b>
               </CardTitle>
-              <CardSubtitle>Venmo: {this.props.details.driver.users.venmo}</CardSubtitle>
+              <CardSubtitle>Venmo: {this.props.details.driver.users.venmo_handle}</CardSubtitle>
               <hr />
               <div className="starttoend">
                 <b>
@@ -79,7 +80,7 @@ class AdditionalDetails extends React.Component {
                 </div>
                 <iframe
                   className="map"
-                  src={`https://maps.google.com/maps?q=${this.props.details.destination}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                  src={`https://maps.google.com/maps?q=${this.props.details.destination.location.name}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
                   style={{ height: `${this.state.mapheight}px` }}
                 >
                   <MapContainer style={{ float: 'center' }} />
