@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Button, Col, Jumbotron, Row } from 'react-bootstrap';
 import './TripFormPage.css';
@@ -44,11 +43,10 @@ class TripFormPage extends React.Component {
     this.setState({ origin: address });
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
-      .then(latLng => 
-        {this.setState({originLat:latLng.lat})
-        this.setState({originLng:latLng.lng}) 
-      }
-        )
+      .then(latLng => {
+        this.setState({ originLat: latLng.lat });
+        this.setState({ originLng: latLng.lng });
+      })
       .catch(error => console.error('Error', error));
   };
 
@@ -56,11 +54,10 @@ class TripFormPage extends React.Component {
     this.setState({ destination: address });
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
-      .then(latLng => 
-        {this.setState({destinationLat:latLng.lat})
-        this.setState({destinationLng:latLng.lng}) 
-      }
-        )
+      .then(latLng => {
+        this.setState({ destinationLat: latLng.lat });
+        this.setState({ destinationLng: latLng.lng });
+      })
       .catch(error => console.error('Error', error));
   };
 
@@ -75,7 +72,6 @@ class TripFormPage extends React.Component {
   updateTime = time => {
     this.setState({ time: time });
   };
-
 
   async sendTripReq() {
     let msg = await createTrip(this.state);
