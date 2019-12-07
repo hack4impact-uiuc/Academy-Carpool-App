@@ -10,7 +10,7 @@ from .populate_db import parse_census_data
 from .web_scrap import extract_data_links
 import datetime
 
-# Kelly's code
+# Kelly's code below
 
 main = Blueprint("main", __name__)  # initialize blueprint
 

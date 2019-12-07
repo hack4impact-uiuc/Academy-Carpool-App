@@ -13,7 +13,7 @@ class Trip(Document, Mixin):
     destination = ReferenceField("Location", required=True)
     checkpoints = ListField(
         ReferenceField("Location")
-    )  # does not include the origin or destination
+    )  # doesn't include the origin or destination
 
     start_date = StringField(required=True)
     start_time = StringField(required=True)
