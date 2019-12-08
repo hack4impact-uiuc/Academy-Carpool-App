@@ -10,7 +10,7 @@ from .populate_db import parse_census_data
 from .web_scrap import extract_data_links
 import datetime
 
-# Kelly's code
+# Kelly's code below
 
 main = Blueprint("main", __name__)  # initialize blueprint
 
@@ -118,17 +118,17 @@ def populate_db():
 
 
 # CARPOOL APP CODE:
-@main.route("/locations/<locationId>", methods=["GET"])
-def get_location_by_id(locationId):
-    location = Location.objects(id=locationId).get(id=locationId)
-    return create_response(data={"location": location})
-
-
 # function that is called when you visit /trips
 @main.route("/trips", methods=["GET"])
 def get_trips():
     trips = Trip.objects()
     return create_response(data={"trips": trips}, status=200)
+
+
+@main.route("/locations/<locationId>", methods=["GET"])
+def get_location_by_id(locationId):
+    location = Location.objects(id=locationId).get(id=locationId)
+    return create_response(data={"location": location})
 
 
 # function that is called when you visit /trips
@@ -156,7 +156,6 @@ def create_trip():
             for locationData in info["checkpoints"]:
                 location = create_location(locationData)
                 locations.append(location)
-
             trip["checkpoints"] = locations
         elif key in info and key == "driver":
             driver = get_user_by_id(info[key])
@@ -175,7 +174,6 @@ def create_trip():
                         status=404,
                     )
                 passengers.append(passenger)
-
             trip["passengers"] = passengers
         elif key in info:
             trip[key] = info[key]
@@ -183,7 +181,7 @@ def create_trip():
     trip.save()
 
     return create_response(
-        message=f"Successfully created trip with driver {trip.driver} and id {trip.id}.",
+        message=f"Successfully created trip ({trip.id}) with driver id {trip.driver.id} and id {trip.id}.",
         status=201,
     )
 
@@ -224,15 +222,19 @@ def update_trip(id):
     if trip_to_update is None:
         return create_response(message=f"No trip with id {id} was found.", status=404)
 
-    # Update each key, but not users, location, or cars
+    # Update each key, but not Users, Location, or Cars
     for key in Trip.get_elements():
-        if key in info and key not in Trips.get_refrence_keys():
+        if (
+            key in info
+            and key in Trip.get_elements()
+            and key not in Trip.get_reference_elements()
+        ):
             trip_to_update[key] = info[key]
 
     trip_to_update.save()
 
     return create_response(
-        message=f"Successfully updated trip with driver {trip_to_update.driver} and id {trip_to_update.id}.",
+        message=f"Successfully updated non-reference field components of trip with driver id {trip_to_update.driver.id} and trip id {trip_to_update.id}.",
         status=201,
     )
 
@@ -246,47 +248,41 @@ def delete_trip(id):
         return create_response(message=f"No trip with id {id} was found.", status=404)
 
     to_delete.delete()
-    return create_response(
-        message=f"Trip with driver {to_delete.driver} and id {id} has been deleted."
-    )
+    return create_response(message=f"Trip with id {id} has been deleted.")
 
 
-# function that is called when you visit /trips/<id>/users
-# NOTE: can only add passengers, but CANNOT add drivers to a trip
-@main.route("/trips/<id>/users", methods=["POST"])
-def create_users_for_trip(id):
+# function that is called when you visit /trips/<trip_id>/passengers/<user_id>
+@main.route("/trips/<trip_id>/passengers/<user_id>", methods=["PUT"])
+def update_passengers_in_trip(trip_id, user_id):
     info = request.get_json()
     logger.info(f"Recieved info {info}")
 
-    trip = get_trip_by_id(id)
+    trip_to_update = get_trip_by_id(trip_id)
 
-    if trip is None:
-        return create_response(message=f"No trip with id {id} was found.", status=404)
+    if trip_to_update is None:
+        return create_response(
+            message=f"No trip with id {trip_id} was found.", status=404
+        )
 
-    user = User()  # passenger
+    user_to_update = get_user_by_id(user_id)
 
-    for key in Users.getAllKeys():
-        if key in Users.getRequiredKeys() and key not in info:
-            msg = f"User was not created because missing required User field '{key}'."
-            logger.info(msg)
-            return create_response(message=msg, status=442)
-        elif key in Users.getRequiredKeys() and key in info:
-            user[key] = info[key]
+    if user_to_update is None:
+        return create_response(
+            message=f"No user with id {user_id} was found.", status=404
+        )
 
-    user.save()
-
-    trip.passengers.append(user)
-    trip.save()
+    trip_to_update.passengers.append(user_to_update)
+    trip_to_update.save()
 
     return create_response(
-        message=f"Successfully created user (passenger) with id {user.id} for trip with driver {trip.driver} and id {trip.id}.",
+        message=f"Successfully added user {user_to_update.id} to trip with driver {trip_to_update.driver.id} and id {trip_to_update.id}.",
         status=201,
     )
 
 
-# function that is called when you visit /trips/<trip_id>/users/<user_id>
-@main.route("/trips/<trip_id>/users/<user_id>", methods=["DELETE"])
-def delete_users_in_trip(trip_id, user_id):
+# function that is called when you visit /trips/<trip_id>/passengers/<user_id>
+@main.route("/trips/<trip_id>/passengers/<user_id>", methods=["DELETE"])
+def delete_passengers_in_trip(trip_id, user_id):
     trip = get_trip_by_id(trip_id)
 
     if trip is None:
@@ -303,34 +299,15 @@ def delete_users_in_trip(trip_id, user_id):
             )  # only delete the user from the trip (not from the database)
             trip.save()
             return create_response(
-                message=f"User with id {user_id} was deleted from trip with driver {trip.driver} and id {trip_id}."
+                message=f"User with id {user_id} was deleted from trip with id {trip_id}."
             )
         else:
             index += 1
 
     return create_response(
-        message=f"No user with id {user_id} is included in trip with driver {trip.driver} and id {trip_id}",
+        message=f"No user with id {user_id} is included in trip with driver id {trip.driver.id} and id {trip_id}",
         status=404,
     )
-
-
-# function that is called when you visit /trips/<id>/locations
-@main.route("/trips/<id>/locations", methods=["GET"])
-def get_locations_in_trip(id):
-    trip = get_trip_by_id(id)
-
-    if trip is None:
-        return create_response(message=f"No trip with id {id} was found.", status=404)
-
-    locations = []
-
-    logger.info(f"Locations: {len(trip.checkpoints)}")
-
-    for locations_in_trip in trip.checkpoints:
-        logger.info(f"Locations: {Location.objects(id=locations_in_trip.id)}")
-        passengers.append(Location.objects(id=locations_in_trip.id))
-
-    return create_response(data={"locations": locations}, status=200)
 
 
 # function that is called when you visit /trips/<id>/locations
@@ -348,7 +325,7 @@ def create_locations_in_trip(id):
 
     for key in Location.get_elements():
         if key in Location.get_elements() and key not in info:
-            msg = f"Location was not created because missing required Location field '{key}'."
+            msg = f"Checkpoint was not created because missing required Location field '{key}'."
             logger.info(msg)
             return create_response(message=msg, status=442)
         elif key in Location.get_elements() and key in info:
@@ -360,50 +337,7 @@ def create_locations_in_trip(id):
     trip.save()
 
     return create_response(
-        message=f"Successfully created location with id {location.id} for trip with driver {trip.driver} and id {trip.id}.",
-        status=201,
-    )
-
-
-# function that is called when you visit /trips/<trip_id>/locations/<location_id>
-@main.route("/trips/<trip_id>/locations/<location_id>", methods=["PUT"])
-def update_locations_in_trip(trip_id, location_id):
-    info = request.get_json()
-    logger.info(f"Recieved info {info}")
-
-    trip_to_update = get_trip_by_id(trip_id)
-
-    if trip_to_update is None:
-        return create_response(
-            message=f"No trip with id {trip_id} was found.", status=404
-        )
-
-    location_to_update = None
-
-    if str(trip_to_update.origin.id) == str(location_id):
-        location_to_update = trip_to_update.origin
-        for key in Location.get_elements():
-            location_to_update[key] = info[key]
-    elif str(trip_to_update.destination.id) == str(location_id):
-        location_to_update = trip_to_update.destination
-        for key in Location.get_elements():
-            location_to_update[key] = info[key]
-    else:
-        for location_in_trip in trip_to_update.checkpoints:
-            if str(location_in_trip.id) == str(location_id):
-                location_to_update = location_in_trip
-                for key in Location.get_elements():
-                    location_to_update[key] = info[key]
-
-    if location_to_update is None:
-        return create_response(
-            message=f"No location with id {location_id} is included in trip with driver {trip_to_update.driver} and id {trip_id}",
-            status=404,
-        )
-
-    trip_to_update.save()
-    return create_response(
-        message=f"Successfully updated location {location_to_update.id} in trip with driver {trip_to_update.driver} and id {trip_to_update.id}.",
+        message=f"Successfully created location with id {location.id} for trip with driver id {trip.driver.id} and id {trip.id}.",
         status=201,
     )
 
@@ -435,13 +369,13 @@ def delete_locations_in_trip(trip_id, location_id):
             trip.checkpoints.pop(index)
             trip.save()
             return create_response(
-                message=f"Location with id {location_id} was deleted from trip with driver {trip.driver} and id {trip_id}."
+                message=f"Location with id {location_id} was deleted from trip with driver id {trip.driver.id} and id {trip_id}."
             )
         else:
             index += 1
 
     return create_response(
-        message=f"No location with id {location_id} is included in trip with driver {trip.driver} and id {trip_id}",
+        message=f"No location with id {location_id} is included in trip with driver id {trip.driver.id} and id {trip_id}",
         status=404,
     )
 
