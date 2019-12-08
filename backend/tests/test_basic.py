@@ -186,7 +186,7 @@ def test_delete_car(client, mongo_proc):
 ###########################
 # Trips Location Test
 ###########################
-#def test_create_trip_location(client, mongo_proc):
+# def test_create_trip_location(client, mongo_proc):
 #    rs = client.get("/trips")
 #    ret_dict = rs.json
 #    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -215,7 +215,7 @@ def test_delete_car(client, mongo_proc):
 #    assert ret_dict["result"]["locations"][0]["longitude"] == 0.1
 
 
-#def test_update_trip_location(client, mongo_proc):
+# def test_update_trip_location(client, mongo_proc):
 #    rs = client.get("/trips")
 #    ret_dict = rs.json
 #    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -239,7 +239,7 @@ def test_delete_car(client, mongo_proc):
 #    assert ret_dict["result"]["locations"][0]["longitude"] == 1.1
 
 
-#def test_delete_trip_location(client, mongo_proc):
+# def test_delete_trip_location(client, mongo_proc):
 #    rs = client.get("/trips")
 #    ret_dict = rs.json
 #    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -258,7 +258,7 @@ def test_delete_car(client, mongo_proc):
 ###########################
 # Trips Users Test
 ###########################
-#def test_create_trip_user(client, mongo_proc):
+# def test_create_trip_user(client, mongo_proc):
 #    rs = client.get("/trips")
 #    ret_dict = rs.json
 #    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -289,7 +289,7 @@ def test_delete_car(client, mongo_proc):
 #    assert ret_dict["result"]["users"][0]["phone"] == "0123456789"
 
 
-#def test_update_trip_user(client, mongo_proc):
+# def test_update_trip_user(client, mongo_proc):
 #    rs = client.get("/trips")
 #    ret_dict = rs.json
 #    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
@@ -311,7 +311,7 @@ def test_delete_car(client, mongo_proc):
 #    assert ret_dict["result"]["users"][0]["phone"] == "1234567890"
 
 
-#def test_delete_trip_user(client, mongo_proc):
+# def test_delete_trip_user(client, mongo_proc):
 #    rs = client.get("/trips")
 #    ret_dict = rs.json
 #    trip_id = ret_dict["result"]["trips"][0]["_id"]["$oid"]
