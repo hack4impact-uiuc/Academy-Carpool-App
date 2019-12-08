@@ -7,14 +7,17 @@ from api.models import Users, Cars, Location
 
 class Trip(Document, Mixin):
     driver = ReferenceField("User", required=True)
-    passengers = ListField(ReferenceField("User", required=True))
+    passengers = ListField(ReferenceField("User"))
 
     origin = ReferenceField("Location", required=True)
     destination = ReferenceField("Location", required=True)
-    checkpoints = ListField(ReferenceField("Location"))
+    checkpoints = ListField(
+        ReferenceField("Location")
+    )  # doesn't include the origin or destination
 
     start_date = StringField(required=True)
     start_time = StringField(required=True)
+
     posted_time = DateTimeField(required=True)
 
     cost = IntField(required=True)
@@ -27,20 +30,17 @@ class Trip(Document, Mixin):
     def get_elements():
         return [
             "driver",
+            "passengers",
             "origin",
             "destination",
             "checkpoints",
-            "start_time",
             "start_date",
+            "start_time",
             "posted_time",
             "cost",
             "car",
             "seats_available",
             "trunk_space",
-            "passengers",
-            "past_drivers",
-            "past_passengers",
-            "current_users",
             "notes",
         ]
 
@@ -50,8 +50,8 @@ class Trip(Document, Mixin):
             "driver",
             "origin",
             "destination",
-            "start_time",
             "start_date",
+            "start_time",
             "posted_time",
             "cost",
             "car",
@@ -60,8 +60,15 @@ class Trip(Document, Mixin):
         ]
 
     @staticmethod
-    def get_reference_keys():
-        return ["driver", "passengers", "origin", "destination"]
+    def get_reference_elements():
+        return [
+            "driver",
+            "passengers",
+            "origin",
+            "destination",
+            "checkpoints",
+            "car",
+        ]
 
     def __repr__(self):
         return f"<Trip {self.driver}>"
