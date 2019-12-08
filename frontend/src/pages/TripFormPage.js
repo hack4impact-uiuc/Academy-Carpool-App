@@ -17,7 +17,11 @@ class TripFormPage extends React.Component {
       date: '',
       time: '',
       origin: '',
+      originLat: '',
+      originLng: '',
       destination: '',
+      destinationLat: '',
+      destinationLng: '',
       trunk_size: '',
       num_seats: 0,
       cost: 0,
@@ -37,10 +41,24 @@ class TripFormPage extends React.Component {
 
   handleOriginChange = address => {
     this.setState({ origin: address });
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => {
+        this.setState({ originLat: latLng.lat });
+        this.setState({ originLng: latLng.lng });
+      })
+      .catch(error => console.error('Error', error));
   };
 
   handleDestChange = address => {
     this.setState({ destination: address });
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => {
+        this.setState({ destinationLat: latLng.lat });
+        this.setState({ destinationLng: latLng.lng });
+      })
+      .catch(error => console.error('Error', error));
   };
 
   handleCostChange = cost => {
@@ -53,24 +71,6 @@ class TripFormPage extends React.Component {
 
   updateTime = time => {
     this.setState({ time: time });
-  };
-
-  handleOriginLocationSelect = address => {
-    this.setState({ origin: address });
-
-    geocodeByAddress(address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
-      .catch(error => console.error('Error', error));
-  };
-
-  handleDestLocationSelect = address => {
-    this.setState({ destination: address });
-
-    geocodeByAddress(address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
-      .catch(error => console.error('Error', error));
   };
 
   async sendTripReq() {

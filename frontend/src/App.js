@@ -96,6 +96,7 @@ class App extends React.Component {
 =======
 import SignUp from './pages/SignUp.js';
 import TripFormPage from './pages/TripFormPage.js';
+import UserFormPage from './pages/UserFormPage.js';
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
@@ -143,7 +144,7 @@ class App extends React.Component {
           </div>
           <Switch>
             <Route exact path="/trips" component={Homepage} />
-            <Route path="/login" component={SignUp} />
+            <Route path="/login" component={UserFormPage} />
             <Route path="/addtrip" component={TripFormPage} />
           </Switch>
         </div>
