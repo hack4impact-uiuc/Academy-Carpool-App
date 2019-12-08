@@ -29,103 +29,7 @@ class Homepage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-<<<<<<< HEAD
-<<<<<<< HEAD
-      //currentTrip: null,
-      allTrips: [],
-
-      currentTrip: {
-        origin: 'West Quad',
-        destination: 'County Market',
-        venmo: 'Ashank-Behara',
-        cost: '5',
-        model: 'Prius',
-        seats: '3',
-        space: 'empty',
-        color: 'blue',
-        make: 'Toyota',
-        notes: 'Meet me in the back entrance behind the building. If you arrive late I will leave.',
-        name: 'Ashank Behara',
-        date: '11/4/19',
-        time: '6:30',
-        plate: 'XXXX'
-      }
-      // allTrips: [
-      //   {
-      //     origin: 'West Quad',
-      //     destination: 'County Market',
-      //     venmo: 'Ashank-Behara',
-      //     cost: '5',
-      //     model: 'Prius',
-      //     seats: '3',
-      //     space: 'empty',
-      //     color: 'blue',
-      //     make: 'Toyota',
-      //     notes: 'Meet me in the back entrance behind the building. If you arrive late I will leave.',
-      //     name: 'Ashank Behara',
-      //     date: '11/4/19',
-      //     time: '6:30',
-      //     plate: 'XXXX',
-      //     id: '0'
-      //   },
-      //   {
-      //     origin: 'Schlopkins',
-      //     destination: 'Red Lion',
-      //     venmo: 'Angela-Luo',
-      //     cost: '24',
-      //     model: 'Lancer',
-      //     seats: '1',
-      //     space: 'full',
-      //     color: 'white',
-      //     make: 'Mitsubishi',
-      //     notes: 'I take preworkout before I drink.',
-      //     name: 'Angela-Luo',
-      //     date: '11/7/19',
-      //     time: '4:20',
-      //     plate: 'XXXX',
-      //     id: '1'
-      //   },
-      //   {
-      //     origin: '606E Stoughton',
-      //     destination: 'Citadel',
-      //     venmo: 'Shreyas-Mohan',
-      //     cost: '83',
-      //     model: 'Fit',
-      //     seats: '2',
-      //     space: 'empty',
-      //     color: 'blue',
-      //     make: 'Honda',
-      //     notes: 'breh',
-      //     name: 'Shreyas Mohan',
-      //     date: '11/13/19',
-      //     time: '5:47',
-      //     plate: 'XXXX',
-      //     id: '2'
-      //   }
-      // ]
-    };
-
-    this.loadTrips();
-    //this.state = {allTrips: [trips]}
-  }
-  
-  async loadTrips(){
-    let trips = await getTrips();
-
-    let tripsArray = trips.result.trips;
-
-    let allTrips = this.state.allTrips;
-
-    tripsArray.forEach(trip => {
-      allTrips.append(trip);
-    });
-
-    this.setState({allTrips: allTrips});
-
-=======
-=======
       bookTripVisibility: false,
->>>>>>> 6ea3f921b99540ab3d40f8107a5b655f736d4ee1
       allTrips: [],
       currentTrip: null,
       //Filters
@@ -185,7 +89,6 @@ class Homepage extends React.Component {
   updateWindowDimensions() {
     this.setState({ height: window.innerHeight });
     this.setState({ mapheight: window.innerHeight / 1.25 });
->>>>>>> 91d03944fe64d7c56b15cf87f5a038684e70343d
   }
 
   handleClickAD(trip) {
@@ -256,37 +159,8 @@ class Homepage extends React.Component {
     return <Redirect to="/signup" />;
   };
 
-  getTripPanelContents() {
-    if(this.state.allTrips.length == 0) {
-      return <h5>There are no active trips.</h5>
-    }
-
-    let elements = []
-
-    {this.state.allTrips.map(value => {
-      elements.append(<TripComponent onClick={() => this.handleClickAD(value)} details={value} />);
-    })}
-
-    return elements;
-  }
-
   render() {
     return (
-<<<<<<< HEAD
-      <div class="filter">
-        <Row>
-          <Col xs="3">
-            <FilterBar />
-          </Col>
-          <Col xs="3">
-            <b style={{ textAlign: 'center' }}>Active Trips</b>
-            {this.getTripPanelContents()}
-          </Col>
-          <Col>
-            <AdditionalDetails details={this.state.currentTrip} />
-          </Col>
-        </Row>
-=======
       <div>
         <div class="filter" style={{ background: '#ededed', paddingTop: '1%', width: '100%' }}>
           {/* "#E7E7F8" */}
@@ -334,7 +208,6 @@ class Homepage extends React.Component {
             )}
           </div>
         </div>
->>>>>>> 91d03944fe64d7c56b15cf87f5a038684e70343d
       </div>
     );
   }
